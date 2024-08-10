@@ -1,0 +1,148 @@
+.home-container {
+  font-family: Arial, sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  height: auto;
+}
+
+.logo img {
+  height: 200px;
+  margin-right: 10px;
+}
+
+.nav {
+  display: flex;
+}
+
+.button-criar {
+  background-color: #013088;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.button-entrar {
+  background-color: #ffffff;
+  color: #013088;
+  border: none;
+  padding: 10px 20px;
+  margin-left: 18px;
+  cursor: pointer;
+  letter-spacing: 0;
+}
+
+.button-entrar:hover,
+.button-entrar:active {
+  letter-spacing: 5px;
+}
+
+.button-entrar:after,
+.button-entrar:before {
+  backface-visibility: hidden;
+  border: 1px solid rgba(255, 255, 255, 0);
+  bottom: 0px;
+  content: " ";
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  transition: all 280ms ease-in-out;
+  width: 0;
+}
+
+.button-entrar:hover:after,
+.button-entrar:hover:before {
+  backface-visibility: hidden;
+  border-color: #013088;
+  transition: width 350ms ease-in-out;
+  width: 70%;
+}
+
+.button-entrar:hover:before {
+  bottom: auto;
+  top: 0;
+  width: 70%;
+}
+
+.main-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  position: relative;
+  min-height: 300px; /*adc uma altura mínima para garantir que o conteúdo apareça */
+}
+
+.retangulo-cinza {
+  background-color: #f0f0f0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.texto-pagPrincipal {
+  max-width: 600px;
+  z-index: 1;
+}
+
+.texto-pagPrincipal h2 {
+  font-size: 36px;
+  font-style: italic;
+}
+
+.texto-pagPrincipal .text-cor {
+  color: #FF5733;
+}
+
+.texto-pagPrincipal p {
+  font-size: 20px;
+  margin: 20px 0;
+}
+
+.criarCt-button {
+  background-color: #013088;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.imagem-content {
+  position: relative;
+  z-index: 1;
+}
+
+.imagem-content img {
+  max-height: 300px;
+  position: relative;
+  z-index: 2;
+}
+
+.bola-laranja {
+  background-color: #FF5733;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  position: absolute;
+  right: -10px;
+  bottom: -1px;
+  z-index: 0;
+}
