@@ -1,0 +1,101 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden; 
+  }
+  
+  .container {
+    display: flex;
+    width: 100vw;
+    height: 100vh; 
+  }
+  
+  .bloco-azul {
+    background-color: #013088; 
+    color: white;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .logo {
+    width: 350px;
+    margin-bottom: 0px -5px 10px;
+    padding: 0;
+    margin-left: -100px;
+    margin-top: -110px;
+  }
+  
+  .entrar {
+    font-size: 42px;
+    margin-top: -150px;
+    margin-left: -200px;
+    position: absolute;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 58px;
+    color: #FFFFFF;
+    
+  }
+  
+  .paragrafo {
+    margin-bottom: 10px;
+    margin-left: -120px;
+    margin-top: -60px;
+  }
+  
+  .login-form {
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .login-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+    
+  }
+  
+  .login-form button {
+    background-color: #D9D9D9; 
+    color: #013088;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 280px;
+  }
+  
+  .login-form a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .login-form button:hover {
+    background-color: #f8f8f8;
+  }
+  
+  .foto-casa {
+    width: 50vw; 
+    height: 100vh; 
+    object-fit: cover;
+    
+  }
+  
