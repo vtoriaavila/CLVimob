@@ -47,9 +47,11 @@ const upload = multer({ storage });
 import userRoute from "./routes/user.route.js";
 import authRoute from "./routes/auth.route.js";
 import imobRoute from "./routes/imob.route.js";
+import contractRoute from "./routes/contract.route.js";
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
 app.use("/imob", imobRoute);
+app.use("/contract", contractRoute);
 
  
 // Conexão com o banco de dados e inicialização do servidor
