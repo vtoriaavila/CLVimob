@@ -85,7 +85,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 15%;
   position: relative;
   min-height: 300px; /*adc uma altura mínima para garantir que o conteúdo apareça */
 }

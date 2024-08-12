@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import './Home.css';
 import logo_azl from './logo_azl.png';
+import teste from '../assets/logo_azl.png'
 import homem from './homem.png'; 
 
 
@@ -19,7 +20,7 @@ const Home = () => {
     <div className='home-container'>
       <header className='header'>
         <div className='logo'>
-          <img src={logo_azl} alt='CLVimob logo' />
+          <img src={teste} alt='CLVimob logo' />
         </div>
         <nav className='nav'>
           <button className='button-criar'
