@@ -13,7 +13,7 @@ const Home = () => {
     };
 
     const handleCadastroClick =()=>{
-        navigate('/cadastro');
+        navigate('/cadastro-opcoes');
     };
 
   return (

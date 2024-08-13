@@ -14,6 +14,10 @@ const Cadastro = () => {
 
     const navigate = useNavigate();
 
+    const handleTipoUsuarioClick = () => {
+      navigate('/tipo-usuario');
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Nome Completo:', nomeCompleto);
@@ -69,7 +73,7 @@ const Cadastro = () => {
             onChange={(e) => setConfirmaSenha(e.target.value)}
             required
           />
-          <button type="submit" >PRÓXIMO</button>
+          <button type="submit" onClick={handleTipoUsuarioClick}>PRÓXIMO</button>
         </form>
       </div>
       <img src={casa} alt="Foto da casa" className="foto-casa" />
