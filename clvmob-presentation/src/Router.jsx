@@ -4,9 +4,9 @@ import Login from "./components/Login";
 import Cadastro from "./components/Cadastro";
 import TipoUsuario from "./components/TipoUsuario";
 import CadastroLayout from "./components/CadastroLayout";
-import CadastroAdm from './components/cadastro/CadastroAdm'
-import CadastroLocatario from './components/cadastro/CadastroLocatario'
-import CadastroPropietario from './components/cadastro/CadastroProprietario'
+import CadastroAdm from './components/cadastro/CadastroAdm';
+import CadastroLocatario from './components/cadastro/CadastroLocatario';
+import CadastroPropietario from './components/cadastro/CadastroProprietario';
 
 
 
@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         element: <CadastroLayout />,
         children: [
             {
-                path: 'adm',
+                path: 'administrador',
                 element: <CadastroAdm />
             },
             {

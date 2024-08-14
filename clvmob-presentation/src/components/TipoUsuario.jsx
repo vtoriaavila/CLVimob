@@ -8,15 +8,15 @@ const TipoUsuario = () => {
   const navigate = useNavigate();
 
   const handleAdministradorClick = () => {
-    navigate('/cadastro-administrador');
+    navigate('/cadastro/administrador');
   };
 
   const handleProprietarioClick = () => {
-    navigate('/cadastro-proprietario');
+    navigate('/cadastro/proprietario');
   };
 
   const handleLocatarioClick = () => {
-    navigate('/cadastro-locatario');
+    navigate('/cadastro/locatario');
   };
 
   return (
