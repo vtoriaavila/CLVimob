@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 export default function CadastroProprietario(){
     const navigate = useNavigate();
     const handlePerfilProprietarioClick = () => {
-        navigate('/cadastro/proprietario');
+        navigate('/perfil/proprietario');
       };
 
 

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function CadastroLocatario(){
     const navigate = useNavigate();
     const handlePerfilLocatarioClick = () => {
-        navigate('/cadastro/proprietario');
+        navigate('/perfil/locatario');
       };
 
     return(
