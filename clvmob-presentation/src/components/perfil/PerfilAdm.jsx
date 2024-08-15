@@ -1,5 +1,5 @@
 export default function PerfilAdm(){
     return(
-        <div>oi</div>
+        <div className="Coluna">oi</div>
     )
 }

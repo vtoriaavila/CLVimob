@@ -1,18 +1,19 @@
-.perfil-main::before{
-    content: '';
-    background-image: url('./cadastro/bg-cadastro.png');
-    background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 80px;
-    width: 100vw;
-    height: calc(100vh - 80px);
-    opacity: .5;
-    z-index: -1;
-    
+.perfil-header{
+    height: 80px;
+    border-bottom: 1px solid #E8E8E8; 
 }
 
 .perfil-main{
-    width: 100vw;
-    /* height: calc(100vh - 80px); */
+ position: absolute;
+ width: 364px;
+ height: 1024px;
+ left: -19px;
+ top: 0px;
+ background: #18305F;
+}
+.perfil-main > img{
+ width: 320px;
+ position: absolute;
+ top: -80px;
+ left:5%;
 }

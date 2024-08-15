@@ -1,7 +1,9 @@
-
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CadastroAdm(){
+    const navigate = useNavigate();
+
     const handlePerfilAdmClick = () => {
         navigate('/perfil/administrador');
       };
@@ -49,7 +51,7 @@ export default function CadastroAdm(){
                     </div>
     
                     <div className="campos-duplas">
-                        <button onClick={handlePerfilAdmClick}>Confirmar</button>
+                        <button type="submit" onClick={handlePerfilAdmClick}>Confirmar</button>
                     </div>
                 </form>
             </>

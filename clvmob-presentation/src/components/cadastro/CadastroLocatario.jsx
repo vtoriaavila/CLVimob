@@ -1,9 +1,11 @@
-
-
-
+import { useNavigate } from 'react-router-dom';
 
 
 export default function CadastroLocatario(){
+    const navigate = useNavigate();
+    const handlePerfilLocatarioClick = () => {
+        navigate('/cadastro/proprietario');
+      };
 
     return(
         <>
@@ -47,7 +49,7 @@ export default function CadastroLocatario(){
                 </div>
 
                 <div className="campos-duplas">
-                    <button>Confirmar</button>
+                    <button type='submit' onClick={handlePerfilLocatarioClick}>Confirmar</button>
                 </div>
             </form>
         </>

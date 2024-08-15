@@ -1,6 +1,10 @@
-
+import { useNavigate } from 'react-router-dom';
 
 export default function CadastroProprietario(){
+    const navigate = useNavigate();
+    const handlePerfilProprietarioClick = () => {
+        navigate('/cadastro/proprietario');
+      };
 
 
     return(
@@ -65,7 +69,7 @@ export default function CadastroProprietario(){
                         <input type="number" name="conta" />
                     </div>
 
-                    <button>Confirmar</button>
+                    <button type='submit' onClick={handlePerfilProprietarioClick }>Confirmar</button>
                 </div>
             </form>
         </>
