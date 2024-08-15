@@ -1,0 +1,550 @@
+{
+    "openapi" : "3.0.0",
+    "info" : {
+        "Title": "CLVImob API",
+        "description": "Consult API end-points to the site",
+        "contact": "cheljose@gmail.com",
+        "version": "1.0.0"
+    },
+    
+    "servers": [
+        {
+            "url": "http://localhost:3000/",
+            "description": "Local server"
+        }
+    ],
+    "paths": {
+    "/": {
+        "post": {
+            "summary": "Cria um novo recurso",
+            "security": [{"authMiddleware": []}],
+            "operationId": "create",
+            "responses": {"200": {"description": "Recurso criado com sucesso"}}
+        },
+        "get": {
+            "summary": "Obtém todos os recursos",
+            "security": [{"authMiddleware": []}],
+            "operationId": "getAll",
+            "responses": {"200": {"description": "Recursos obtidos com sucesso"}}
+        }
+    },
+    "/byUser/": {
+        "get": {
+            "summary": "Obtém recursos por usuário",
+            "security": [{"authMiddleware": []}],
+            "operationId": "byUser",
+            "responses": {"200": {"description": "Recursos obtidos com sucesso"}}
+        }
+    },
+    "/{id}": {
+        "get": {
+            "summary": "Obtém um recurso específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "findById",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Recurso obtido com sucesso"}}
+        },
+        "delete": {
+            "summary": "Deleta um recurso específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "deleteContract",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Recurso deletado com sucesso"}}
+        },
+        "put": {
+            "summary": "Atualiza um recurso específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "updateDocumento",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Recurso atualizado com sucesso"}}
+        },
+        "patch": {
+            "summary": "Atualiza parcialmente um recurso específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "updateImob",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Recurso atualizado parcialmente com sucesso"}}
+        }
+    },
+    "/top": {
+        "get": {
+            "summary": "Obtém os principais imóveis",
+            "security": [{"authMiddleware": []}],
+            "operationId": "topImob",
+            "responses": {"200": {"description": "Imóveis obtidos com sucesso"}}
+        }
+    },
+    "/busca/cidade": {
+        "get": {
+            "summary": "Busca recursos por cidade",
+            "security": [{"authMiddleware": []}],
+            "operationId": "searchByCidade",
+            "responses": {"200": {"description": "Recursos encontrados com sucesso"}}
+        }
+    },
+    "/busca/estado": {
+        "get": {
+            "summary": "Busca recursos por estado",
+            "security": [{"authMiddleware": []}],
+            "operationId": "searchByEstado",
+            "responses": {"200": {"description": "Recursos encontrados com sucesso"}}
+        }
+    },
+    "/busca/endereco": {
+        "get": {
+            "summary": "Busca recursos por endereço",
+            "security": [{"authMiddleware": []}],
+            "operationId": "searchByEndereco",
+            "responses": {"200": {"description": "Recursos encontrados com sucesso"}}
+        }
+    },
+    "/busca/cep": {
+        "get": {
+            "summary": "Busca recursos por CEP",
+            "security": [{"authMiddleware": []}],
+            "operationId": "searchByCep",
+            "responses": {"200": {"description": "Recursos encontrados com sucesso"}}
+        }
+    },
+    "/documentos": {
+        "post": {
+            "summary": "Cria um novo documento",
+            "security": [{"authMiddleware": []}],
+            "operationId": "createDocumento",
+            "responses": {"200": {"description": "Documento criado com sucesso"}}
+        },
+        "get": {
+            "summary": "Obtém todos os documentos",
+            "security": [{"authMiddleware": []}],
+            "operationId": "getAllDocumentos",
+            "responses": {"200": {"description": "Documentos obtidos com sucesso"}}
+        }
+    },
+    "/documentos/{id}": {
+        "get": {
+            "summary": "Obtém um documento específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "getDocumentoById",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Documento obtido com sucesso"}}
+        },
+        "delete": {
+            "summary": "Deleta um documento específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "deleteDocumento",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Documento deletado com sucesso"}}
+        }
+    },
+    "/despesas": {
+        "post": {
+            "summary": "Cria uma nova despesa",
+            "security": [{"authMiddleware": []}],
+            "operationId": "createDespesas",
+            "responses": {"200": {"description": "Despesa criada com sucesso"}}
+        }
+    },
+    "/pagamentos": {
+        "post": {
+            "summary": "Cria um novo pagamento",
+            "security": [{"authMiddleware": []}],
+            "operationId": "createPagamento",
+            "responses": {"200": {"description": "Pagamento criado com sucesso"}}
+        },
+        "get": {
+            "summary": "Obtém todos os pagamentos",
+            "security": [{"authMiddleware": []}],
+            "operationId": "getAllPagamentos",
+            "responses": {"200": {"description": "Pagamentos obtidos com sucesso"}}
+        }
+    },
+    "/pagamentos/{id}": {
+        "get": {
+            "summary": "Obtém um pagamento específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "getPagamentoById",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Pagamento obtido com sucesso"}}
+        },
+        "delete": {
+            "summary": "Deleta um pagamento específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "deletePagamento",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Pagamento deletado com sucesso"}}
+        },
+        "put": {
+            "summary": "Atualiza um pagamento específico por ID",
+            "security": [{"authMiddleware": []}],
+            "operationId": "updatePagamento",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Pagamento atualizado com sucesso"}}
+        }
+    },
+    "/usuarios": {
+        "post": {
+            "summary": "Cria um novo usuário",
+            "operationId": "createUser",
+            "responses": {"200": {"description": "Usuário criado com sucesso"}}
+        },
+        "get": {
+            "summary": "Obtém todos os usuários",
+            "operationId": "findAllUsers",
+            "responses": {"200": {"description": "Usuários obtidos com sucesso"}}
+        }
+    },
+    "/usuarios/{id}": {
+        "get": {
+            "summary": "Obtém um usuário específico por ID",
+            "operationId": "findUserById",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Usuário obtido com sucesso"}}
+        },
+        "patch": {
+            "summary": "Atualiza um usuário específico por ID",
+            "operationId": "updateUserById",
+            "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}],
+            "responses": {"200": {"description": "Usuário atualizado com sucesso"}}
+        }
+    },
+    "/login": {
+        "post": {
+            "summary": "Login do usuário",
+            "operationId": "loginUser",
+            "responses": {"200": {"description": "Login realizado com sucesso"}}
+        }
+    }
+
+    },
+    "components": {
+    "schemas": {
+        "User": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único do usuário"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Nome do usuário"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email do usuário"
+                },
+                "password": {
+                    "type": "string",
+                    "description": "Senha do usuário"
+                },
+                "estado": {
+                    "type": "string",
+                    "description": "Estado do usuário"
+                },
+                "cidade": {
+                    "type": "string",
+                    "description": "Cidade do usuário"
+                },
+                "bairro": {
+                    "type": "string",
+                    "description": "Bairro do usuário"
+                },
+                "endereco": {
+                    "type": "string",
+                    "description": "Endereço do usuário"
+                },
+                "documento": {
+                    "type": "string",
+                    "description": "Documento do usuário"
+                },
+                "data_nascimento": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data de nascimento do usuário"
+                },
+                "role": {
+                    "type": "string",
+                    "enum": ["admin", "proprietario", "locatario"],
+                    "description": "Função do usuário"
+                },
+                "banco": {
+                    "type": "string",
+                    "description": "Banco do proprietário"
+                },
+                "agencia": {
+                    "type": "string",
+                    "description": "Agência do proprietário"
+                },
+                "conta": {
+                    "type": "string",
+                    "description": "Conta do proprietário"
+                }
+            },
+            "required": ["name", "email", "password", "estado", "cidade", "bairro", "endereco", "documento", "data_nascimento"]
+        },
+        "Contract": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único do contrato"
+                },
+                "proprietario": {
+                    "type": "string",
+                    "description": "ID do proprietário"
+                },
+                "admin": {
+                    "type": "string",
+                    "description": "ID do administrador"
+                },
+                "locatorio": {
+                    "type": "string",
+                    "description": "ID do locatário"
+                },
+                "imob": {
+                    "type": "string",
+                    "description": "ID do imóvel"
+                },
+                "dt_inicio": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data de início do contrato"
+                },
+                "dt_vencimento": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data de vencimento do contrato"
+                }
+            },
+            "required": ["proprietario", "admin", "locatorio", "imob", "dt_inicio", "dt_vencimento"]
+        },
+        "Pagamento": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único do pagamento"
+                },
+                "contrato": {
+                    "type": "string",
+                    "description": "ID do contrato relacionado"
+                },
+                "emissor": {
+                    "type": "string",
+                    "description": "ID do emissor do pagamento"
+                },
+                "destinatario": {
+                    "type": "string",
+                    "description": "ID do destinatário do pagamento"
+                },
+                "valor": {
+                    "type": "number",
+                    "description": "Valor do pagamento"
+                },
+                "data": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data do pagamento"
+                },
+                "vencimento": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data de vencimento do pagamento"
+                }
+            },
+            "required": ["contrato", "emissor", "destinatario", "valor", "data", "vencimento"]
+        },
+        "Manutencao": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único da manutenção"
+                },
+                "imob": {
+                    "type": "string",
+                    "description": "ID do imóvel"
+                },
+                "tipo_manutencao": {
+                    "type": "string",
+                    "description": "Tipo de manutenção"
+                },
+                "data_solicitacao": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data da solicitação"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": ["Solicitado", "Em andamento", "Concluído"],
+                    "description": "Status da manutenção"
+                },
+                "desc_total": {
+                    "type": "string",
+                    "description": "Descrição detalhada da manutenção"
+                }
+            },
+            "required": ["imob", "tipo_manutencao", "data_solicitacao", "status", "desc_total"]
+        },
+        "Imob": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único do imóvel"
+                },
+                "tipo": {
+                    "type": "string",
+                    "description": "Tipo de imóvel"
+                },
+                "cep": {
+                    "type": "string",
+                    "description": "CEP do imóvel"
+                },
+                "endereco": {
+                    "type": "string",
+                    "description": "Endereço do imóvel"
+                },
+                "cidade": {
+                    "type": "string",
+                    "description": "Cidade do imóvel"
+                },
+                "estado": {
+                    "type": "string",
+                    "description": "Estado do imóvel"
+                },
+                "proprietario": {
+                    "type": "string",
+                    "description": "ID do proprietário do imóvel"
+                },
+                "quartos": {
+                    "type": "integer",
+                    "description": "Número de quartos no imóvel"
+                },
+                "banheiro": {
+                    "type": "integer",
+                    "description": "Número de banheiros no imóvel"
+                },
+                "tamanho": {
+                    "type": "string",
+                    "description": "Tamanho do imóvel"
+                },
+                "aluguel": {
+                    "type": "number",
+                    "description": "Valor do aluguel do imóvel"
+                }
+            },
+            "required": ["tipo", "cep", "endereco", "cidade", "estado", "proprietario", "quartos", "banheiro", "tamanho", "aluguel"]
+        },
+        "Documento": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único do documento"
+                },
+                "imob": {
+                    "type": "string",
+                    "description": "ID do imóvel relacionado"
+                },
+                "titulo": {
+                    "type": "string",
+                    "description": "Título do documento"
+                },
+                "tipo": {
+                    "type": "string",
+                    "enum": ["Contrato", "Certificado", "Outro"],
+                    "description": "Tipo de documento"
+                },
+                "data": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data do documento"
+                }
+            },
+            "required": ["imob", "titulo", "tipo", "data"]
+        },
+        "Despesas": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID único das despesas"
+                },
+                "imob": {
+                    "type": "string",
+                    "description": "ID do imóvel relacionado"
+                },
+                "condominio": {
+                    "type": "number",
+                    "description": "Valor do condomínio"
+                },
+                "iptu": {
+                    "type": "number",
+                    "description": "Valor do IPTU"
+                },
+                "seguro": {
+                    "type": "number",
+                    "description": "Valor do seguro"
+                },
+                "eletricidade": {
+                    "type": "number",
+                    "description": "Valor da conta de eletricidade"
+                },
+                "agua": {
+                    "type": "number",
+                    "description": "Valor da conta de água"
+                }
+            },
+            "required": ["imob", "condominio", "iptu", "seguro", "eletricidade", "agua"]
+        }
+    },
+    "parameters": {
+        "idParam": {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+                "type": "string"
+            },
+            "description": "ID único do recurso"
+        }
+    },
+    "responses": {
+        "NotFound": {
+            "description": "Recurso não encontrado",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "string",
+                                "example": "Recurso não encontrado"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Unauthorized": {
+            "description": "Não autorizado",
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "message": {
+                                "type": "string",
+                                "example": "Não autorizado"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+}

@@ -1,6 +1,7 @@
 
 import { query } from "express";
-import { createService , findAllService,countContract,findByIdService} from "../services/contract.service.js";
+import { createService , findAllService,countContract,findByIdService,byUseService, deleteContractService} from "../services/contract.service.js";
+import mongoose from "mongoose";
 
 
 
@@ -108,4 +109,65 @@ export const findById = async (req, res) => {
     } catch (erro) {
         res.status(500).send({ message: erro.message });
     }
+};
+
+export const byUser = async (req, res) => {
+    try {
+        const id = req.userId; // Obtém diretamente o userId
+
+        // Verifique se o ID é válido
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).send({ message: "Invalid User ID" });
+        }
+
+        // Busca todos os contratos do usuário
+        const contracts = await byUseService(id);
+
+        // Verifica se encontrou contratos
+        if (!contracts || contracts.length === 0) {
+            return res.status(404).send({ message: "No contracts found for this user" });
+        }
+
+        // Retorna os contratos encontrados
+        return res.status(200).send({
+            results: contracts.map(contract => ({
+                id: contract._id,
+                proprietario: contract.proprietario,
+                admin: contract.admin,
+                locatorio: contract.locatorio,
+                imob: contract.imob,
+                dt_inicio: contract.dt_inicio,
+                dt_vencimento: contract.dt_vencimento,
+            }))
+        });
+    } catch (erro) {
+        console.error(erro); // Log do erro para debug
+        res.status(500).send({ message: erro.message });
+    }
+};
+
+export const deleteContract = async (req, res) => {
+    try {
+        const { id } = req.params
+        const contract = await findByIdService(id);
+
+        if (!contract) {
+            return res.status(404).send({ message: "contract not found" });
+        }
+
+        if (String(contract.proprietario._id) !== req.userId) {
+            return res.status(400).send({
+                message: "You didn't delete this contract",
+            });
+        }
+
+        await deleteContractService(id);
+        return res.send("Delete complete");
+
+    } catch (erro) {
+        res.status(500).send({ message: erro.message });
+    }
 }
+
+
+

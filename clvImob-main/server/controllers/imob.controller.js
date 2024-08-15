@@ -1,87 +1,93 @@
-import { createService, findAllService, countImob, topImobService, findByIdService, searchByCidadeService, searchByEstadoService, searchByBairroService, searchByCepService, byUseService, updateService, deleteImobService } from "../services/imob.service.js";
-import mongoose from "mongoose"
-// const { createService, findAllService, countImob, topImobService, findByIdService } = imobService;
+import {
+    createService,
+    findAllService,
+    countImob,
+    topImobService,
+    findByIdService,
+    searchByCidadeService,
+    searchByEstadoService,
+    searchByEnderecoService,
+    searchByCepService,
+    byUseService,
+    updateService,
+    deleteImobService
+} from "../services/imob.service.js";
+import mongoose from "mongoose";
 
+// Create Imob
 export const create = async (req, res) => {
     try {
+        const { tipo, cep, endereco, cidade, estado, quartos, banheiro, tamanho, aluguel} = req.body;
 
-        const { cep, num_casa, rua, bairro, cidade, estado } = req.body;
-
-        if (!cep || !num_casa || !rua || !bairro || !cidade || !estado) {
+        if (!tipo || !cep || !endereco || !cidade || !estado || !quartos || !banheiro || !tamanho ||!aluguel) {
             return res.status(400).send({
                 message: "Submit all fields for registration",
             });
         }
 
         await createService({
+            tipo,
             cep,
-            num_casa,
-            rua,
-            bairro,
+            endereco,
             cidade,
             estado,
             proprietario: req.userId,
+            quartos,
+            banheiro,
+            tamanho,
+            aluguel,
         });
 
-        return res.status(201).send("Created");  // Corrigido para enviar status corretamente
+        return res.status(201).send("Created");
     } catch (err) {
         return res.status(500).send({ message: err.message });
     }
 };
 
-
+// Find All Imobs
 export const findAll = async (req, res) => {
     let { limit, offset } = req.query;
 
-    limit = Number(limit)
-    offset = Number(offset)
-
-    if (!limit) {
-        limit = 5;
-    }
-
-    if (!offset) {
-        offset = 5;
-    }
-
+    limit = Number(limit) || 5;
+    offset = Number(offset) || 0;
 
     const imob = await findAllService(offset, limit);
     const total = await countImob();
     const currentUrl = req.baseUrl;
 
-
     const next = offset + limit;
-    const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${offset}` : null;
+    const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}` : null;
 
     const previous = offset - limit < 0 ? null : offset - limit;
     const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}` : null;
 
-
-    if (imob.length == 0) {
+    if (imob.length === 0) {
         return res.status(400).send({ message: "There are no registered imob" });
-
     }
-    res.send(
-        {
-            nextUrl,
-            previousUrl,
-            limit,
-            offset,
-            total,
 
-            results: imob.map(imobItem => ({
-                id: imobItem._id,
-                cep: imobItem.cep,
-                num_casa: imobItem.num_casa,
-                rua: imobItem.rua,
-                bairro: imobItem.bairro,
-                cidade: imobItem.cidade,
-                estado: imobItem.estado,
-                proprietario: imobItem.proprietario
-            }))
-        });
-}
+    res.send({
+        nextUrl,
+        previousUrl,
+        limit,
+        offset,
+        total,
+        results: imob.map(imobItem => ({
+            id: imobItem._id,
+            tipo: imobItem.tipo,
+            cep: imobItem.cep,
+            endereco: imobItem.endereco,
+            cidade: imobItem.cidade,
+            estado: imobItem.estado,
+            quartos: imobItem.quartos,
+            banheiro: imobItem.banheiro,
+            tamanho: imobItem.tamanho,
+            proprietario: imobItem.proprietario,
+            aluguel: imobItem.aluguel,
+        }))
+    });
+};
 
+// Top Imob
 export const topImob = async (req, res) => {
     const imob = await topImobService();
 
@@ -92,20 +98,23 @@ export const topImob = async (req, res) => {
     res.send({
         imob: {
             id: imob._id,
+            tipo: imob.tipo,
             cep: imob.cep,
-            num_casa: imob.num_casa,
-            rua: imob.rua,
-            bairro: imob.bairro,
+            endereco: imob.endereco,
             cidade: imob.cidade,
             estado: imob.estado,
+            quartos: imob.quartos,
+            banheiro: imob.banheiro,
+            tamanho: imob.tamanho,
+            aluguel: imob.aluguel,
         }
-    })
-}
+    });
+};
 
+// Find Imob by ID
 export const findById = async (req, res) => {
     try {
         const { id } = req.params;
-
         const imob = await findByIdService(id);
 
         if (!imob) {
@@ -115,24 +124,26 @@ export const findById = async (req, res) => {
         return res.send({
             imob: {
                 id: imob._id,
+                tipo: imob.tipo,
                 cep: imob.cep,
-                num_casa: imob.num_casa,
-                rua: imob.rua,
-                bairro: imob.bairro,
+                endereco: imob.endereco,
                 cidade: imob.cidade,
                 estado: imob.estado,
+                quartos: imob.quartos,
+                banheiro: imob.banheiro,
+                tamanho: imob.tamanho,
+                aluguel: imob.aluguel
             }
         });
-    } catch (erro) {
-        res.status(500).send({ message: erro.message });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
-}
+};
 
-
+// Search by Cidade
 export const searchByCidade = async (req, res) => {
     try {
         const { cidade } = req.query;
-
         const imob = await searchByCidadeService(cidade);
 
         if (imob.length === 0) {
@@ -142,24 +153,26 @@ export const searchByCidade = async (req, res) => {
         return res.send({
             results: imob.map(imobItem => ({
                 id: imobItem._id,
+                tipo: imobItem.tipo,
                 cep: imobItem.cep,
-                num_casa: imobItem.num_casa,
-                rua: imobItem.rua,
-                bairro: imobItem.bairro,
+                endereco: imobItem.endereco,
                 cidade: imobItem.cidade,
                 estado: imobItem.estado,
+                quartos: imobItem.quartos,
+                banheiro: imobItem.banheiro,
+                tamanho: imobItem.tamanho,
+                aluguel: imobItem.aluguel
             }))
-        })
-
-    } catch (erro) {
-        res.status(500).send({ message: erro.message })
+        });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
-}
+};
 
+// Search by Estado
 export const searchByEstado = async (req, res) => {
     try {
         const { estado } = req.query;
-
         const imob = await searchByEstadoService(estado);
 
         if (imob.length === 0) {
@@ -169,25 +182,27 @@ export const searchByEstado = async (req, res) => {
         return res.send({
             results: imob.map(imobItem => ({
                 id: imobItem._id,
+                tipo: imobItem.tipo,
                 cep: imobItem.cep,
-                num_casa: imobItem.num_casa,
-                rua: imobItem.rua,
-                bairro: imobItem.bairro,
+                endereco: imobItem.endereco,
                 cidade: imobItem.cidade,
                 estado: imobItem.estado,
+                quartos: imobItem.quartos,
+                banheiro: imobItem.banheiro,
+                tamanho: imobItem.tamanho,
+                aluguel: imobItem.aluguel,
             }))
-        })
-
-    } catch (erro) {
-        res.status(500).send({ message: erro.message })
+        });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
-}
+};
 
-export const searchByBairro = async (req, res) => {
+// Search by Endereco
+export const searchByEndereco = async (req, res) => {
     try {
-        const { bairro } = req.query;
-
-        const imob = await searchByBairroService(bairro);
+        const { endereco } = req.query;
+        const imob = await searchByEnderecoService(endereco);
 
         if (imob.length === 0) {
             return res.status(400).send({ message: "There are no registered imob" });
@@ -196,25 +211,26 @@ export const searchByBairro = async (req, res) => {
         return res.send({
             results: imob.map(imobItem => ({
                 id: imobItem._id,
+                tipo: imobItem.tipo,
                 cep: imobItem.cep,
-                num_casa: imobItem.num_casa,
-                rua: imobItem.rua,
-                bairro: imobItem.bairro,
+                endereco: imobItem.endereco,
                 cidade: imobItem.cidade,
                 estado: imobItem.estado,
+                quartos: imobItem.quartos,
+                banheiro: imobItem.banheiro,
+                tamanho: imobItem.tamanho,
+                aluguel: imobItem.aluguel,
             }))
-        })
-
-    } catch (erro) {
-        res.status(500).send({ message: erro.message })
+        });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
-}
+};
 
+// Search by CEP
 export const searchByCep = async (req, res) => {
     try {
         const { cep } = req.query;
-
-        // Corrigido para chamar a função correta
         const imob = await searchByCepService(cep);
 
         if (imob.length === 0) {
@@ -224,53 +240,60 @@ export const searchByCep = async (req, res) => {
         return res.send({
             results: imob.map(imobItem => ({
                 id: imobItem._id,
+                tipo: imobItem.tipo,
                 cep: imobItem.cep,
-                num_casa: imobItem.num_casa,
-                rua: imobItem.rua,
-                bairro: imobItem.bairro,
+                endereco: imobItem.endereco,
                 cidade: imobItem.cidade,
                 estado: imobItem.estado,
+                quartos: imobItem.quartos,
+                banheiro: imobItem.banheiro,
+                tamanho: imobItem.tamanho,
+                aluguel: imobItem.aluguel,
             }))
         });
-
-    } catch (erro) {
-        res.status(500).send({ message: erro.message });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
 };
 
+// Find by User
 export const byUser = async (req, res) => {
     try {
         const id = req.userId;
-        console.log("User ID:", id); // Verifique o valor aqui
+        console.log("User ID:", id);
 
         const imob = await byUseService(id);
-        console.log("Imob Records:", imob); // Verifique os registros retornados
+        console.log("Imob Records:", imob);
 
         return res.send({
             results: imob.map(imobItem => ({
                 id: imobItem._id,
+                tipo: imobItem.tipo,
                 cep: imobItem.cep,
-                num_casa: imobItem.num_casa,
-                rua: imobItem.rua,
-                bairro: imobItem.bairro,
+                endereco: imobItem.endereco,
                 cidade: imobItem.cidade,
                 estado: imobItem.estado,
+                quartos: imobItem.quartos,
+                banheiro: imobItem.banheiro,
+                tamanho: imobItem.tamanho,
+                aluguel: imobItem.aluguel,
             }))
         });
-
-    } catch (erro) {
-        console.error(erro);
-        res.status(500).send({ message: erro.message });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ message: err.message });
     }
 };
+
+// Update Imob
 export const update = async (req, res) => {
     try {
-        const { cep, num_casa, rua, bairro, cidade, estado } = req.body;
+        const { tipo, cep, endereco, cidade, estado, quartos, banheiro,tamanho, aluguel } = req.body;
         const { id } = req.params;
 
-        if (!cep && !num_casa && !rua && !bairro && !cidade && !estado) {
+        if (!tipo && !cep && !endereco && !cidade && !estado && !quartos && !banheiro && !tamanho && aluguel) {
             return res.status(400).send({
-                message: "Submit all fields for registration",
+                message: "Submit all fields for update",
             });
         }
 
@@ -286,17 +309,30 @@ export const update = async (req, res) => {
             });
         }
 
-        await updateService(id, cep, num_casa, rua, bairro, cidade, estado);
-        return res.status(200).send({ message: "Imob updated successfully" });
+        await updateService(
+            id,
+            tipo,
+            cep,
+            endereco,
+            cidade,
+            estado,
+            quartos,
+            banheiro,
+            tamanho,
+            aluguel
+        );
 
-    } catch (erro) {
-        res.status(500).send({ message: erro.message });
+        return res.send({ message: "Imob successfully updated" });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
 };
 
-export const deleteEImob = async (req, res) => {
+// Delete Imob
+export const deleteImob = async (req, res) => {
     try {
-        const { id } = req.params
+        const { id } = req.params;
+
         const imob = await findByIdService(id);
 
         if (!imob) {
@@ -310,9 +346,9 @@ export const deleteEImob = async (req, res) => {
         }
 
         await deleteImobService(id);
-        return res.send("Delete complete");
 
-    } catch (erro) {
-        res.status(500).send({ message: erro.message });
+        return res.send({ message: "Imob successfully deleted" });
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
     }
-}
+};

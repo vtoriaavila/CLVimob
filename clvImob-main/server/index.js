@@ -10,6 +10,7 @@ import { fileURLToPath } from "url";
 import connectDatabase from "./database/db.js"; // Corrigido
 import dotenv from "dotenv";
 
+
 const envPath = path.resolve( '../.env'); // Ajuste o caminho conforme a estrutura do seu projeto
 
 dotenv.config({ path: envPath });
@@ -17,7 +18,7 @@ dotenv.config({ path: envPath });
 console.log("MONGO_URL:", process.env.MONGO_URL); // Verifique o valor impresso no console
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 10000;
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -29,7 +30,7 @@ app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(morgan("common"));
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(cors({ origin: 'http://localhost:3000/', methods: "GET,POST,PUT,DELETE", credentials: true }));
+app.use(cors({ origin: 'http://localhost:10000/', methods: "GET,POST,PUT,DELETE", credentials: true }));
 app.use("/assets", express.static(path.join(dirname, 'public/assets')));
 
 // Configuração do multer para armazenamento de arquivos
@@ -48,10 +49,22 @@ import userRoute from "./routes/user.route.js";
 import authRoute from "./routes/auth.route.js";
 import imobRoute from "./routes/imob.route.js";
 import contractRoute from "./routes/contract.route.js";
+import despesasRoute from "./routes/despesas.routes.js";
+import manutencaoRoute from "./routes/manutecao.routes.js";
+import documentoRoute from "./routes/documento.route.js";
+import pagamentoRoute from "./routes/pagamento.route.js";
+import swaggerRoute from "./routes/swagger.route.cjs";
 app.use("/user", userRoute);
 app.use("/auth", authRoute);
 app.use("/imob", imobRoute);
 app.use("/contract", contractRoute);
+app.use("/despesa", despesasRoute);
+app.use("/manutencao", manutencaoRoute);
+app.use("/documento", documentoRoute);
+app.use("/pagamento", pagamentoRoute);
+app.use("/doc",swaggerRoute);
+
+
 
  
 // Conexão com o banco de dados e inicialização do servidor

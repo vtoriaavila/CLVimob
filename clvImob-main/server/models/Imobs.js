@@ -1,23 +1,18 @@
 import mongoose from "mongoose";
 
 const ImobsSchema = new mongoose.Schema({
+    tipo:{
+        type: String,
+        required: true,
+    },
+
     cep: {
         type: String,
         required: true,  
     },
 
-    num_casa: {
-        type: Number,    
-        required: true,  
-    },
-
-    rua: {
-        type: String,
-        required: true,  
-    },
-    
-    bairro: {
-        type: String,
+    endereco: {
+        type: String,    
         required: true,  
     },
 
@@ -36,6 +31,24 @@ const ImobsSchema = new mongoose.Schema({
         ref: "User",
         required: true  
     },
+    quartos: {
+        type: Number,
+        required: true  
+    },
+    banheiro: {
+        type: Number,
+        required: true  
+    },
+    tamanho: {
+        type: String,
+        required: true  
+    },    
+
+    aluguel:  {
+        type: Number,
+        required: true
+    },
+
 });
 
 const Imob = mongoose.model("Imobs", ImobsSchema);

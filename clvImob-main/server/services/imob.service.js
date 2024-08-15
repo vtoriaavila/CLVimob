@@ -19,8 +19,8 @@ export const searchByEstadoService = (estado) => Imob.find({
     estado: { $regex: `${estado || ""}`, $options: "i" }
 }).sort({ _id: -1 }).populate("proprietario");
 
-export const searchByBairroService = (bairro) => Imob.find({
-    bairro: { $regex: `${bairro || ""}`, $options: "i" }
+export const searchByEnderecoService = (endereco) => Imob.find({
+    endereco: { $regex: `${endereco || ""}`, $options: "i" }
 }).sort({ _id: -1 }).populate("proprietario");
 
 export const searchByCepService = (cep) => Imob.find({

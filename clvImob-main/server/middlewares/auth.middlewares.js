@@ -37,9 +37,8 @@ export const authMiddleware = async (req, res, next) => {
             if (!user || !user.id) {
                 return res.status(401).send("Token Invalid for user"); // Retorna 401 se a verificação falhar
             }
-
+            
             req.userId = user.id;
-
             // Passa para o próximo middleware se o token for válido
             return next();
         });
