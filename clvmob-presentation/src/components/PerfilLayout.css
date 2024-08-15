@@ -1,0 +1,18 @@
+.perfil-main::before{
+    content: '';
+    background-image: url('./cadastro/bg-cadastro.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 80px;
+    width: 100vw;
+    height: calc(100vh - 80px);
+    opacity: .5;
+    z-index: -1;
+    
+}
+
+.perfil-main{
+    width: 100vw;
+    /* height: calc(100vh - 80px); */
+}

@@ -18,22 +18,28 @@
   
   .logo {
     width: 350px;
-    margin-bottom: 0px -5px 10px;
+    margin-bottom: 0px -0px 10px;
     padding: 0;
     margin-left: -10px;
     margin-top: -200px;
   }
   
-  h1 {
+  .tipoUsuarioContainer .leftPanel h1 {
     font-size: 36px;
+    margin-top: -220px;
     margin-left: 10px;
+    position: absolute;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 58px;
 
   }
   
-  p {
+  .tipoUsuarioContainer .leftPanel p {
     font-size: 18px;
     margin-bottom: 40px;
     margin-left: 10px;
+    margin-top: -70px;
   }
   
   .usuarioButton {

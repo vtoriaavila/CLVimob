@@ -2,6 +2,9 @@
 
 
 export default function CadastroAdm(){
+    const handlePerfilAdmClick = () => {
+        navigate('/perfil/administrador');
+      };
 
     return(
         
@@ -46,7 +49,7 @@ export default function CadastroAdm(){
                     </div>
     
                     <div className="campos-duplas">
-                        <button>Confirmar</button>
+                        <button onClick={handlePerfilAdmClick}>Confirmar</button>
                     </div>
                 </form>
             </>

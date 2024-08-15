@@ -7,7 +7,10 @@ import CadastroLayout from "./components/CadastroLayout";
 import CadastroAdm from './components/cadastro/CadastroAdm';
 import CadastroLocatario from './components/cadastro/CadastroLocatario';
 import CadastroPropietario from './components/cadastro/CadastroProprietario';
-
+import PerfilLayout from "./components/PerfilLayout";
+import PerfilAdm from "./components/perfil/PerfilAdm";
+import PerfilLocatario from "./components/perfil/PerfilLocatario";
+import PerfilProprietario from "./components/perfil/PerfilProprietario";
 
 
 
@@ -46,8 +49,25 @@ const router = createBrowserRouter([
             }
         ]
         
-    }
-
+    },
+{
+    path: '/perfil',
+    element: <PerfilLayout />,
+    children: [
+        {
+            path:'administrador',
+            element: <PerfilAdm />
+        },
+        {
+            path:'proprietario',
+            element: <PerfilProprietario /> 
+        },
+        {
+            path:'locatario',
+            element: <PerfilLocatario />
+        }
+    ]
+}
 ])
 
 export default router;

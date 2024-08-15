@@ -34,10 +34,10 @@ html, body {
     margin-top: -80px;
   }
   
-  h1 {
+  .cadastro-form h1 {
     font-size: 38px;
-    margin-top: -230px;
-    margin-left: -28%;
+    margin-top: -350px;
+    margin-left: -18%;
     position: absolute;
     font-style: normal;
     font-weight: 400;
@@ -45,10 +45,10 @@ html, body {
     color: #FFFFFF;
   }
   
-  p {
+  .cadastro-form p {
     margin-bottom: 10px;
-    margin-top: -100px ;
-    margin-left: -100px;
+    margin-top: -120px ;
+    margin-left: -130px;
     
   }
   
