@@ -1,5 +1,8 @@
-export default function PerfilLocatario(){
-    return(
-        <div>oi</div>
-    )
+export default function PerfilLocatario() {
+    return (
+        <div>
+            <h1>Página do Locatário</h1>
+            <p>Bem-vindo, Locatário!</p>
+        </div>
+    );
 }

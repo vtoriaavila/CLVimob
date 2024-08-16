@@ -12,12 +12,10 @@ import PerfilAdm from "./components/perfil/PerfilAdm";
 import PerfilLocatario from "./components/perfil/PerfilLocatario";
 import PerfilProprietario from "./components/perfil/PerfilProprietario";
 
-
-
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Home/>,
+        element: <Home />,
     },
     {
         path: '/login',
@@ -48,26 +46,28 @@ const router = createBrowserRouter([
                 element: <CadastroLocatario />
             }
         ]
-        
     },
-{
-    path: '/perfil',
-    element: <PerfilLayout />,
-    children: [
-        {
-            path:'administrador',
-            element: <PerfilAdm />
-        },
-        {
-            path:'proprietario',
-            element: <PerfilProprietario /> 
-        },
-        {
-            path:'locatario',
-            element: <PerfilLocatario />
-        }
-    ]
-}
-])
+    {
+        path: '/perfil',
+        element: <PerfilLayout />,
+        children: [
+            {
+                path: 'administrador',
+                element: <PerfilAdm />,
+                props: { profileType: 'administrador' }
+            },
+            {
+                path: 'proprietario',
+                element: <PerfilProprietario />,
+                props: { profileType: 'proprietario' }
+            },
+            {
+                path: 'locatario',
+                element: <PerfilLocatario />,
+                props: { profileType: 'locatario' }
+            }
+        ]
+    }
+]);
 
 export default router;
