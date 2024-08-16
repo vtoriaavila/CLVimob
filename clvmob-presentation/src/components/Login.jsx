@@ -2,17 +2,51 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo_branco from './logo_branco.png';
 import casa from './casa.jpg';
+import { login } from "../services/user.service.js";
+import Cookies from "js-cookie"
 import './Login.css'; 
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
     //ainda precisa validar com api
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('E-mail:', email);
-    console.log('Senha:', password);
-  };
+    async function handleSubmit(e) {
+      e.preventDefault(); // Prevenir comportamento padrão do formulário
+  
+      const loginData = {
+        email: email,
+        password: password
+      };
+  
+      try {
+        const response = await login(loginData); // Envia os dados corretos
+        const { token, userProfileType } = response.data;
+        console.log(userProfileType)
+  
+        // Salva o token no cookie
+        Cookies.set("token", token, { expires: 1 });
+  
+        // Redireciona de acordo com o tipo de perfil
+        switch (userProfileType) {
+          case 'administrador':
+            navigate('/perfil/administrador/dashboard');
+            break;
+          case 'proprietario':
+            navigate('/perfil/proprietario');
+            break;
+          case 'locatario':
+            navigate('/perfil/locatario');
+            break;
+          default:
+            console.log('Tipo de perfil desconhecido');
+            break;
+        }
+      } catch (error) {
+        console.log(error);
+        // Aqui você pode adicionar lógica adicional, como mostrar uma mensagem de erro ao usuário
+      }
+    }
+    
 
   const navigate = useNavigate();
 
