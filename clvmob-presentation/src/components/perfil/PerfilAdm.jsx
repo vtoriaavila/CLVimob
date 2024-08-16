@@ -1,5 +1,7 @@
 import React from 'react';
 import Dashboard from './Dashboard';
+import Imoveis from './Imoveis';
+import { Outlet } from 'react-router-dom';
 
 
 export default function PerfilAdm() {
@@ -7,7 +9,9 @@ export default function PerfilAdm() {
         <div>
             <h1>Página de Administração</h1>
             <p>Bem-vindo, Administrador!</p>
-            <Dashboard/>
+            <Outlet/>
+            {/* <Dashboard/>
+            <Imoveis/> */}
         </div>
 
     );

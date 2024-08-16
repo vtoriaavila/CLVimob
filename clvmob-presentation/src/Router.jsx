@@ -12,6 +12,7 @@ import PerfilAdm from "./components/perfil/PerfilAdm";
 import PerfilLocatario from "./components/perfil/PerfilLocatario";
 import PerfilProprietario from "./components/perfil/PerfilProprietario";
 import Dashboard from "./components/perfil/Dashboard";
+import Imoveis from "./components/perfil/Imoveis";
 
 const router = createBrowserRouter([
     {
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
                     {
                         path: 'dashboard',
                         element: <Dashboard />,
+                    },
+                    {
+                        path:'imoveis',
+                        element:<Imoveis/>
                     },
                     // Outras rotas para administrador podem ir aqui
                 ]
