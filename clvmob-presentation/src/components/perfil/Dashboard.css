@@ -1,6 +1,13 @@
 .dashboard {
     padding: 20px;
     background-color: #f5f5f5;
+    overflow-y: auto; /* Permite scroll vertical */
+    scrollbar-width: none; /* Oculta a barra de scroll no Firefox */
+    -ms-overflow-style: none; /* Oculta a barra de scroll no IE e Edge */
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none; /* Oculta a barra de scroll no Chrome, Safari e Opera */
 }
 
 .dashboard-header {
@@ -50,6 +57,16 @@ ul.summary-item {
     left: 33px;
     top: 920px;
 }
+.chart-container, .chart-container2 {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Deixe o grid controlar o tamanho */
+    max-width: 526px; /* Controle o tamanho máximo se necessário */
+    height: auto; /* Permita que a altura seja flexível */
+}
+
 
 
 .dashboard-footer {
