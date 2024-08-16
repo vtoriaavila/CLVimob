@@ -11,6 +11,7 @@ import PerfilLayout from "./components/PerfilLayout";
 import PerfilAdm from "./components/perfil/PerfilAdm";
 import PerfilLocatario from "./components/perfil/PerfilLocatario";
 import PerfilProprietario from "./components/perfil/PerfilProprietario";
+import Dashboard from "./components/perfil/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -54,7 +55,14 @@ const router = createBrowserRouter([
             {
                 path: 'administrador',
                 element: <PerfilAdm />,
-                props: { profileType: 'administrador' }
+                props: { profileType: 'administrador' },
+                children: [
+                    {
+                        path: 'dashboard',
+                        element: <Dashboard />,
+                    },
+                    // Outras rotas para administrador podem ir aqui
+                ]
             },
             {
                 path: 'proprietario',
