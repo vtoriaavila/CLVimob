@@ -13,6 +13,12 @@ import PerfilLocatario from "./components/perfil/PerfilLocatario";
 import PerfilProprietario from "./components/perfil/PerfilProprietario";
 import Dashboard from "./components/perfil/Dashboard";
 import Imoveis from "./components/perfil/Imoveis";
+import Locatarios from "./components/perfil/Locatarios";
+import ContratosDeLoc from "./components/perfil/ContratosDeLoc";
+import Manutencao from "./components/perfil/Manutencao";
+import Pagamentos from "./components/perfil/Pagamentos";
+import Documentos from "./components/perfil/Documentos";
+import Proprietarios from "./components/perfil/Proprietarios";
 
 const router = createBrowserRouter([
     {
@@ -65,7 +71,28 @@ const router = createBrowserRouter([
                     {
                         path:'imoveis',
                         element:<Imoveis/>
+                    },{
+                        path:'locatarios',
+                        element:<Locatarios/>
                     },
+                    {
+                        path:'contratoslocacao',
+                        element:<ContratosDeLoc/>
+                    },
+                    {
+                        path:'manutencao',
+                        element:<Manutencao/>
+                    },{
+                        path:'pagamentos',
+                        element:<Pagamentos/>
+                    },{
+                        path:'documentos',
+                        element:<Documentos/>
+                    }
+                    ,{
+                        path:'proprietarios',
+                        element:<Proprietarios/>
+                    }
                     // Outras rotas para administrador podem ir aqui
                 ]
             },

@@ -1,25 +1,25 @@
-.imoveis-container {
+.manutencao-container {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
     background-color: #f1f1f1;
     border-radius: 8px;
-  }
-  
-  .imoveis-container h2 {
+}
+
+.manutencao-container h2 {
     font-size: 24px;
     margin-bottom: 20px;
     color: #333;
-  }
-  
-  .imoveis-list {
+}
+
+.manutencao-list {
     display: flex;
     flex-direction: column;
     gap: 15px;
-  }
-  
-  .imovel-item {
+}
+
+.manutencao-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,34 +27,34 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .imovel-item span {
+}
+
+.manutencao-item span {
     flex: 1;
     text-align: left;
     font-size: 16px;
     color: #333;
-  }
-  
-  .imovel-actions {
+}
+
+.manutencao-actions {
     display: flex;
     gap: 10px;
-  }
-  
-  .imovel-actions button {
+}
+
+.manutencao-actions button {
     background-color: #ccc;
     border: none;
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
-  }
-  
-  .imovel-actions button:hover {
+}
+
+.manutencao-actions button:hover {
     background-color: #aaa;
-  }
-  
-  .add-imovel {
+}
+
+.add-manutencao {
     display: block;
     width: 100%;
     padding: 10px 0;
@@ -65,9 +65,8 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
-  }
-  
-  .add-imovel:hover {
+}
+
+.add-manutencao:hover {
     background-color: #455a64;
-  }
-  
+}

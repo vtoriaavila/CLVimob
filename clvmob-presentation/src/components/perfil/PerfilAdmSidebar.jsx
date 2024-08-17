@@ -12,12 +12,12 @@ export default function PerfilAdmSidebar() {
             <ul>
                 <li><button className='button' onClick={() => navigate('/perfil/administrador/dashboard')}><FaChartPie className="icon" /> Dashboard</button></li>
                 <li><button className='button' onClick={() => navigate('/perfil/administrador/imoveis')}><FaBuilding className="icon" /> Imóveis</button></li>
-                <li><button className='button'><FaUserFriends className="icon" /> Locatários</button></li>
-                <li><button className='button'><FaHandshake className="icon" /> Contratos de Locação</button></li>
-                <li><button className='button'><FaTools className="icon" /> Manutenção</button></li>
-                <li><button className='button'><FaMoneyBillWave className="icon" /> Pagamentos</button></li>
-                <li><button className='button'><FaFileAlt className="icon" /> Documentos</button></li>
-                <li><button className='button'><FaUserTie className="icon" /> Proprietários</button></li>
+                <li><button className='button' onClick={() => navigate('/perfil/administrador/locatarios')}><FaUserFriends className="icon" /> Locatários</button></li>
+                <li><button className='button'onClick={() => navigate('/perfil/administrador/contratoslocacao')}><FaHandshake className="icon" /> Contratos de Locação</button></li>
+                <li><button className='button'onClick={() => navigate('/perfil/administrador/manutencao')}><FaTools className="icon" /> Manutenção</button></li>
+                <li><button className='button'onClick={() => navigate('/perfil/administrador/pagamentos')}><FaMoneyBillWave className="icon" /> Pagamentos</button></li>
+                <li><button className='button'onClick={() => navigate('/perfil/administrador/documentos')}><FaFileAlt className="icon" /> Documentos</button></li>
+                <li><button className='button'onClick={() => navigate('/perfil/administrador/proprietarios')}><FaUserTie className="icon"onClick={() => navigate('/perfil/administrador/proprietarios')} /> Proprietários</button></li>
             </ul>
             <button className='button-sair'>Sair</button>
         </div>
