@@ -16,7 +16,7 @@ export async function cadastro(data) {
 
 export function login(data){
     const response = axios.post(`${baseURL}/auth`,data)
-    return response
+    return response 
 }
 
 
