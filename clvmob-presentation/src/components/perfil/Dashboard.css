@@ -15,21 +15,26 @@
 }
 
 .dashboard-summary {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.summary-item-dashboard{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    margin-top: 10px;
 }
 
-ul.summary-item {
+.summary-item-adm {
     background-color: #ffffff;
     padding: 10px;
     border-radius: 5px;
-    height: 30px;
-    width: 150px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border: 2px solid #003366;
+    border: 1px solid #003366;
 }
+
 
 .dashboard-charts {
     display: grid;

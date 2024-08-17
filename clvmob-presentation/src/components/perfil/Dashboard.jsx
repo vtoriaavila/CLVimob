@@ -9,13 +9,14 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="dashboard-header">
         <div className="dashboard-summary">
-            <ul className='.summary-item'>
-                <li>Total de propriedades: 30</li>
-                <li>Total de Locatários: 28</li>
-                <li>Total de Contratos Ativos: 28</li>
-                <li>Receita Mensal: 75.000</li>
-                <li>Manutenções Pendentes: 4</li>
-            </ul>
+        <div className="summary-item-dashboard">
+            <div className="summary-item-adm">Total de propriedades: 30</div>
+            <div className="summary-item-adm">Total de Locatários: 28</div>
+            <div className="summary-item-adm">Total de Contratos Ativos: 28</div>
+            <div className="summary-item-adm">Receita Mensal: R$ 75.000</div>
+            <div className="summary-item-adm">Manutenções Pendentes: 4</div>
+            <div className="summary-item-adm">Total de Proprietários: 9</div>
+          </div>
         </div>
       </div>
       <div className="dashboard-charts">

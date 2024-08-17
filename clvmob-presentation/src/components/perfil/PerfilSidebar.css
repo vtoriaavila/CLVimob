@@ -9,7 +9,7 @@
     box-sizing: border-box;
     color: #ffffff;
     cursor: pointer;
-    font-family: Roobert,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
     font-weight: 600;
     line-height: normal;
@@ -21,27 +21,32 @@
     transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
     user-select: none;
     width: 78%;
-  }
-  
-  .button .icon {
+}
+
+.button .icon {
     margin-right: 8px; /* Espaço entre o ícone e o texto */
     font-size: 20px; /* Tamanho do ícone */
-  }
-  
-  .button:hover {
+}
+
+.button:hover {
     color: #fff;
     background-color: #D9D9D9;
     box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
     transform: translateY(-2px);
-  }
-  
-  .button:active {
+}
+
+.button:active {
     box-shadow: none;
     transform: translateY(0);
-  }
-    
-  
-  .button-sair {
+}
+
+.button-active {
+    background-color: #003366; /* Cor de fundo para o botão ativo */
+    color: #ffffff; /* Cor do texto para o botão ativo */
+    border: 2px solid #003366; /* Cor da borda para o botão ativo */
+}
+
+.button-sair {
     width: 130px;
     height: 52px;
     left: 87px;
@@ -57,11 +62,10 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
-    
 }
 
 .button-sair:hover {
     background-color: #003366; /* Fundo branco ao passar o mouse */
-    color: ffffff; /* Letra laranja ao passar o mouse */
-    border: 2px solid #ffffff; /* Borda laranja */
+    color: #ffffff; /* Letra branca ao passar o mouse */
+    border: 2px solid #ffffff; /* Borda branca */
 }

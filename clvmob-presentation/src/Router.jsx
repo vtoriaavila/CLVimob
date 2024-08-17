@@ -19,6 +19,14 @@ import Manutencao from "./components/perfil/Manutencao";
 import Pagamentos from "./components/perfil/Pagamentos";
 import Documentos from "./components/perfil/Documentos";
 import Proprietarios from "./components/perfil/Proprietarios";
+import DashboardProprietario from "./components/perfil/DashboardProprietario";
+import ImoveisProprietario from "./components/perfil/ImoveisProprietario";
+import ContratosProprietario from "./components/perfil/ContratosProprietario";
+import ManutencaoProprietario from "./components/perfil/ManutencaoProprietario";
+import PagamentoProprietario from "./components/perfil/PagamentoProprietario";
+import DocumentoProprietario from "./components/perfil/DocumentoProprietario";
+import ConfiguracaoProprietario from "./components/perfil/ConfiguracaoProprietario";
+import ConfiguracaoLocatario from "./components/perfil/ConfiguracaoLocatario";
 
 const router = createBrowserRouter([
     {
@@ -99,12 +107,44 @@ const router = createBrowserRouter([
             {
                 path: 'proprietario',
                 element: <PerfilProprietario />,
-                props: { profileType: 'proprietario' }
+                props: { profileType: 'proprietario' },
+                children: [
+                    {
+                        path: 'dashboard',
+                        element: <DashboardProprietario />,
+                    },
+                    {
+                        path: 'imoveis',
+                        element: <ImoveisProprietario />,
+                    },
+                    {
+                        path:'contratos',
+                        element:<ContratosProprietario/>
+                    },
+                    {
+                        path:'manutencao',
+                        element:<ManutencaoProprietario/>
+                    },{
+                        path:'pagamentos',
+                        element:<PagamentoProprietario/>
+                    },{
+                        path:'documentos',
+                        element:<DocumentoProprietario/>
+                    },{
+                        path:'configuracao',
+                        element:<ConfiguracaoProprietario/>
+                    }
+                ]
             },
             {
                 path: 'locatario',
                 element: <PerfilLocatario />,
-                props: { profileType: 'locatario' }
+                props: { profileType: 'locatario' },
+                children: [
+                    {
+                        path: 'configuracao',
+                        element: <ConfiguracaoLocatario />,
+                    }]
             }
         ]
     }
