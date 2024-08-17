@@ -28,7 +28,7 @@ const Login = () => {
   
         // Redireciona de acordo com o tipo de perfil
         switch (userProfileType) {
-          case 'administrador':
+          case 'admin':
             navigate('/perfil/administrador/dashboard');
             break;
           case 'proprietario':
