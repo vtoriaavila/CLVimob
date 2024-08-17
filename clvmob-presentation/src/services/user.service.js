@@ -1,6 +1,6 @@
 import axios from "axios";
-const baseURL = "http://localhost:10001";
-// const baseURL = "https://api-clvimob.onrender.com";
+// const baseURL = "http://localhost:10001";
+const baseURL = "https://api-clvimob.onrender.com";
 
 
 export async function cadastro(data) {
