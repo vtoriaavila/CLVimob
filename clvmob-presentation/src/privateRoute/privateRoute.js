@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { userLogado } from '../services/user.service.js'; // Ajuste o caminho conforme necessário
+import { useNavigate } from 'react-router-dom';
 
 export default function PrivateRoute({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function checkAuth() {
             try {
                 const response = await userLogado();
-                console.log(response)
                 if (response.status === 200) {
                     setIsAuthenticated(true);
                 } else {
@@ -25,13 +26,19 @@ export default function PrivateRoute({ children }) {
         checkAuth();
     }, []);
 
-    // if (loading) {
-    //     return <div>Loading...</div>; // Um indicador de carregamento
-    // }
+    useEffect(() => {
+        if (loading === false && !isAuthenticated) {
+            navigate('/login'); // Redireciona o usuário após a verificação
+        }
+    }, [loading, isAuthenticated, navigate]);
 
-    // if (!isAuthenticated) {
-    //     return <Navigate to="/login" />;
-    // }
+    if (loading) {
+        return null; // Um indicador de carregamento
+    }
 
-    return children;
+    if (isAuthenticated) {
+        return children; // Renderiza os filhos se o usuário estiver autenticado
+    }
+
+    return null; // Retorna nulo enquanto redireciona
 }

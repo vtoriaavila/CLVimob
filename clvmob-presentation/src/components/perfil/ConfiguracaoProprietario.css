@@ -1,0 +1,61 @@
+.configuracao-proprietario-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Fundo claro */
+    border-radius: 8px;
+}
+
+.configuracao-proprietario-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #444; /* Cor do título */
+}
+
+.configuracao-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.configuracao-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.configuracao-field label {
+    font-size: 16px;
+    color: #333; /* Cor do texto do label */
+}
+
+.configuracao-field input {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.configuracao-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.editar-configuracoes,
+.salvar-configuracoes,
+.cancelar-edicao {
+    background-color: #607d8b; /* Cor dos botões */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+}
+
+.editar-configuracoes:hover,
+.salvar-configuracoes:hover,
+.cancelar-edicao:hover {
+    background-color: #455a64; /* Cor dos botões ao passar o mouse */
+}

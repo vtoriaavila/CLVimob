@@ -19,7 +19,22 @@ import Manutencao from "./components/perfil/Manutencao";
 import Pagamentos from "./components/perfil/Pagamentos";
 import Documentos from "./components/perfil/Documentos";
 import Proprietarios from "./components/perfil/Proprietarios";
+
 import PrivateRoute from './privateRoute/privateRoute.js'; // Ajuste o caminho conforme necessário
+
+import DashboardProprietario from "./components/perfil/DashboardProprietario";
+import ImoveisProprietario from "./components/perfil/ImoveisProprietario";
+import ContratosProprietario from "./components/perfil/ContratosProprietario";
+import ManutencaoProprietario from "./components/perfil/ManutencaoProprietario";
+import PagamentoProprietario from "./components/perfil/PagamentoProprietario";
+import DocumentoProprietario from "./components/perfil/DocumentoProprietario";
+import ConfiguracaoProprietario from "./components/perfil/ConfiguracaoProprietario";
+import ConfiguracaoLocatario from "./components/perfil/ConfiguracaoLocatario";
+import ContratosLocatario from './components/perfil/ContratosLocatario'
+import ManutencaoLocatario from "./components/perfil/ManutencaoLocatario";
+import PagamentosLocatario from "./components/perfil/PagamentosLocatarios";
+import DocumentosLocatario from "./components/perfil/DocumentosLocatario";
+
 
 const router = createBrowserRouter([
     {
@@ -101,10 +116,94 @@ const router = createBrowserRouter([
             {
                 path: 'proprietario',
                 element: <PrivateRoute><PerfilProprietario /></PrivateRoute>,
+                props: { profileType: 'proprietario' },
+                children: [
+                    {
+                        path: 'dashboard',
+                        element: <DashboardProprietario />,
+                    },
+                    {
+                        path: 'imoveis',
+                        element: <ImoveisProprietario />,
+                    },
+                    {
+                        path:'contratos',
+                        element:<ContratosProprietario/>
+                    },
+                    {
+                        path:'manutencao',
+                        element:<ManutencaoProprietario/>
+                    },{
+                        path:'pagamentos',
+                        element:<PagamentoProprietario/>
+                    },{
+                        path:'documentos',
+                        element:<DocumentoProprietario/>
+                    },{
+                        path:'configuracao',
+                        element:<ConfiguracaoProprietario/>
+                    }
+                ]
+
             },
             {
                 path: 'locatario',
                 element: <PrivateRoute><PerfilLocatario /></PrivateRoute>,
+                props: { profileType: 'proprietario' },
+                children: [
+                    {
+                        path: 'dashboard',
+                        element: <DashboardProprietario />,
+                    },
+                    {
+                        path: 'imoveis',
+                        element: <ImoveisProprietario />,
+                    },
+                    {
+                        path:'contratos',
+                        element:<ContratosProprietario/>
+                    },
+                    {
+                        path:'manutencao',
+                        element:<ManutencaoProprietario/>
+                    },{
+                        path:'pagamentos',
+                        element:<PagamentoProprietario/>
+                    },{
+                        path:'documentos',
+                        element:<DocumentoProprietario/>
+                    },{
+                        path:'configuracao',
+                        element:<ConfiguracaoProprietario/>
+                    }
+                ]
+            },
+            {
+                path: 'locatario',
+                element: <PerfilLocatario />,
+                props: { profileType: 'locatario' },
+                children: [
+                    {
+                        path: 'meusContratos',
+                        element: <ContratosLocatario />,
+                    },
+                    {
+                        path: 'manutencao',
+                        element: <ManutencaoLocatario />,
+                    },
+                    {
+                        path: 'pagamento',
+                        element: <PagamentosLocatario />,
+                    },
+                    {
+                        path: 'documentos',
+                        element: <DocumentosLocatario/>,
+                    },
+                    {
+                        path: 'configuracao',
+                        element: <ConfiguracaoLocatario />,
+                    }
+                ]
             }
         ]
     }

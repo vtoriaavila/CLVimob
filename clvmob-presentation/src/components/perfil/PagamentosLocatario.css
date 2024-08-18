@@ -1,0 +1,59 @@
+.pagamentos-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.resumo-pagamentos {
+    background-color: #e0e0e0;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.historico-pagamento, .pendencias-pagamento {
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ccc;
+}
+
+.btn-pagar, .btn-lembrete {
+    margin-right: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-pagar {
+    background-color: #607d8b;
+    color: white;
+}
+
+.btn-lembrete {
+    background-color: #607d8b;
+    color: white;
+}
+
+.btn-comprovante {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

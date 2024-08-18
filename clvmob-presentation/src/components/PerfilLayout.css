@@ -10,7 +10,7 @@
 }
 
 .perfil-main > .logo {
-    width: 320px;
+    width: 20%;
     position: absolute;
     top: -80px;
     left: 5%;
@@ -33,6 +33,7 @@
     
 }
 
+
 .sidebar::-webkit-scrollbar {
     width: 6px; /* Define a largura da barra de scroll */
 }
@@ -52,7 +53,8 @@
 
 
 .sidebar h2 {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    color: #e8e8e8;
 }
 
 .sidebar ul {
