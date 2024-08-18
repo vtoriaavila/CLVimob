@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { userLogado } from '../services/user.service.js'; // Ajuste o caminho conforme necessário
 import { useNavigate } from 'react-router-dom';
+import ContratosLocatario from '../components/perfil/ContratosLocatario.jsx';
 
 export default function PrivateRoute({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
@@ -12,6 +13,7 @@ export default function PrivateRoute({ children }) {
         async function checkAuth() {
             try {
                 const response = await userLogado();
+                console.log(response)
                 if (response.status === 200) {
                     setIsAuthenticated(true);
                 } else {

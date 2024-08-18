@@ -1,6 +1,6 @@
 import axios from "axios";
-// const baseURL = "http://localhost:10001";
-const baseURL = "https://api-clvimob.onrender.com";
+const baseURL = "http://localhost:10001";
+// const baseURL = "https://api-clvimob.onrender.com";
 import Cookies from "js-cookie";
 
 
@@ -20,15 +20,41 @@ export function login(data){
     return response 
 }
 
-export function userLogado(){
-    console.log(Cookies.get('token'));
-    const response = axios.get(`${baseURL}/user/cookie`, {
+export async function userLogado(){
+    const response =await axios.get(`${baseURL}/user/cookie`, {
         headers: {
             Authorization: `Bearer ${Cookies.get('token')}`,
 
         }
     })
     return response
+}
+
+export async function userEdit(data) {
+    try {
+        console.log('Dados enviados para atualização:', data);
+        const response = await axios.patch(`${baseURL}/user/update`, data, {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${Cookies.get('token')}`,
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Erro ao atualizar o usuário:', error.message);
+        if (error.response) {
+            console.error('Resposta do erro:', error.response.data);
+            console.error('Status do erro:', error.response.status);
+            console.error('Cabeçalhos do erro:', error.response.headers);
+        } else if (error.request) {
+            console.error('Solicitação feita, mas sem resposta recebida:', error.request);
+        } else {
+            console.error('Erro na configuração da solicitação:', error.message);
+        }
+        console.error('Configuração da requisição:', error.config);
+        console.error('Stack trace:', error.stack);
+        throw error;
+    }
 }
 
 
