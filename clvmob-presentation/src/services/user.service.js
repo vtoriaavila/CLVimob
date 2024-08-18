@@ -1,6 +1,7 @@
 import axios from "axios";
 // const baseURL = "http://localhost:10001";
 const baseURL = "https://api-clvimob.onrender.com";
+import Cookies from "js-cookie";
 
 
 export async function cadastro(data) {
@@ -17,6 +18,17 @@ export async function cadastro(data) {
 export function login(data){
     const response = axios.post(`${baseURL}/auth`,data)
     return response 
+}
+
+export function userLogado(){
+    console.log(Cookies.get('token'));
+    const response = axios.get(`${baseURL}/user/`, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+
+        }
+    })
+    return response
 }
 
 

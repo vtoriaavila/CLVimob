@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import { cadastro } from '../../services/user.service';
+import Cookies from "js-cookie";
 
 export default function CadastroLocatario() {
     const navigate = useNavigate();
@@ -42,6 +43,8 @@ export default function CadastroLocatario() {
       
         try {
             const response = await cadastro(formData);
+
+            Cookies.set("token", response, { expires: 1 });
             console.log('Resposta do servidor:', response);
     
             if (response.status === 201) {

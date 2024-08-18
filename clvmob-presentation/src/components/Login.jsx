@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logo_branco from './logo_branco.png';
 import casa from './casa.jpg';
 import { login } from "../services/user.service.js";
-import Cookies from "js-cookie"
+import Cookies from "js-cookie";
 import './Login.css'; 
 
 const Login = () => {

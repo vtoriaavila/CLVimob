@@ -19,6 +19,7 @@ import Manutencao from "./components/perfil/Manutencao";
 import Pagamentos from "./components/perfil/Pagamentos";
 import Documentos from "./components/perfil/Documentos";
 import Proprietarios from "./components/perfil/Proprietarios";
+import PrivateRoute from './privateRoute/privateRoute.js'; // Ajuste o caminho conforme necessário
 
 const router = createBrowserRouter([
     {
@@ -57,54 +58,53 @@ const router = createBrowserRouter([
     },
     {
         path: '/perfil',
-        element: <PerfilLayout />,
+        element: <PrivateRoute><PerfilLayout /></PrivateRoute>,
         children: [
             {
                 path: 'administrador',
-                element: <PerfilAdm />,
-                props: { profileType: 'administrador' },
+                element: <PrivateRoute><PerfilAdm /></PrivateRoute>,
                 children: [
                     {
                         path: 'dashboard',
-                        element: <Dashboard />,
+                        element: <PrivateRoute><Dashboard /></PrivateRoute>,
                     },
                     {
                         path:'imoveis',
-                        element:<Imoveis/>
-                    },{
+                        element:<PrivateRoute><Imoveis /></PrivateRoute>
+                    },
+                    {
                         path:'locatarios',
-                        element:<Locatarios/>
+                        element:<PrivateRoute><Locatarios /></PrivateRoute>
                     },
                     {
                         path:'contratoslocacao',
-                        element:<ContratosDeLoc/>
+                        element:<PrivateRoute><ContratosDeLoc /></PrivateRoute>
                     },
                     {
                         path:'manutencao',
-                        element:<Manutencao/>
-                    },{
+                        element:<PrivateRoute><Manutencao /></PrivateRoute>
+                    },
+                    {
                         path:'pagamentos',
-                        element:<Pagamentos/>
-                    },{
+                        element:<PrivateRoute><Pagamentos /></PrivateRoute>
+                    },
+                    {
                         path:'documentos',
-                        element:<Documentos/>
-                    }
-                    ,{
+                        element:<PrivateRoute><Documentos /></PrivateRoute>
+                    },
+                    {
                         path:'proprietarios',
-                        element:<Proprietarios/>
+                        element:<PrivateRoute><Proprietarios /></PrivateRoute>
                     }
-                    // Outras rotas para administrador podem ir aqui
                 ]
             },
             {
                 path: 'proprietario',
-                element: <PerfilProprietario />,
-                props: { profileType: 'proprietario' }
+                element: <PrivateRoute><PerfilProprietario /></PrivateRoute>,
             },
             {
                 path: 'locatario',
-                element: <PerfilLocatario />,
-                props: { profileType: 'locatario' }
+                element: <PrivateRoute><PerfilLocatario /></PrivateRoute>,
             }
         ]
     }
