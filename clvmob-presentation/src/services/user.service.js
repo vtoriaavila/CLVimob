@@ -22,7 +22,7 @@ export function login(data){
 
 export function userLogado(){
     console.log(Cookies.get('token'));
-    const response = axios.get(`${baseURL}/user/imob`, {
+    const response = axios.get(`${baseURL}/user/cookie`, {
         headers: {
             Authorization: `Bearer ${Cookies.get('token')}`,
 
