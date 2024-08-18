@@ -1,21 +1,40 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ImoveisProprietario.css';
+import { getImobs } from '../../services/imob.service';
 
 const ImoveisProprietario = () => {
-  const [imoveis, setImoveis] = useState([
-    { id: 1, nome: 'Apartamento 101', endereco: 'Rua A, 123' },
-    { id: 2, nome: 'Casa na Rua X', endereco: 'Av. B, 456' },
-    { id: 3, nome: 'Loja no Centro', endereco: 'Centro, 789' },
-    { id: 4, nome: 'Loja no Centro', endereco: 'Rua C, 1011' },
-  ]);
+  const [imoveis, setImoveis] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchImoveis = async () => {
+      try {
+        const response =  await getImobs();
+        const data = response.data.results; // Acessando o array de imóveis na resposta
+        setImoveis(data);
+      } catch (err) {
+        setError('Erro ao carregar imóveis');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImoveis();
+  }, []);
 
   const adicionarImovel = () => {
     const novoImovel = { id: imoveis.length + 1, nome: 'Novo Imóvel', endereco: 'Endereço' };
     setImoveis([...imoveis, novoImovel]);
   };
 
-  const excluirImovel = (id) => {
-    setImoveis(imoveis.filter(imovel => imovel.id !== id));
+  const excluirImovel = async (id) => {
+    try {
+      // Adicione a lógica para excluir o imóvel da API aqui
+      setImoveis(imoveis.filter(imovel => imovel.id !== id));
+    } catch (err) {
+      console.error('Erro ao excluir imóvel:', err);
+    }
   };
 
   const verImovel = (id) => {
@@ -28,21 +47,28 @@ const ImoveisProprietario = () => {
     // Adicione a lógica para editar o imóvel
   };
 
+  if (loading) return <p>Carregando...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div className="imoveis-proprietario-container">
       <h2>Meus Imóveis</h2>
       <div className="imoveis-proprietario-list">
-        {imoveis.map(imovel => (
-          <div key={imovel.id} className="imovel-item">
-            <span>{imovel.nome}</span>
-            <span>{imovel.endereco}</span>
-            <div className="imovel-actions">
-              <button onClick={() => editarImovel(imovel.id)}>Editar</button>
-              <button onClick={() => excluirImovel(imovel.id)}>Excluir</button>
-              <button onClick={() => verImovel(imovel.id)}>Ver</button>
+        {imoveis.length === 0 ? (
+          <p>Nenhum imóvel encontrado.</p>
+        ) : (
+          imoveis.map(imovel => (
+            <div key={imovel.id} className="imovel-item">
+              <span>{imovel.tipo}</span> {/* Use o atributo que representa o nome do imóvel */}
+              <span>{imovel.endereco}</span>
+              <div className="imovel-actions">
+                <button onClick={() => editarImovel(imovel.id)}>Editar</button>
+                <button onClick={() => excluirImovel(imovel.id)}>Excluir</button>
+                <button onClick={() => verImovel(imovel.id)}>Ver</button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
       <button className="add-imovel" onClick={adicionarImovel}>
         Adicionar Imóvel +

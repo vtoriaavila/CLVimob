@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ManutencaoProprietario.css';
+import { getManutencao } from '../../services/manutencao.service';
 
 const ManutencaoProprietario = () => {
-  const [manutencao, setManutencao] = useState([
-    { id: 1, descricao: 'Troca de Filtro de Ar', data: '01/06/2024', status: 'Concluído' },
-    { id: 2, descricao: 'Pintura do Apartamento', data: '15/06/2024', status: 'Em Andamento' },
-    { id: 3, descricao: 'Reparo no Encanamento', data: '20/06/2024', status: 'Pendente' },
-  ]);
+  const [manutencao, setManutencao] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchManutencao = async () => {
+      try {
+        const response = await getManutencao();
+        const data = response.data; // Supondo que a resposta correta já está formatada
+        setManutencao(data);
+      } catch (err) {
+        console.error('Erro ao buscar manutenções:', err);
+        setError('Erro ao carregar manutenções');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchManutencao();
+  }, []);
 
   const adicionarManutencao = () => {
     const novaManutencao = { id: manutencao.length + 1, descricao: 'Nova Manutenção', data: 'Data', status: 'Pendente' };
@@ -14,7 +30,7 @@ const ManutencaoProprietario = () => {
   };
 
   const excluirManutencao = (id) => {
-    setManutencao(manutencao.filter(item => item.id !== id));
+    setManutencao(manutencao.filter(item => item._id !== id));
   };
 
   const verManutencao = (id) => {
@@ -27,19 +43,22 @@ const ManutencaoProprietario = () => {
     // Adicione a lógica para editar a manutenção
   };
 
+  if (loading) return <p>Carregando...</p>;
+  if (error) return <p>{error}</p>;
+
   return (
     <div className="manutencao-proprietario-container">
       <h2>Manutenções</h2>
       <div className="manutencao-proprietario-list">
         {manutencao.map(item => (
-          <div key={item.id} className="manutencao-item">
-            <span>{item.descricao}</span>
-            <span>{item.data}</span>
+          <div key={item._id} className="manutencao-item">
+            <span>{item.tipo_manutencao}</span>
+            <span>{new Date(item.data_solicitacao).toLocaleDateString('pt-BR')}</span>
             <span>{item.status}</span>
             <div className="manutencao-actions">
-              <button onClick={() => editarManutencao(item.id)}>Editar</button>
-              <button onClick={() => excluirManutencao(item.id)}>Excluir</button>
-              <button onClick={() => verManutencao(item.id)}>Ver</button>
+              <button onClick={() => editarManutencao(item._id)}>Editar</button>
+              <button onClick={() => excluirManutencao(item._id)}>Excluir</button>
+              <button onClick={() => verManutencao(item._id)}>Ver</button>
             </div>
           </div>
         ))}
