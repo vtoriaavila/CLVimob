@@ -27,6 +27,10 @@ import PagamentoProprietario from "./components/perfil/PagamentoProprietario";
 import DocumentoProprietario from "./components/perfil/DocumentoProprietario";
 import ConfiguracaoProprietario from "./components/perfil/ConfiguracaoProprietario";
 import ConfiguracaoLocatario from "./components/perfil/ConfiguracaoLocatario";
+import ContratosLocatario from './components/perfil/ContratosLocatario'
+import ManutencaoLocatario from "./components/perfil/ManutencaoLocatario";
+import PagamentosLocatario from "./components/perfil/PagamentosLocatarios";
+import DocumentosLocatario from "./components/perfil/DocumentosLocatario";
 
 const router = createBrowserRouter([
     {
@@ -142,9 +146,26 @@ const router = createBrowserRouter([
                 props: { profileType: 'locatario' },
                 children: [
                     {
+                        path: 'meusContratos',
+                        element: <ContratosLocatario />,
+                    },
+                    {
+                        path: 'manutencao',
+                        element: <ManutencaoLocatario />,
+                    },
+                    {
+                        path: 'pagamento',
+                        element: <PagamentosLocatario />,
+                    },
+                    {
+                        path: 'documentos',
+                        element: <DocumentosLocatario/>,
+                    },
+                    {
                         path: 'configuracao',
                         element: <ConfiguracaoLocatario />,
-                    }]
+                    }
+                ]
             }
         ]
     }
