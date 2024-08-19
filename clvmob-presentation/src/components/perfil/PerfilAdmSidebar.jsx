@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaChartPie, FaBuilding, FaUserFriends, FaCog, FaMoneyBillWave, FaFileAlt, FaUserTie, FaHandshake, FaTools } from 'react-icons/fa';
-import './PerfilSidebar.css'; // Estilos da sidebar
+import './PerfilSidebar.css'; 
 
 export default function PerfilAdmSidebar() {
     const navigate = useNavigate();

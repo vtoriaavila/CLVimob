@@ -6,6 +6,20 @@ const ImoveisProprietario = () => {
   const [imoveis, setImoveis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [novoImovel, setNovoImovel] =useState({
+    nome: '',
+    tipo: '',
+    cep: '',
+    endereco: '',
+    cidade: '',
+    estado: '',
+    quartos: '',
+    banheiro: '',
+    tamanho: '',
+    aluguel: ''
+
+  });
 
   useEffect(() => {
     const fetchImoveis = async () => {
@@ -23,9 +37,48 @@ const ImoveisProprietario = () => {
     fetchImoveis();
   }, []);
 
+  const handleChange = (e) => {
+    setNovoImovel({
+      ...novoImovel,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const adicionarImovel = () => {
-    const novoImovel = { id: imoveis.length + 1, nome: 'Novo Imóvel', endereco: 'Endereço' };
-    setImoveis([...imoveis, novoImovel]);
+    const { nome, tipo, cep, endereco, cidade, estado, quartos, banheiro, tamanho, aluguel } = novoImovel;
+
+    if (!nome || !tipo || !cep || !endereco || !cidade || !estado || !quartos || !banheiro || !tamanho || !aluguel) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    const novoImovelData = {
+      id: imoveis.length + 1,
+      nome,
+      tipo,
+      cep,
+      endereco,
+      cidade,
+      estado,
+      quartos,
+      banheiro,
+      tamanho,
+      aluguel
+    };
+
+    setImoveis([...imoveis, novoImovelData]);
+    setNovoImovel({
+      nome: '',
+      tipo: '',
+      cep: '',
+      endereco: '',
+      cidade: '',
+      estado: '',
+      quartos: '',
+      banheiro: '',
+      tamanho: '',
+      aluguel: ''
+    });
   };
 
   const excluirImovel = async (id) => {
@@ -59,7 +112,7 @@ const ImoveisProprietario = () => {
         ) : (
           imoveis.map(imovel => (
             <div key={imovel.id} className="imovel-item">
-              <span>{imovel.tipo}</span> {/* Use o atributo que representa o nome do imóvel */}
+              <span>{imovel.tipo}</span>
               <span>{imovel.endereco}</span>
               <div className="imovel-actions">
                 <button onClick={() => editarImovel(imovel.id)}>Editar</button>
@@ -70,9 +123,83 @@ const ImoveisProprietario = () => {
           ))
         )}
       </div>
-      <button className="add-imovel" onClick={adicionarImovel}>
-        Adicionar Imóvel +
-      </button>
+
+      <div className="novo-imovel-form">
+        <h3 className='adc-novo'>Adicionar Novo Imóvel</h3>
+        <input className='text-nome'
+          type="text"
+          name="tipo"
+          placeholder="Tipo"
+          value={novoImovel.tipo}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="nome"
+          placeholder="Nome"
+          value={novoImovel.nome}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="cep"
+          placeholder="CEP"
+          value={novoImovel.cep}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="endereco"
+          placeholder="Endereço"
+          value={novoImovel.endereco}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="cidade"
+          placeholder="Cidade"
+          value={novoImovel.cidade}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="estado"
+          placeholder="Estado"
+          value={novoImovel.estado}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="quartos"
+          placeholder="Quartos"
+          value={novoImovel.quartos}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="banheiro"
+          placeholder="Banheiros"
+          value={novoImovel.banheiro}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="tamanho"
+          placeholder="Tamanho (m²)"
+          value={novoImovel.tamanho}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="aluguel"
+          placeholder="Valor do Aluguel"
+          value={novoImovel.aluguel}
+          onChange={handleChange}
+        />
+        <button className="add-imovel" onClick={adicionarImovel}>
+          Adicionar Imóvel +
+        </button>
+      </div>
     </div>
   );
 };

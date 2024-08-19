@@ -51,7 +51,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleCadastroClick = () => {
-        navigate('/cadastro');
+        navigate('/cadastro-opcoes');
   };
 
   return (
@@ -78,7 +78,7 @@ const Login = () => {
             required
           />
             <a href="/esqueceu-senha">ESQUECEU A SENHA?</a>
-            <a href="/cadastro"  onClick={handleCadastroClick}>Não possui conta? Cadastre-se aqui!</a>
+            <a href="/cadastro-opcoes"  onClick={handleCadastroClick}>Não possui conta? Cadastre-se aqui!</a>
           <button type="submit">Entrar</button>
         </form>
       </div>
