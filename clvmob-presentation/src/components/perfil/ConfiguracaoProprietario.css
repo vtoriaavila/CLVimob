@@ -44,6 +44,7 @@
 
 .editar-configuracoes,
 .salvar-configuracoes,
+.editar-senha,
 .cancelar-edicao {
     background-color: #607d8b; /* Cor dos botões */
     border: none;
@@ -56,6 +57,7 @@
 
 .editar-configuracoes:hover,
 .salvar-configuracoes:hover,
+.editar-senha:hover,
 .cancelar-edicao:hover {
     background-color: #455a64; /* Cor dos botões ao passar o mouse */
 }

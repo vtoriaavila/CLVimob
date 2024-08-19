@@ -32,10 +32,10 @@ const Login = () => {
             navigate('/perfil/administrador/dashboard');
             break;
           case 'proprietario':
-            navigate('/perfil/proprietario');
+            navigate('/perfil/proprietario/dashboard');
             break;
           case 'locatario':
-            navigate('/perfil/locatario');
+            navigate('/perfil/locatario/meusContratos');
             break;
           default:
             console.log('Tipo de perfil desconhecido');

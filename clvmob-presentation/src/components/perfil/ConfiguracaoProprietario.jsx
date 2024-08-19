@@ -8,7 +8,7 @@ const ConfiguracaoProprietario = () => {
     name: '',
     email: '',
     senha: '',
-    confirmacaoSenha: '', // Campo para confirmação de senha
+    confirmacaoSenha: '',
     estado: '',
     cidade: '',
     bairro: '',
@@ -25,6 +25,7 @@ const ConfiguracaoProprietario = () => {
   });
 
   const [modoEdicao, setModoEdicao] = useState(false);
+  const [editandoSenha, setEditandoSenha] = useState(false);
   const [user, setUser] = useState({});
   const [originalConfig, setOriginalConfig] = useState({});
 
@@ -38,12 +39,11 @@ const ConfiguracaoProprietario = () => {
 
   const salvarConfiguracoes = () => {
     // Verifica se a senha e a confirmação da senha correspondem
-    if (configuracoes.senha !== "" && configuracoes.senha !== configuracoes.confirmacaoSenha) {
+    if (editandoSenha && configuracoes.senha !== configuracoes.confirmacaoSenha) {
       alert('A confirmação da senha não corresponde à senha.');
       return;
     }
 
-    // Prepara o objeto com apenas as configurações alteradas
     const changedConfig = Object.keys(configuracoes).reduce((acc, key) => {
       if (configuracoes[key] !== originalConfig[key] && key !== 'confirmacaoSenha') {
         acc[key] = configuracoes[key];
@@ -51,17 +51,15 @@ const ConfiguracaoProprietario = () => {
       return acc;
     }, {});
 
-    // Inclui a senha apenas se não estiver vazia
-    if (configuracoes.senha !== '') {
+    if (editandoSenha && configuracoes.senha !== '') {
       changedConfig.senha = configuracoes.senha;
     }
-
-    console.log('Configurações alteradas:', changedConfig);
 
     userEdit(changedConfig)
       .then(response => {
         console.log('Usuário atualizado com sucesso:', response.data);
         setModoEdicao(false);
+        setEditandoSenha(false);
       })
       .catch(error => {
         console.error('Erro ao atualizar usuário:', error);
@@ -75,10 +73,9 @@ const ConfiguracaoProprietario = () => {
           const response = await userLogado();
           const userData = response.data;
           
-          // Formata a data de nascimento para o formato yyyy-mm-dd
           const formattedDate = new Date(userData.data_nascimento).toISOString().split('T')[0];
 
-          setUser(userData); // Assumindo que a resposta tem os dados do usuário em response.data
+          setUser(userData);
           setOriginalConfig({
             name: userData.name || '',
             email: userData.email || '',
@@ -127,7 +124,7 @@ const ConfiguracaoProprietario = () => {
       <h2>Configurações</h2>
       <div className="configuracao-form">
         <div className="configuracao-field">
-          <label htmlFor="name">name:</label>
+          <label htmlFor="name">Nome:</label>
           <input
             type="text"
             id="name"
@@ -148,30 +145,30 @@ const ConfiguracaoProprietario = () => {
             disabled={!modoEdicao}
           />
         </div>
-        <div className="configuracao-field">
-          <label htmlFor="senha">Senha:</label>
-          <input
-            type="password"
-            id="senha"
-            name="senha"
-            value={configuracoes.senha}
-            onChange={handleChange}
-            placeholder="********"
-            disabled={!modoEdicao}
-          />
-        </div>
-        <div className="configuracao-field">
-          <label htmlFor="confirmacaoSenha">Confirmar Senha:</label>
-          <input
-            type="password"
-            id="confirmacaoSenha"
-            name="confirmacaoSenha"
-            value={configuracoes.confirmacaoSenha}
-            onChange={handleChange}
-            placeholder="********"
-            disabled={!modoEdicao}
-          />
-        </div>
+        {editandoSenha && (
+          <>
+            <div className="configuracao-field">
+              <label htmlFor="senha">Nova Senha:</label>
+              <input
+                type="password"
+                id="senha"
+                name="senha"
+                value={configuracoes.senha}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="configuracao-field">
+              <label htmlFor="confirmacaoSenha">Confirmar Senha:</label>
+              <input
+                type="password"
+                id="confirmacaoSenha"
+                name="confirmacaoSenha"
+                value={configuracoes.confirmacaoSenha}
+                onChange={handleChange}
+              />
+            </div>
+          </>
+        )}
         <div className="configuracao-field">
           <label htmlFor="estado">Estado:</label>
           <input
@@ -309,21 +306,16 @@ const ConfiguracaoProprietario = () => {
             disabled={!modoEdicao}
           />
         </div>
-        <div className="configuracao-actions">
-          {modoEdicao ? (
-            <>
-              <button className="salvar-configuracoes" onClick={salvarConfiguracoes}>
-                Salvar Configurações
-              </button>
-              <button className="cancelar-edicao" onClick={() => setModoEdicao(false)}>
-                Cancelar
-              </button>
-            </>
-          ) : (
-            <button className="editar-configuracoes" onClick={() => setModoEdicao(true)}>
-              Editar
-            </button>
+        <div className="configuracao-buttons">
+          <button className="editar-configuracoes"onClick={() => setModoEdicao(!modoEdicao)}>
+            {modoEdicao ? 'Cancelar' : 'Editar Configurações'}
+          </button>
+          {modoEdicao && (
+            <button className="salvar-configuracoes" onClick={salvarConfiguracoes}>Salvar Configurações</button>
           )}
+          <button className="editar-senha" onClick={() => setEditandoSenha(!editandoSenha)}>
+            {editandoSenha ? 'Cancelar' : 'Mudar Senha'}
+          </button>
         </div>
       </div>
     </div>
