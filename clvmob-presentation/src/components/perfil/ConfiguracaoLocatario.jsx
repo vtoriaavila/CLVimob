@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 
 const ConfiguracaoLocatario = () => {
   const [configuracoes, setConfiguracoes] = useState({
-    nome: '',
+    name: '',
     email: '',
     senha: '',
     confirmacaoSenha: '', // Adiciona confirmação de senha para validação
@@ -31,10 +31,12 @@ const ConfiguracaoLocatario = () => {
         try {
           const response = await userLogado();
           const userData = response.data;
+
+          const formattedDate = new Date(userData.data_nascimento).toISOString().split('T')[0];
           
           setUser(userData); // Assumindo que a resposta tem os dados do usuário em response.data
           setOriginalConfig({
-            nome: userData.nome || '',
+            name: userData.name || '',
             email: userData.email || '',
             notificacoesEmail: userData.notificacoesEmail ?? true,
             notificacoesSMS: userData.notificacoesSMS ?? false,
@@ -44,12 +46,12 @@ const ConfiguracaoLocatario = () => {
             bairro: userData.bairro || '',
             endereco: userData.endereco || '',
             documento: userData.documento || '',
-            data_nascimento: userData.data_nascimento || '',
+            data_nascimento: formattedDate || '',
             role: userData.role || '', // Supondo que o locatário pode alterar o papel
           });
           setConfiguracoes(prevState => ({
             ...prevState,
-            nome: userData.nome || '',
+            name: userData.name || '',
             email: userData.email || '',
             notificacoesEmail: userData.notificacoesEmail ?? true,
             notificacoesSMS: userData.notificacoesSMS ?? false,
@@ -59,7 +61,7 @@ const ConfiguracaoLocatario = () => {
             bairro: userData.bairro || '',
             endereco: userData.endereco || '',
             documento: userData.documento || '',
-            data_nascimento: userData.data_nascimento || '',
+            data_nascimento: formattedDate || '',
             role: userData.role || '', // Supondo que o locatário pode alterar o papel
           }));
         } catch (error) {
@@ -115,12 +117,12 @@ const ConfiguracaoLocatario = () => {
       <h2>Configurações</h2>
       <div className="configuracao-form-locatario">
         <div className="configuracao-field">
-          <label htmlFor="nome">Nome:</label>
+          <label htmlFor="name">Nome:</label>
           <input
             type="text"
-            id="nome"
-            name="nome"
-            value={configuracoes.nome}
+            id="name"
+            name="name"
+            value={configuracoes.name}
             onChange={handleChange}
             disabled={!modoEdicao}
           />
@@ -222,17 +224,6 @@ const ConfiguracaoLocatario = () => {
             id="data_nascimento"
             name="data_nascimento"
             value={configuracoes.data_nascimento}
-            onChange={handleChange}
-            disabled={!modoEdicao}
-          />
-        </div>
-        <div className="configuracao-field">
-          <label htmlFor="role">Papel:</label>
-          <input
-            type="text"
-            id="role"
-            name="role"
-            value={configuracoes.role}
             onChange={handleChange}
             disabled={!modoEdicao}
           />

@@ -13,7 +13,144 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Estilos da Tabela */
+/* Estilos da Tabela */.manutencao-Locatario-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Fundo claro */
+    border-radius: 8px;
+}
+
+.manutencao-Locatario-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #444; /* Cor do título */
+}
+
+.manutencao-Locatario-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.manutencao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
+}
+
+.manutencao-item span {
+    flex: 1;
+    text-align: left;
+    font-size: 16px;
+    color: #333; /* Cor do texto dos itens */
+}
+
+.manutencao-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.manutencao-actions button {
+    background-color: #78909c; /* Cor dos botões */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #fff; /* Cor do texto dos botões */
+}
+
+.manutencao-actions button:hover {
+    background-color: #546e7a; /* Cor do botão ao passar o mouse */
+}
+
+.add-manutencao {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #607d8b; /* Cor do botão adicionar */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.add-manutencao:hover {
+    background-color: #455a64; /* Cor do botão adicionar ao passar o mouse */
+}
+
+.novo-manutencao-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-top: 20px;
+    max-width: 1000px;
+}
+
+.novo-manutencao-form input {
+    padding: 10px;
+    width: 80%;
+    box-sizing: border-box;
+    
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: left;
+  }
+
+  .modal-content h2 {
+    margin-bottom: 20px;
+    color: #455a64;
+  }
+
+  .modal-content p {
+    margin-bottom: 10px;
+    color: #555;
+  }
+
+  .modal-button{
+    background-color: #607d8b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    transition: background-color 0.3s ease;
+
+  }
+
+  .modal-button:hover{
+    background-color: #455a64;
+  }
+
 .manutencao-table {
     width: 100%;
     border-collapse: collapse;
@@ -109,3 +246,4 @@ h2 {
 .btn-add:hover {
     background-color: #45a049;
 }
+
