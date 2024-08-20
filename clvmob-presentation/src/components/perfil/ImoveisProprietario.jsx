@@ -6,8 +6,10 @@ const ImoveisProprietario = () => {
   const [imoveis, setImoveis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  const [novoImovel, setNovoImovel] =useState({
+  const [modalVisivel, setModalVisivel] = useState(false);
+  const [imovelSelecionado, setImovelSelecionado] = useState(null); // Declaração do estado
+
+  const [novoImovel, setNovoImovel] = useState({
     nome: '',
     tipo: '',
     cep: '',
@@ -18,7 +20,6 @@ const ImoveisProprietario = () => {
     banheiro: '',
     tamanho: '',
     aluguel: ''
-
   });
 
   useEffect(() => {
@@ -91,8 +92,9 @@ const ImoveisProprietario = () => {
   };
 
   const verImovel = (id) => {
-    console.log('Ver Imóvel:', id);
-    // Adicione a lógica para visualizar o imóvel
+    const imovel = imoveis.find(imovel => imovel.id === id);
+    setImovelSelecionado(imovel);
+    setModalVisivel(true);
   };
 
   const editarImovel = (id) => {
@@ -123,6 +125,13 @@ const ImoveisProprietario = () => {
           ))
         )}
       </div>
+
+      {modalVisivel && (
+        <Modal 
+          imovel={imovelSelecionado} 
+          onClose={() => setModalVisivel(false)} 
+        />
+      )}
 
       <div className="novo-imovel-form">
         <h3 className='adc-novo'>Adicionar Novo Imóvel</h3>
@@ -199,6 +208,28 @@ const ImoveisProprietario = () => {
         <button className="add-imovel" onClick={adicionarImovel}>
           Adicionar Imóvel +
         </button>
+      </div>
+    </div>
+  );
+};
+
+const Modal = ({ imovel, onClose }) => {
+  if (!imovel) return null;
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <h2>{imovel.nome}</h2>
+        <p>Tipo: {imovel.tipo}</p>
+        <p>CEP: {imovel.cep}</p>
+        <p>Endereço: {imovel.endereco}</p>
+        <p>Cidade: {imovel.cidade}</p>
+        <p>Estado: {imovel.estado}</p>
+        <p>Quartos: {imovel.quartos}</p>
+        <p>Banheiros: {imovel.banheiro}</p>
+        <p>Tamanho: {imovel.tamanho} m²</p>
+        <p>Valor do Aluguel: {imovel.aluguel}</p>
+        <button className='modal-button'onClick={onClose}>Fechar</button>
       </div>
     </div>
   );
