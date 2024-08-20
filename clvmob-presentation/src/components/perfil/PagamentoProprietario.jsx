@@ -124,8 +124,8 @@ const Modal = ({ pagamento, onClose }) => {
         <p><strong>Contrato:</strong> {pagamento.contrato ? pagamento.contrato.toString() : 'Não disponível'}</p>
         <p><strong>Tipo:</strong> {pagamento.tipo || 'Não disponível'}</p>
         <p><strong>Emissor:</strong> {pagamento.emissor ? pagamento.emissor.toString() : 'Não disponível'}</p>
-        <p><strong>Destinatário:</strong> {pagamento.destinatario ? pagamento.destinatario.toString() : 'Não disponível'}</p> 
-        <p><strong>Valor:</strong> {`R$ ${pagamento.valor.toFixed(2).replace('.', ',')}`}</p>
+        <p><strong>Destinatário:</strong> {pagamento.destinatario ? pagamento.destinatario.toString() : 'Não disponível'}</p>
+        <p><strong>Valor:</strong> {`R$ ${valorExibido}`}</p>
         <p><strong>Data:</strong> {formatarData(pagamento.data)}</p>
         <p><strong>Vencimento:</strong> {formatarData(pagamento.vencimento)}</p>
         <p><strong>Status:</strong> {pagamento.status || 'Não disponível'}</p>
