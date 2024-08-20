@@ -17,3 +17,18 @@ export async function getImobs() {
       throw error; // Lança o erro para ser tratado onde a função é chamada
     }
   }
+
+  export async function createImob(novoImovel) {
+    try {
+      const response = await axios.post(`${baseURL}/imob/`, novoImovel, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+      console.log('Imóvel criado com sucesso:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao criar imóvel:', error);
+      throw error;
+    }
+  }

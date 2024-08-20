@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ImoveisProprietario.css';
-import { getImobs } from '../../services/imob.service';
+import { createImob, getImobs } from '../../services/imob.service';
 
 const ImoveisProprietario = () => {
   const [imoveis, setImoveis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  const [novoImovel, setNovoImovel] =useState({
-    nome: '',
+  const [showForm, setShowForm] = useState(false);
+
+  const [novoImovel, setNovoImovel] = useState({
     tipo: '',
     cep: '',
     endereco: '',
@@ -18,13 +18,12 @@ const ImoveisProprietario = () => {
     banheiro: '',
     tamanho: '',
     aluguel: ''
-
   });
 
   useEffect(() => {
     const fetchImoveis = async () => {
       try {
-        const response =  await getImobs();
+        const response = await getImobs();
         const data = response.data.results; // Acessando o array de imóveis na resposta
         setImoveis(data);
       } catch (err) {
@@ -44,41 +43,48 @@ const ImoveisProprietario = () => {
     });
   };
 
-  const adicionarImovel = () => {
-    const { nome, tipo, cep, endereco, cidade, estado, quartos, banheiro, tamanho, aluguel } = novoImovel;
+  const adicionarImovel = async () => {
+    const { tipo, cep, endereco, cidade, estado, quartos, banheiro, tamanho, aluguel } = novoImovel;
 
-    if (!nome || !tipo || !cep || !endereco || !cidade || !estado || !quartos || !banheiro || !tamanho || !aluguel) {
+    if (!tipo || !cep || !endereco || !cidade || !estado || !quartos || !banheiro || !tamanho || !aluguel) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    const novoImovelData = {
-      id: imoveis.length + 1,
-      nome,
-      tipo,
-      cep,
-      endereco,
-      cidade,
-      estado,
-      quartos,
-      banheiro,
-      tamanho,
-      aluguel
-    };
+    // Exibindo os dados do novo imóvel no console
+    console.log('Novo Imóvel:', novoImovel);
 
-    setImoveis([...imoveis, novoImovelData]);
-    setNovoImovel({
-      nome: '',
-      tipo: '',
-      cep: '',
-      endereco: '',
-      cidade: '',
-      estado: '',
-      quartos: '',
-      banheiro: '',
-      tamanho: '',
-      aluguel: ''
-    });
+    try {
+      const novoImovelData = {
+        tipo,
+        cep,
+        endereco,
+        cidade,
+        estado,
+        quartos,
+        banheiro,
+        tamanho,
+        aluguel
+      };
+
+      const imovelCriado = await createImob(novoImovelData);
+      setImoveis([...imoveis, imovelCriado]);
+      setNovoImovel({
+        tipo: '',
+        cep: '',
+        endereco: '',
+        cidade: '',
+        estado: '',
+        quartos: '',
+        banheiro: '',
+        tamanho: '',
+        aluguel: ''
+      });
+    } catch (error) {
+      alert('Erro ao adicionar imóvel');
+    }
+
+    setShowForm(false); // Esconde o formulário após adicionar o imóvel
   };
 
   const excluirImovel = async (id) => {
@@ -124,82 +130,81 @@ const ImoveisProprietario = () => {
         )}
       </div>
 
-      <div className="novo-imovel-form">
-        <h3 className='adc-novo'>Adicionar Novo Imóvel</h3>
-        <input className='text-nome'
-          type="text"
-          name="tipo"
-          placeholder="Tipo"
-          value={novoImovel.tipo}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome"
-          value={novoImovel.nome}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="cep"
-          placeholder="CEP"
-          value={novoImovel.cep}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="endereco"
-          placeholder="Endereço"
-          value={novoImovel.endereco}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="cidade"
-          placeholder="Cidade"
-          value={novoImovel.cidade}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="estado"
-          placeholder="Estado"
-          value={novoImovel.estado}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="quartos"
-          placeholder="Quartos"
-          value={novoImovel.quartos}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="banheiro"
-          placeholder="Banheiros"
-          value={novoImovel.banheiro}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="tamanho"
-          placeholder="Tamanho (m²)"
-          value={novoImovel.tamanho}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="aluguel"
-          placeholder="Valor do Aluguel"
-          value={novoImovel.aluguel}
-          onChange={handleChange}
-        />
-        <button className="add-imovel" onClick={adicionarImovel}>
-          Adicionar Imóvel +
-        </button>
-      </div>
+
+      <button className="add-imovel" onClick={() => setShowForm(!showForm)}>
+        {showForm ? 'Cancelar' : 'Adicionar Imóvel +'}
+      </button>
+
+      {showForm && (
+        <div className="novo-imovel-form">
+          <input
+            type="text"
+            name="tipo"
+            placeholder="Tipo"
+            value={novoImovel.tipo}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="cep"
+            placeholder="CEP"
+            value={novoImovel.cep}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="endereco"
+            placeholder="Endereço"
+            value={novoImovel.endereco}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="cidade"
+            placeholder="Cidade"
+            value={novoImovel.cidade}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="estado"
+            placeholder="Estado"
+            value={novoImovel.estado}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="quartos"
+            placeholder="Quartos"
+            value={novoImovel.quartos}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="banheiro"
+            placeholder="Banheiros"
+            value={novoImovel.banheiro}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="tamanho"
+            placeholder="Tamanho (m²)"
+            value={novoImovel.tamanho}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="aluguel"
+            placeholder="Valor do Aluguel"
+            value={novoImovel.aluguel}
+            onChange={handleChange}
+          />
+          <button className="add-imovel" onClick={adicionarImovel}>
+            Adicionar Imóvel +
+          </button>
+        </div>
+      )}
     </div>
   );
 };
