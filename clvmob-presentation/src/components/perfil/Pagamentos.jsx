@@ -177,7 +177,7 @@ const Modal = ({ pagamento, onClose }) => {
       <div className="modal-content">
         <h2>Detalhes do Pagamento</h2>
         <p>Tipo de Pagamento: {pagamento.tipo}</p>
-        <p>Valor: R$ {pagamento.valor.toFixed(2)}</p>
+        <p>Valor: R$ {pagamento.valor}</p>
         <p>Data: {new Date(pagamento.data).toLocaleDateString()}</p>
         <p>Vencimento: {new Date(pagamento.vencimento).toLocaleDateString()}</p>
         <p>Status: {pagamento.status}</p>
