@@ -113,7 +113,7 @@ const ConfiguracaoLocatario = () => {
   return (
     <div className="configuracao-locatario-container">
       <h2>Configurações</h2>
-      <div className="configuracao-form">
+      <div className="configuracao-form-locatario">
         <div className="configuracao-field">
           <label htmlFor="nome">Nome:</label>
           <input
