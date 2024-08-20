@@ -6,6 +6,16 @@ const ContratosProprietario = () => {
   const [contratos, setContratos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalVisivel, setModalVisivel] = useState(false);
+  const [contratoSelecionado, setContratoSelecionado] = useState(null);
+
+  const [novoContrato, setNovoContrato] = useState({
+    admin: '',
+    locatario: '',
+    imob: '',
+    dt_inicio: '',
+    dt_vencimento: ''
+  });
 
   useEffect(() => {
     const fetchContratos = async () => {
@@ -30,14 +40,38 @@ const ContratosProprietario = () => {
     fetchContratos();
   }, []);
 
+  const handleChange = (e) => {
+    setNovoContrato({
+      ...novoContrato,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const adicionarContrato = () => {
-    const novoContrato = {
+    const { admin, locatario, imob, dt_inicio, dt_vencimento } = novoContrato;
+
+    if (!admin || !locatario || !imob || !dt_inicio || !dt_vencimento) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    const novoContratoData = {
       id: contratos.length + 1,
-      titulo: 'Novo Contrato',
-      dataInicio: 'Data Início',
-      dataFim: 'Data Fim'
+      admin,
+      locatario,
+      imob,
+      dt_inicio,
+      dt_vencimento
     };
-    setContratos([...contratos, novoContrato]);
+
+    setContratos([...contratos, novoContratoData]);
+    setNovoContrato({
+      admin: '',
+      locatario: '',
+      imob: '',
+      dt_inicio: '',
+      dt_vencimento: ''
+    });
   };
 
   const excluirContrato = (id) => {
@@ -45,8 +79,9 @@ const ContratosProprietario = () => {
   };
 
   const verContrato = (id) => {
-    console.log('Ver Contrato:', id);
-    // Adicione a lógica para visualizar o contrato
+    const contrato = contratos.find((contrato) => contrato.id === id);
+    setContratoSelecionado(contrato);
+    setModalVisivel(true);
   };
 
   const editarContrato = (id) => {
@@ -67,7 +102,7 @@ const ContratosProprietario = () => {
 
           return (
             <div key={contrato.id} className="contrato-item">
-              <span><strong>Imóvel:</strong> {contrato.imob?.tipo}</span>
+              <span><strong>Imóvel:</strong> {contrato.imob?.tipo || 'N/A'}</span>
               <span><strong>Data Início:</strong> {formattedDateI}</span>
               <span><strong>Data Fim:</strong> {formattedDateV}</span>
               <div className="contrato-actions">
@@ -79,9 +114,83 @@ const ContratosProprietario = () => {
           );
         })}
       </div>
-      <button className="add-contrato" onClick={adicionarContrato}>
-        Adicionar Contrato +
-      </button>
+
+      {modalVisivel && (
+        <Modal 
+          contrato={contratoSelecionado} 
+          onClose={() => setModalVisivel(false)} 
+        />
+      )}
+      
+      <div className="novo-contrato-form">
+        <h3>Adicionar Novo Contrato</h3>
+        <input
+          type="text"
+          name="admin"
+          placeholder="Admin"
+          value={novoContrato.admin}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="locatario"
+          placeholder="Locatário"
+          value={novoContrato.locatario}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="imob"
+          placeholder="Imóvel"
+          value={novoContrato.imob}
+          onChange={handleChange}
+        />
+        <div className="form-group">
+          <label htmlFor="dt_inicio">Data de Início:</label>
+          <input
+            type="date"
+            name="dt_inicio"
+            placeholder="Data de Início"
+            value={novoContrato.dt_inicio}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="dt_vencimento">Data de Vencimento:</label>
+          <input
+            type="date"
+            name="dt_vencimento"
+            placeholder="Data de Vencimento"
+            value={novoContrato.dt_vencimento}
+            onChange={handleChange}
+          />
+        </div>
+        <button className="add-contrato" onClick={adicionarContrato}>
+          Adicionar Contrato +
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const Modal = ({ contrato, onClose }) => {
+  if (!contrato) return null;
+
+  const formattedDateI = new Date(contrato.dt_inicio).toLocaleDateString('pt-BR');
+  const formattedDateV = new Date(contrato.dt_vencimento).toLocaleDateString('pt-BR');
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <h2>Detalhes do Contrato</h2>
+        <p><strong>Admin:</strong> {contrato.admin?.name || 'N/A'}</p>
+        <p><strong>Locatário:</strong> {contrato.locatario?.name || 'N/A'}</p>
+        <p><strong>Imóvel:</strong> {contrato.imob?.tipo || 'N/A'}</p>
+        <p><strong>Data de Início:</strong> {formattedDateI}</p>
+        <p><strong>Data de Vencimento:</strong> {formattedDateV}</p>
+        <button className='modal-button' onClick={onClose}>Fechar</button>
+      </div>
     </div>
   );
 };

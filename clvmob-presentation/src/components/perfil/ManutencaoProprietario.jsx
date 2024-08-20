@@ -6,6 +6,15 @@ const ManutencaoProprietario = () => {
   const [manutencao, setManutencao] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showForm,setShowForm] = useState(false);
+  const[manutencaoSelecionada, setManutencaoSelecionada]= useState(null);
+  const [modalVisivel, setModalVisivel]=useState(false);
+
+  const[novaManutencao,setNovaManutencao]=useState({
+    imob:'',
+    tipo_manutencao:'',
+    desc_total:''
+  });
 
   useEffect(() => {
     const fetchManutencao = async () => {
