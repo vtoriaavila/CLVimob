@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ImoveisProprietario.css';
-import { createImob, getImobs } from '../../services/imob.service';
+import { createImob, getImobs, deleteImob } from '../../services/imob.service';
 
 const ImoveisProprietario = () => {
   const [imoveis, setImoveis] = useState([]);
@@ -9,6 +9,8 @@ const ImoveisProprietario = () => {
   const [showForm, setShowForm] = useState(false);
   const [imovelSelecionado, setImovelSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [senha, setSenha] = useState('');
+  const [senhaError, setSenhaError] = useState('');
 
   const [novoImovel, setNovoImovel] = useState({
     tipo: '',
@@ -26,7 +28,7 @@ const ImoveisProprietario = () => {
     const fetchImoveis = async () => {
       try {
         const response = await getImobs();
-        const data = response.data.results; // Acessando o array de imóveis na resposta
+        const data = response.data.results;
         setImoveis(data);
       } catch (err) {
         setError('Erro ao carregar imóveis');
@@ -53,7 +55,6 @@ const ImoveisProprietario = () => {
       return;
     }
 
-    // Exibindo os dados do novo imóvel no console
     console.log('Novo Imóvel:', novoImovel);
 
     try {
@@ -86,15 +87,31 @@ const ImoveisProprietario = () => {
       alert('Erro ao adicionar imóvel');
     }
 
-    setShowForm(false); // Esconde o formulário após adicionar o imóvel
+    setShowForm(false);
   };
 
-  const excluirImovel = async (id) => {
+  const confirmarExclusao = (id) => {
+    setImovelSelecionado(id);
+    setModalVisivel(true);
+  };
+
+  const excluirImovel = async () => {
+    if (!senha) {
+      setSenhaError('Por favor, insira sua senha para confirmar a exclusão.');
+      return;
+    }
+
     try {
-      // Adicione a lógica para excluir o imóvel da API aqui
-      setImoveis(imoveis.filter(imovel => imovel.id !== id));
+      // Substitua 'senha' pelo campo correto se necessário
+      const response = await deleteImob(imovelSelecionado, senha);
+      alert('Imóvel excluído com sucesso.');
+      setImoveis(imoveis.filter(imovel => imovel.id !== imovelSelecionado));
+      setModalVisivel(false);
+      setSenha('');
+      setSenhaError('');
     } catch (err) {
       console.error('Erro ao excluir imóvel:', err);
+      alert('Erro ao excluir imóvel. Verifique a senha e tente novamente.');
     }
   };
 
@@ -125,7 +142,7 @@ const ImoveisProprietario = () => {
               <span>{imovel.endereco}</span>
               <div className="imovel-actions">
                 <button onClick={() => editarImovel(imovel.id)}>Editar</button>
-                <button onClick={() => excluirImovel(imovel.id)}>Excluir</button>
+                <button onClick={() => confirmarExclusao(imovel.id)}>Excluir</button>
                 <button onClick={() => verImovel(imovel.id)}>Ver</button>
               </div>
             </div>
@@ -211,30 +228,36 @@ const ImoveisProprietario = () => {
       {modalVisivel && (
         <Modal 
           imovel={imovelSelecionado} 
-          onClose={() => setModalVisivel(false)} 
+          onClose={() => setModalVisivel(false)}
+          onConfirm={excluirImovel}
+          senha={senha}
+          setSenha={setSenha}
+          senhaError={senhaError}
         />
       )}
     </div>
   );
 };
 
-const Modal = ({ imovel, onClose }) => {
+const Modal = ({ imovel, onClose, onConfirm, senha, setSenha, senhaError }) => {
   if (!imovel) return null;
 
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{imovel.tipo}</h2>
-        <p>Tipo: {imovel.tipo}</p>
-        <p>CEP: {imovel.cep}</p>
-        <p>Endereço: {imovel.endereco}</p>
-        <p>Cidade: {imovel.cidade}</p>
-        <p>Estado: {imovel.estado}</p>
-        <p>Quartos: {imovel.quartos}</p>
-        <p>Banheiros: {imovel.banheiro}</p>
-        <p>Tamanho: {imovel.tamanho} m²</p>
-        <p>Valor do Aluguel: {imovel.aluguel}</p>
-        <button className='modal-button' onClick={onClose}>Fechar</button>
+        <h2>Confirmar Exclusão</h2>
+        <p>Tem certeza que deseja excluir o imóvel <strong>{imovel.tipo}</strong>?</p>
+        <input
+          type="password"
+          placeholder="Digite sua senha"
+          value={senha}
+          onChange={(e) => setSenha(e.target.value)}
+        />
+        {senhaError && <p className="error-message">{senhaError}</p>}
+        <div className="modal-buttons">
+          <button className="modal-button" onClick={onConfirm}>Excluir</button>
+          <button className="modal-button" onClick={onClose}>Cancelar</button>
+        </div>
       </div>
     </div>
   );
