@@ -8,6 +8,9 @@ const Proprietarios = () => {
     { id: 3, nome: 'Carlos Mendes', contato: 'carlos@gmail.com', imoveis: 2 },
   ]);
 
+  const [proprietarioSelecionado, setProprietarioSelecionado] = useState(null);
+  const [modalVisivel, setModalVisivel] = useState(false);
+
   const adicionarProprietario = () => {
     const novoProprietario = {
       id: proprietarios.length + 1,
@@ -23,13 +26,14 @@ const Proprietarios = () => {
   };
 
   const verProprietario = (id) => {
-    console.log('Ver Proprietário:', id);
-    // adc a lógica ainda
+    const proprietario = proprietarios.find(proprietario => proprietario.id === id);
+    setProprietarioSelecionado(proprietario);
+    setModalVisivel(true);
   };
 
   const editarProprietario = (id) => {
     console.log('Editar Proprietário:', id);
-    // adc a lógica ainda
+    // Adicione a lógica para editar o proprietário
   };
 
   return (
@@ -42,9 +46,9 @@ const Proprietarios = () => {
             <span>{proprietario.contato}</span>
             <span>{proprietario.imoveis} Imóveis</span>
             <div className="proprietario-actions">
-              <button onClick={() => editarProprietario(proprietario.id)}>editar</button>
-              <button onClick={() => excluirProprietario(proprietario.id)}>excluir</button>
-              <button onClick={() => verProprietario(proprietario.id)}>ver</button>
+              <button onClick={() => editarProprietario(proprietario.id)}>Editar</button>
+              <button onClick={() => excluirProprietario(proprietario.id)}>Excluir</button>
+              <button onClick={() => verProprietario(proprietario.id)}>Ver</button>
             </div>
           </div>
         ))}
@@ -52,6 +56,34 @@ const Proprietarios = () => {
       <button className="add-proprietario" onClick={adicionarProprietario}>
         Adicionar Proprietário +
       </button>
+
+      {modalVisivel && (
+        <Modal 
+          proprietario={proprietarioSelecionado} 
+          onClose={() => setModalVisivel(false)} 
+        />
+      )}
+    </div>
+  );
+};
+
+const Modal = ({ proprietario, onClose }) => {
+  if (!proprietario) return null;
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <h2>{proprietario.nome}</h2>
+        <p>Nome: {proprietario.nome}</p>
+        <p>Contato: {proprietario.contato}</p>
+        <p>Imóveis: {proprietario.imoveis}</p>
+        <p>Email: {proprietario.email}</p>
+        <p>Estado: {proprietario.estado}</p>
+        <p>Cidade: {proprietario.cidade}</p>
+        <p>Endereco: {proprietario.endereco}</p>
+        <p>Data Nascimento: {proprietario.data_nascimento}</p>  
+        <button className="modal-button" onClick={onClose}>Fechar</button>
+      </div>
     </div>
   );
 };

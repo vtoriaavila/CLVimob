@@ -70,3 +70,67 @@
 .add-pagamento:hover {
     background-color: #455a64;
 }
+
+.novo-pagamento-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-top: 20px;
+    max-width: 800px;
+}
+
+.novo-pagamento-form input {
+    padding: 10px;
+    width: 80%;
+    box-sizing: border-box;
+    
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90%;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: left;
+  }
+
+  .modal-content h2 {
+    margin-bottom: 20px;
+    color: #455a64;
+  }
+
+  .modal-content p {
+    margin-bottom: 10px;
+    color: #555;
+  }
+
+  .modal-button{
+    background-color: #607d8b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    transition: background-color 0.3s ease;
+
+  }
+
+  .modal-button:hover{
+    background-color: #455a64;
+  }
