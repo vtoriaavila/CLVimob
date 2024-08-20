@@ -7,6 +7,8 @@ const ImoveisProprietario = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [imovelSelecionado, setImovelSelecionado] = useState(null);
+  const [modalVisivel, setModalVisivel] = useState(false);
 
   const [novoImovel, setNovoImovel] = useState({
     tipo: '',
@@ -97,8 +99,9 @@ const ImoveisProprietario = () => {
   };
 
   const verImovel = (id) => {
-    console.log('Ver Imóvel:', id);
-    // Adicione a lógica para visualizar o imóvel
+    const imovel = imoveis.find(imovel => imovel.id === id);
+    setImovelSelecionado(imovel);
+    setModalVisivel(true);
   };
 
   const editarImovel = (id) => {
@@ -129,7 +132,6 @@ const ImoveisProprietario = () => {
           ))
         )}
       </div>
-
 
       <button className="add-imovel" onClick={() => setShowForm(!showForm)}>
         {showForm ? 'Cancelar' : 'Adicionar Imóvel +'}
@@ -205,6 +207,35 @@ const ImoveisProprietario = () => {
           </button>
         </div>
       )}
+
+      {modalVisivel && (
+        <Modal 
+          imovel={imovelSelecionado} 
+          onClose={() => setModalVisivel(false)} 
+        />
+      )}
+    </div>
+  );
+};
+
+const Modal = ({ imovel, onClose }) => {
+  if (!imovel) return null;
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <h2>{imovel.tipo}</h2>
+        <p>Tipo: {imovel.tipo}</p>
+        <p>CEP: {imovel.cep}</p>
+        <p>Endereço: {imovel.endereco}</p>
+        <p>Cidade: {imovel.cidade}</p>
+        <p>Estado: {imovel.estado}</p>
+        <p>Quartos: {imovel.quartos}</p>
+        <p>Banheiros: {imovel.banheiro}</p>
+        <p>Tamanho: {imovel.tamanho} m²</p>
+        <p>Valor do Aluguel: {imovel.aluguel}</p>
+        <button className='modal-button' onClick={onClose}>Fechar</button>
+      </div>
     </div>
   );
 };
