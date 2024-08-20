@@ -35,7 +35,6 @@ export default function DashboardProprietario() {
 
         const despesaResponse = await getDespesa(); // Buscar despesas
         setDespesas(despesaResponse.data); // Atualiza o estado de despesas
-
       } catch (err) {
         setError('Erro ao buscar dados.');
       } finally {
@@ -119,15 +118,18 @@ export default function DashboardProprietario() {
         </div>
       </div>
       <div className="dashboard-proprietario-properties">
-        {imoveis.map(imovel => {
-          const contratoRelacionado = contratos.find(contrato => contrato.imob.id === imovel._id);
-          const status = contratoRelacionado ? "Alugado" : "Disponível";
+      {imoveis.map(imovel => {
+
+          const atualizarStatusImoveis = (imovelId) => {
+            const contratoAtivo = contratos.find(contrato => contrato.imob._id === imovelId);
+            return contratoAtivo ? 'Alugado' : 'Disponível';
+          };
           
           return (
             <div className="property-card" key={imovel._id}>
               <h3>{imovel.tipo}</h3>
               <p><strong>Endereço:</strong> {imovel.endereco}</p>
-              <p><strong>Status:</strong> {status}</p>
+              <p><strong>Status:</strong> {atualizarStatusImoveis(imovel.id)}</p>
               <p><strong>Última Manutenção:</strong> {encontrarUltimaManutencao(imovel.id)}</p>
             </div>
           );
