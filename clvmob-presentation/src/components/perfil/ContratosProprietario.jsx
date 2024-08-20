@@ -123,7 +123,6 @@ const ContratosProprietario = () => {
       )}
       
       <div className="novo-contrato-form">
-        <h3>Adicionar Novo Contrato</h3>
         <input
           type="text"
           name="admin"

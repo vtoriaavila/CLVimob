@@ -6,12 +6,13 @@ const PagamentoProprietario = () => {
   const [pagamentos, setPagamentos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [modalVisivel, setModalVisivel] = useState(false);
+  const [pagamentoSelecionado, setPagamentoSelecionado] = useState(null);
 
   useEffect(() => {
     const fetchPagamentos = async () => {
       try {
         const response = await getPagamento();
-        console.log(response)
         setPagamentos(response.data); // Atualiza o estado com os dados retornados
       } catch (err) {
         setError('Erro ao buscar pagamentos.'); // Define a mensagem de erro
@@ -24,7 +25,36 @@ const PagamentoProprietario = () => {
   }, []);
 
   const adicionarPagamento = () => {
-    // Lógica para adicionar pagamento (se necessário)
+    const { tipo, valor, data, vencimento, status, contrato, emissor, destinatario } = novoPagamento;
+
+    if (!tipo || !valor || !data || !vencimento || !status || !contrato || !emissor || !destinatario) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    const novoPagamentoData = {
+      _id: pagamentos.length + 1, // Ou gerar um ID único
+      tipo,
+      valor: parseFloat(valor),
+      data,
+      vencimento,
+      status,
+      contrato,
+      emissor,
+      destinatario
+    };
+
+    setPagamentos([...pagamentos, novoPagamentoData]);
+    setNovoPagamento({
+      tipo: '',
+      valor: '',
+      data: '',
+      vencimento: '',
+      status: '',
+      contrato: '',
+      emissor: '',
+      destinatario: ''
+    });
   };
 
   const excluirPagamento = (id) => {
@@ -32,8 +62,9 @@ const PagamentoProprietario = () => {
   };
 
   const verPagamento = (id) => {
-    console.log('Ver Pagamento:', id);
-    // Adicione a lógica para visualizar o pagamento
+    const pagamentoItem = pagamentos.find(pagamento => pagamento._id === id);
+    setPagamentoSelecionado(pagamentoItem);
+    setModalVisivel(true);
   };
 
   const editarPagamento = (id) => {
@@ -55,10 +86,10 @@ const PagamentoProprietario = () => {
       <div className="pagamento-proprietario-list">
         {pagamentos.map(pagamento => (
           <div key={pagamento._id} className="pagamento-item">
-            <span>{pagamento.tipo}</span>
+            <span>{pagamento.tipo || 'Não disponível'}</span>
             <span>{new Date(pagamento.data).toLocaleDateString()}</span>
             <span>{`R$ ${pagamento.valor.toFixed(2).replace('.', ',')}`}</span>
-            <span>{pagamento.status}</span>
+            <span>{pagamento.status || 'Não disponível'}</span>
             <div className="pagamento-actions">
               <button onClick={() => editarPagamento(pagamento._id)}>Editar</button>
               <button onClick={() => excluirPagamento(pagamento._id)}>Excluir</button>
@@ -70,6 +101,36 @@ const PagamentoProprietario = () => {
       <button className="add-pagamento" onClick={adicionarPagamento}>
         Adicionar Pagamento +
       </button>
+
+      {modalVisivel && (
+        <Modal 
+          pagamento={pagamentoSelecionado} 
+          onClose={() => setModalVisivel(false)} 
+        />
+      )}
+    </div>
+  );
+};
+
+const Modal = ({ pagamento, onClose }) => {
+  if (!pagamento) return null;
+
+  const formatarData = (data) => new Date(data).toLocaleDateString();
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <h2>Detalhes do Pagamento</h2>
+        <p><strong>Contrato:</strong> {pagamento.contrato ? pagamento.contrato.toString() : 'Não disponível'}</p>
+        <p><strong>Tipo:</strong> {pagamento.tipo || 'Não disponível'}</p>
+        <p><strong>Emissor:</strong> {pagamento.emissor ? pagamento.emissor.toString() : 'Não disponível'}</p>
+        <p><strong>Destinatário:</strong> {pagamento.destinatario ? pagamento.destinatario.toString() : 'Não disponível'}</p> 
+        <p><strong>Valor:</strong> {`R$ ${pagamento.valor.toFixed(2).replace('.', ',')}`}</p>
+        <p><strong>Data:</strong> {formatarData(pagamento.data)}</p>
+        <p><strong>Vencimento:</strong> {formatarData(pagamento.vencimento)}</p>
+        <p><strong>Status:</strong> {pagamento.status || 'Não disponível'}</p>
+        <button className='modal-button' onClick={onClose}>Fechar</button>
+      </div>
     </div>
   );
 };

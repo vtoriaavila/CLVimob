@@ -70,6 +70,21 @@
     background-color: #455a64; /* Cor do botão adicionar ao passar o mouse */
 }
 
+.novo-contrato-form{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    margin-top: 20px;
+    max-width: 800px;
+}
+
+.novo-contrato-form input {
+    padding: 10px;
+    width: 80%;
+    box-sizing: border-box;
+    
+}
+
 .modal {
     position: fixed;
     top: 0;
