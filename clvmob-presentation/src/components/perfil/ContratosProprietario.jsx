@@ -96,6 +96,26 @@ const ContratosProprietario = () => {
   return (
     <div className="contratos-proprietario-container">
       <h2>Meus Contratos</h2>
+      <div className="contratos-proprietario-list">
+        {contratos.map((contrato) => {
+          const formattedDateI = new Date(contrato.dt_inicio).toLocaleDateString('pt-BR');
+          const formattedDateV = new Date(contrato.dt_vencimento).toLocaleDateString('pt-BR');
+
+          return (
+            <div key={contrato.id} className="contrato-item">
+              <span><strong>Imóvel:</strong> {contrato.imob?.tipo || 'N/A'}</span>
+              <span><strong>Data Início:</strong> {formattedDateI}</span>
+              <span><strong>Data Fim:</strong> {formattedDateV}</span>
+              <div className="contrato-actions">
+                <button onClick={() => editarContrato(contrato.id)}>Editar</button>
+                <button onClick={() => excluirContrato(contrato.id)}>Excluir</button>
+                <button onClick={() => verContrato(contrato.id)}>Ver</button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      
       <button className="toggle-form" onClick={() => setFormVisivel(!formVisivel)}>
         {formVisivel ? 'Cancelar' : 'Adicionar Contrato +'}
       </button>
@@ -150,26 +170,6 @@ const ContratosProprietario = () => {
         </div>
       )}
       
-      <div className="contratos-proprietario-list">
-        {contratos.map((contrato) => {
-          const formattedDateI = new Date(contrato.dt_inicio).toLocaleDateString('pt-BR');
-          const formattedDateV = new Date(contrato.dt_vencimento).toLocaleDateString('pt-BR');
-
-          return (
-            <div key={contrato.id} className="contrato-item">
-              <span><strong>Imóvel:</strong> {contrato.imob?.tipo || 'N/A'}</span>
-              <span><strong>Data Início:</strong> {formattedDateI}</span>
-              <span><strong>Data Fim:</strong> {formattedDateV}</span>
-              <div className="contrato-actions">
-                <button onClick={() => editarContrato(contrato.id)}>Editar</button>
-                <button onClick={() => excluirContrato(contrato.id)}>Excluir</button>
-                <button onClick={() => verContrato(contrato.id)}>Ver</button>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
       {modalVisivel && (
         <Modal 
           contrato={contratoSelecionado} 

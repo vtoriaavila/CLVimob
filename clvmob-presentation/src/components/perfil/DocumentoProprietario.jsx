@@ -68,6 +68,20 @@ const DocumentoProprietario = () => {
   return (
     <div className="documento-proprietario-container">
       <h2>Documentos</h2>
+      <div className="documento-proprietario-list">
+        {documentos.map(doc => (
+          <div key={doc.id} className="documento-item">
+            <span><strong>Tipo:</strong> {doc.tipo}</span>
+            <span><strong>Imóvel:</strong> {doc.imob}</span>
+            <span><strong>Data:</strong> {doc.data}</span>
+            <div className="documento-actions">
+              <button onClick={() => editarDocumento(doc.id)}>Editar</button>
+              <button onClick={() => excluirDocumento(doc.id)}>Excluir</button>
+              <button onClick={() => verDocumento(doc.id)}>Ver</button>
+            </div>
+          </div>
+        ))}
+      </div>
       <button className="add-documento" onClick={() => setShowForm(!showForm)}>
         {showForm ? 'Cancelar' : 'Adicionar Documento +'}
       </button>
@@ -107,21 +121,6 @@ const DocumentoProprietario = () => {
           </button>
         </div>
       )}
-
-      <div className="documento-proprietario-list">
-        {documentos.map(doc => (
-          <div key={doc.id} className="documento-item">
-            <span><strong>Tipo:</strong> {doc.tipo}</span>
-            <span><strong>Imóvel:</strong> {doc.imob}</span>
-            <span><strong>Data:</strong> {doc.data}</span>
-            <div className="documento-actions">
-              <button onClick={() => editarDocumento(doc.id)}>Editar</button>
-              <button onClick={() => excluirDocumento(doc.id)}>Excluir</button>
-              <button onClick={() => verDocumento(doc.id)}>Ver</button>
-            </div>
-          </div>
-        ))}
-      </div>
 
       {modalVisivel && (
         <Modal 

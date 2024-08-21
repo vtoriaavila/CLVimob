@@ -8,20 +8,18 @@ const ConfiguracaoLocatario = () => {
     name: '',
     email: '',
     senha: '',
-    confirmacaoSenha: '', // Adiciona confirmação de senha para validação
+    confirmacaoSenha: '',
     notificacoesEmail: true,
-    notificacoesSMS: false,
-    atualizacoesAutomáticas: true,
     estado: '',
     cidade: '',
     bairro: '',
     endereco: '',
     documento: '',
     data_nascimento: '',
-    role: '', // Supondo que o locatário pode alterar o papel
   });
 
   const [modoEdicao, setModoEdicao] = useState(false);
+  const [modoEdicaoSenha, setModoEdicaoSenha] = useState(false);
   const [user, setUser] = useState({});
   const [originalConfig, setOriginalConfig] = useState({});
 
@@ -34,35 +32,29 @@ const ConfiguracaoLocatario = () => {
 
           const formattedDate = new Date(userData.data_nascimento).toISOString().split('T')[0];
           
-          setUser(userData); // Assumindo que a resposta tem os dados do usuário em response.data
+          setUser(userData); 
           setOriginalConfig({
             name: userData.name || '',
             email: userData.email || '',
             notificacoesEmail: userData.notificacoesEmail ?? true,
-            notificacoesSMS: userData.notificacoesSMS ?? false,
-            atualizacoesAutomáticas: userData.atualizacoesAutomáticas ?? true,
             estado: userData.estado || '',
             cidade: userData.cidade || '',
             bairro: userData.bairro || '',
             endereco: userData.endereco || '',
             documento: userData.documento || '',
             data_nascimento: formattedDate || '',
-            role: userData.role || '', // Supondo que o locatário pode alterar o papel
           });
           setConfiguracoes(prevState => ({
             ...prevState,
             name: userData.name || '',
             email: userData.email || '',
             notificacoesEmail: userData.notificacoesEmail ?? true,
-            notificacoesSMS: userData.notificacoesSMS ?? false,
-            atualizacoesAutomáticas: userData.atualizacoesAutomáticas ?? true,
             estado: userData.estado || '',
             cidade: userData.cidade || '',
             bairro: userData.bairro || '',
             endereco: userData.endereco || '',
             documento: userData.documento || '',
             data_nascimento: formattedDate || '',
-            role: userData.role || '', // Supondo que o locatário pode alterar o papel
           }));
         } catch (error) {
           console.log(error);
@@ -81,13 +73,6 @@ const ConfiguracaoLocatario = () => {
   };
 
   const salvarConfiguracoes = () => {
-    // Verifica se a senha e a confirmação da senha correspondem
-    if (configuracoes.senha !== "" && configuracoes.senha !== configuracoes.confirmacaoSenha) {
-      alert('A confirmação da senha não corresponde à senha.');
-      return;
-    }
-
-    // Prepara o objeto com apenas as configurações alteradas
     const changedConfig = Object.keys(configuracoes).reduce((acc, key) => {
       if (configuracoes[key] !== originalConfig[key] && key !== 'confirmacaoSenha') {
         acc[key] = configuracoes[key];
@@ -95,9 +80,15 @@ const ConfiguracaoLocatario = () => {
       return acc;
     }, {});
 
-    // Inclui a senha apenas se não estiver vazia
-    if (configuracoes.senha !== '') {
-      changedConfig.senha = configuracoes.senha;
+    if (modoEdicaoSenha) {
+      if (configuracoes.senha !== configuracoes.confirmacaoSenha) {
+        alert('A confirmação da senha não corresponde à senha.');
+        return;
+      }
+
+      if (configuracoes.senha !== '') {
+        changedConfig.senha = configuracoes.senha;
+      }
     }
 
     console.log('Configurações alteradas:', changedConfig);
@@ -106,9 +97,35 @@ const ConfiguracaoLocatario = () => {
       .then(response => {
         console.log('Usuário atualizado com sucesso:', response.data);
         setModoEdicao(false);
+        setModoEdicaoSenha(false);
       })
       .catch(error => {
         console.error('Erro ao atualizar usuário:', error);
+      });
+  };
+
+  const salvarSenha = () => {
+    if (configuracoes.senha !== configuracoes.confirmacaoSenha) {
+      alert('A confirmação da senha não corresponde à senha.');
+      return;
+    }
+
+    const senhaConfig = {
+      senha: configuracoes.senha,
+    };
+
+    userEdit(senhaConfig)
+      .then(response => {
+        console.log('Senha atualizada com sucesso:', response.data);
+        setModoEdicaoSenha(false);
+        setConfiguracoes(prevState => ({
+          ...prevState,
+          senha: '',
+          confirmacaoSenha: ''
+        }));
+      })
+      .catch(error => {
+        console.error('Erro ao atualizar senha:', error);
       });
   };
 
@@ -134,14 +151,23 @@ const ConfiguracaoLocatario = () => {
             id="email"
             name="email"
             value={configuracoes.email}
-            onChange={handleChange}
-            disabled={!modoEdicao}
+            disabled
+          />
+        </div>
+        <div className="configuracao-field">
+          <label htmlFor="documento">Documento (CPF):</label>
+          <input
+            type="text"
+            id="documento"
+            name="documento"
+            value={configuracoes.documento}
+            disabled
           />
         </div>
         <div className="configuracao-field">
           <label htmlFor="senha">Senha:</label>
           <input
-            type="password"
+            type="text"
             id="senha"
             name="senha"
             value={configuracoes.senha}
@@ -150,18 +176,34 @@ const ConfiguracaoLocatario = () => {
             disabled={!modoEdicao}
           />
         </div>
-        <div className="configuracao-field">
-          <label htmlFor="confirmacaoSenha">Confirmar Senha:</label>
-          <input
-            type="password"
-            id="confirmacaoSenha"
-            name="confirmacaoSenha"
-            value={configuracoes.confirmacaoSenha}
-            onChange={handleChange}
-            placeholder="********"
-            disabled={!modoEdicao}
-          />
-        </div>
+
+        {modoEdicaoSenha && (
+          <>
+            <div className="configuracao-field">
+              <label htmlFor="senha">Senha:</label>
+              <input
+                type="password"
+                id="senha"
+                name="senha"
+                value={configuracoes.senha}
+                onChange={handleChange}
+                placeholder="********"
+              />
+            </div>
+            <div className="configuracao-field">
+              <label htmlFor="confirmacaoSenha">Confirmar Senha:</label>
+              <input
+                type="password"
+                id="confirmacaoSenha"
+                name="confirmacaoSenha"
+                value={configuracoes.confirmacaoSenha}
+                onChange={handleChange}
+                placeholder="********"
+              />
+            </div>
+          </>
+        )}
+
         <div className="configuracao-field">
           <label htmlFor="estado">Estado:</label>
           <input
@@ -207,17 +249,6 @@ const ConfiguracaoLocatario = () => {
           />
         </div>
         <div className="configuracao-field">
-          <label htmlFor="documento">Documento:</label>
-          <input
-            type="text"
-            id="documento"
-            name="documento"
-            value={configuracoes.documento}
-            onChange={handleChange}
-            disabled={!modoEdicao}
-          />
-        </div>
-        <div className="configuracao-field">
           <label htmlFor="data_nascimento">Data de Nascimento:</label>
           <input
             type="date"
@@ -228,18 +259,7 @@ const ConfiguracaoLocatario = () => {
             disabled={!modoEdicao}
           />
         </div>
-        <div className="configuracao-field">
-          <label htmlFor="notificacoesEmail">Notificações por Email:</label>
-          <input
-            type="checkbox"
-            id="notificacoesEmail"
-            name="notificacoesEmail"
-            checked={configuracoes.notificacoesEmail}
-            onChange={handleChange}
-            disabled={!modoEdicao}
-          />
-        </div>
-       
+        
         <div className="configuracao-actions">
           {modoEdicao ? (
             <>
@@ -251,8 +271,19 @@ const ConfiguracaoLocatario = () => {
               </button>
             </>
           ) : (
-            <button className="editar-configuracoes" onClick={() => setModoEdicao(true)}>
-              Editar
+            <>
+              <button className="editar-configuracoes" onClick={() => setModoEdicao(true)}>
+                Editar Configurações
+              </button>
+              <button className="mudar-senha" onClick={() => setModoEdicaoSenha(!modoEdicaoSenha)}>
+                {modoEdicaoSenha ? "Cancelar" : "Mudar Senha"}
+              </button>
+            </>
+          )}
+          
+          {modoEdicaoSenha && (
+            <button className="salvar-configuracoes" onClick={salvarSenha}>
+              Salvar Senha
             </button>
           )}
         </div>

@@ -43,6 +43,7 @@
 }
 
 
+.mudar-senha,
 .editar-configuracoes,
 .salvar-configuracoes,
 .cancelar-edicao {
@@ -58,6 +59,7 @@
     justify-content: space-between;
 }
 
+.mudar-senha:hover,
 .editar-configuracoes:hover,
 .salvar-configuracoes:hover,
 .cancelar-edicao:hover {

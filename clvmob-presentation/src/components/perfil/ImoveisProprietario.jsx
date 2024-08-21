@@ -8,7 +8,8 @@ const ImoveisProprietario = () => {
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [imovelSelecionado, setImovelSelecionado] = useState(null);
-  const [modalVisivel, setModalVisivel] = useState(false);
+  const [modalVisivelExcluir, setModalVisivelExcluir] = useState(false);
+  const [modalVisivelVisualizar, setModalVisivelVisualizar] = useState(false);
   const [senha, setSenha] = useState('');
   const [senhaError, setSenhaError] = useState('');
 
@@ -58,20 +59,17 @@ const ImoveisProprietario = () => {
     console.log('Novo Imóvel:', novoImovel);
 
     try {
-      const novoImovelData = {
-        tipo,
-        cep,
-        endereco,
-        cidade,
-        estado,
-        quartos,
-        banheiro,
-        tamanho,
-        aluguel
-      };
+      if (imovelSelecionado) {
+        // Atualizar imóvel existente
+        const imovelAtualizado = await updateImob(imovelSelecionado.id, novoImovel);
+        setImoveis(imoveis.map(imovel => (imovel.id === imovelSelecionado.id ? imovelAtualizado : imovel)));
+        setImovelSelecionado(null);
+      } else {
+        // Adicionar novo imóvel
+        const imovelCriado = await createImob(novoImovel);
+        setImoveis([...imoveis, imovelCriado]);
+      }
 
-      const imovelCriado = await createImob(novoImovelData);
-      setImoveis([...imoveis, imovelCriado]);
       setNovoImovel({
         tipo: '',
         cep: '',
@@ -83,16 +81,15 @@ const ImoveisProprietario = () => {
         tamanho: '',
         aluguel: ''
       });
+      setShowForm(false);
     } catch (error) {
-      alert('Erro ao adicionar imóvel');
+      alert('Erro ao adicionar/atualizar imóvel');
     }
-
-    setShowForm(false);
   };
 
   const confirmarExclusao = (id) => {
     setImovelSelecionado(id);
-    setModalVisivel(true);
+    setModalVisivelExcluir(true);
   };
 
   const excluirImovel = async () => {
@@ -106,7 +103,7 @@ const ImoveisProprietario = () => {
       const response = await deleteImob(imovelSelecionado, senha);
       alert('Imóvel excluído com sucesso.');
       setImoveis(imoveis.filter(imovel => imovel.id !== imovelSelecionado));
-      setModalVisivel(false);
+      setModalVisivelExcluir(false);
       setSenha('');
       setSenhaError('');
     } catch (err) {
@@ -118,12 +115,14 @@ const ImoveisProprietario = () => {
   const verImovel = (id) => {
     const imovel = imoveis.find(imovel => imovel.id === id);
     setImovelSelecionado(imovel);
-    setModalVisivel(true);
+    setModalVisivelVisualizar(true);
   };
 
   const editarImovel = (id) => {
-    console.log('Editar Imóvel:', id);
-    // Adicione a lógica para editar o imóvel
+    const imovel = imoveis.find(imovel => imovel.id === id);
+    setImovelSelecionado(imovel);
+    setNovoImovel(imovel); // Definir os dados do imóvel no formulário
+    setShowForm(true); // Mostrar o formulário de edição
   };
 
   if (loading) return <p>Carregando...</p>;
@@ -220,26 +219,33 @@ const ImoveisProprietario = () => {
             onChange={handleChange}
           />
           <button className="add-imovel" onClick={adicionarImovel}>
-            Adicionar Imóvel +
+            {imovelSelecionado ? 'Atualizar Imóvel' : 'Adicionar Imóvel +'}
           </button>
         </div>
       )}
 
-      {modalVisivel && (
-        <Modal 
+      {modalVisivelExcluir && (
+        <ModalExcluir 
           imovel={imovelSelecionado} 
-          onClose={() => setModalVisivel(false)}
+          onClose={() => setModalVisivelExcluir(false)}
           onConfirm={excluirImovel}
           senha={senha}
           setSenha={setSenha}
           senhaError={senhaError}
         />
       )}
+
+      {modalVisivelVisualizar && (
+        <ModalVisualizar 
+          imovel={imovelSelecionado} 
+          onClose={() => setModalVisivelVisualizar(false)}
+        />
+      )}
     </div>
   );
 };
 
-const Modal = ({ imovel, onClose, onConfirm, senha, setSenha, senhaError }) => {
+const ModalExcluir = ({ imovel, onClose, onConfirm, senha, setSenha, senhaError }) => {
   if (!imovel) return null;
 
   return (
@@ -258,6 +264,28 @@ const Modal = ({ imovel, onClose, onConfirm, senha, setSenha, senhaError }) => {
           <button className="modal-button" onClick={onConfirm}>Excluir</button>
           <button className="modal-button" onClick={onClose}>Cancelar</button>
         </div>
+      </div>
+    </div>
+  );
+};
+
+const ModalVisualizar = ({ imovel, onClose }) => {
+  if (!imovel) return null;
+
+  return (
+    <div className="modal">
+      <div className="modal-content">
+        <h2>Detalhes do Imóvel</h2>
+        <p><strong>Tipo:</strong> {imovel.tipo}</p>
+        <p><strong>CEP:</strong> {imovel.cep}</p>
+        <p><strong>Endereço:</strong> {imovel.endereco}</p>
+        <p><strong>Cidade:</strong> {imovel.cidade}</p>
+        <p><strong>Estado:</strong> {imovel.estado}</p>
+        <p><strong>Quartos:</strong> {imovel.quartos}</p>
+        <p><strong>Banheiros:</strong> {imovel.banheiro}</p>
+        <p><strong>Tamanho (m²):</strong> {imovel.tamanho}</p>
+        <p><strong>Valor do Aluguel:</strong> {imovel.aluguel}</p>
+        <button className="modal-button" onClick={onClose}>Fechar</button>
       </div>
     </div>
   );
