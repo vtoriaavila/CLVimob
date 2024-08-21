@@ -78,6 +78,11 @@ const ManutencaoProprietario = () => {
     // Adicione a lógica para editar a manutenção
   };
 
+  const handleStatusChange = (id, e) => {
+    const newStatus = e.target.value;
+    editarManutencao(id, newStatus);
+  };
+
   if (loading) return <p>Carregando...</p>;
   if (error) return <p>{error}</p>;
 
@@ -89,7 +94,14 @@ const ManutencaoProprietario = () => {
           <div key={item._id} className="manutencao-item">
             <span>{item.tipo_manutencao}</span>
             <span>{new Date(item.data_solicitacao).toLocaleDateString('pt-BR')}</span>
-            <span>{item.status}</span>
+            <select 
+              value={item.status} 
+              onChange={(e) => handleStatusChange(item._id, e)}
+            >
+              <option value="Pendente">Pendente</option>
+              <option value="Em Andamento">Em Andamento</option>
+              <option value="Concluído">Concluído</option>
+            </select>
             <div className="manutencao-actions">
               <button onClick={() => editarManutencao(item._id)}>Editar</button>
               <button onClick={() => excluirManutencao(item._id)}>Excluir</button>

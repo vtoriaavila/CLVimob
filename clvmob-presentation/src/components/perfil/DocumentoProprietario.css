@@ -83,7 +83,7 @@
 
 .novo-documento-form input {
     padding: 10px;
-    width: 100%; /* Ajusta o width para ocupar o espaço disponível */
+    width: 80%;
     box-sizing: border-box;
 }
 

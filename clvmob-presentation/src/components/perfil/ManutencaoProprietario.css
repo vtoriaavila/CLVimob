@@ -36,6 +36,21 @@
     color: #333; /* Cor do texto dos itens */
 }
 
+.manutencao-item select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+  margin-right: 15px;
+  }
+  
+  .manutencao-item select:focus {
+    border-color: #013088;
+    outline: none;
+  }
+
 .manutencao-actions {
     display: flex;
     gap: 10px;
