@@ -8,7 +8,7 @@ const ContratosProprietario = () => {
   const [error, setError] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [contratoSelecionado, setContratoSelecionado] = useState(null);
-
+  const [formVisivel, setFormVisivel] = useState(false); // Novo estado para controlar a visibilidade do formulário
   const [novoContrato, setNovoContrato] = useState({
     admin: '',
     locatario: '',
@@ -72,6 +72,7 @@ const ContratosProprietario = () => {
       dt_inicio: '',
       dt_vencimento: ''
     });
+    setFormVisivel(false); // Esconde o formulário após adicionar o contrato
   };
 
   const excluirContrato = (id) => {
@@ -95,6 +96,60 @@ const ContratosProprietario = () => {
   return (
     <div className="contratos-proprietario-container">
       <h2>Meus Contratos</h2>
+      <button className="toggle-form" onClick={() => setFormVisivel(!formVisivel)}>
+        {formVisivel ? 'Cancelar' : 'Adicionar Contrato +'}
+      </button>
+      
+      {formVisivel && (
+        <div className="novo-contrato-form">
+          <input
+            type="text"
+            name="admin"
+            placeholder="Admin"
+            value={novoContrato.admin}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="locatario"
+            placeholder="Locatário"
+            value={novoContrato.locatario}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="imob"
+            placeholder="Imóvel"
+            value={novoContrato.imob}
+            onChange={handleChange}
+          />
+          <div className="form-group">
+            <label htmlFor="dt_inicio">Data de Início:</label>
+            <input
+              type="date"
+              name="dt_inicio"
+              placeholder="Data de Início"
+              value={novoContrato.dt_inicio}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="dt_vencimento">Data de Vencimento:</label>
+            <input
+              type="date"
+              name="dt_vencimento"
+              placeholder="Data de Vencimento"
+              value={novoContrato.dt_vencimento}
+              onChange={handleChange}
+            />
+          </div>
+          <button className="add-contrato" onClick={adicionarContrato}>
+            Adicionar Contrato +
+          </button>
+        </div>
+      )}
+      
       <div className="contratos-proprietario-list">
         {contratos.map((contrato) => {
           const formattedDateI = new Date(contrato.dt_inicio).toLocaleDateString('pt-BR');
@@ -121,54 +176,6 @@ const ContratosProprietario = () => {
           onClose={() => setModalVisivel(false)} 
         />
       )}
-      
-      <div className="novo-contrato-form">
-        <input
-          type="text"
-          name="admin"
-          placeholder="Admin"
-          value={novoContrato.admin}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="locatario"
-          placeholder="Locatário"
-          value={novoContrato.locatario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="imob"
-          placeholder="Imóvel"
-          value={novoContrato.imob}
-          onChange={handleChange}
-        />
-        <div className="form-group">
-          <label htmlFor="dt_inicio">Data de Início:</label>
-          <input
-            type="date"
-            name="dt_inicio"
-            placeholder="Data de Início"
-            value={novoContrato.dt_inicio}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="dt_vencimento">Data de Vencimento:</label>
-          <input
-            type="date"
-            name="dt_vencimento"
-            placeholder="Data de Vencimento"
-            value={novoContrato.dt_vencimento}
-            onChange={handleChange}
-          />
-        </div>
-        <button className="add-contrato" onClick={adicionarContrato}>
-          Adicionar Contrato +
-        </button>
-      </div>
     </div>
   );
 };

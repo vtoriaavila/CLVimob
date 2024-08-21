@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './ManutencaoLocatario.css';
-import { getManutencao } from '../../services/manutencao.service';
+import { getManutencao, createManutencao, deleteManutencao, editManutencao } from '../../services/manutencao.service';
 import { getContract } from '../../services/contrato.service'; // Importa o serviço de contratos
 
 const ManutencaoLocatario = () => {
@@ -15,13 +15,13 @@ const ManutencaoLocatario = () => {
         desc_total: ''
     });
     const [formVisivel, setFormVisivel] = useState(false); // Estado para controlar a visibilidade do formulário
+    const [edicaoManutencao, setEdicaoManutencao] = useState(null); // Estado para manutenção em edição
 
     useEffect(() => {
         const fetchManutencao = async () => {
             try {
                 const response = await getManutencao();
-                const data = response.data; // Supondo que a resposta correta já está formatada
-                setManutencao(data);
+                setManutencao(response.data);
 
                 // Busca o contrato do locatário
                 const responseContrato = await getContract();
@@ -41,13 +41,20 @@ const ManutencaoLocatario = () => {
     }, []);
 
     const handleChange = (e) => {
-        setNovaManutencao({
-            ...novaManutencao,
-            [e.target.name]: e.target.value
-        });
+        if (edicaoManutencao) {
+            setEdicaoManutencao({
+                ...edicaoManutencao,
+                [e.target.name]: e.target.value
+            });
+        } else {
+            setNovaManutencao({
+                ...novaManutencao,
+                [e.target.name]: e.target.value
+            });
+        }
     };
 
-    const adicionarManutencao = () => {
+    const adicionarManutencao = async () => {
         const { tipo_manutencao, desc_total } = novaManutencao;
 
         if (!tipo_manutencao || !desc_total) {
@@ -56,17 +63,25 @@ const ManutencaoLocatario = () => {
         }
 
         const novaManutencaoData = {
-            imob: imobId, // Usa o ID do imóvel armazenado
+            imob: imobId,
             tipo_manutencao,
             desc_total,
         };
 
-        setManutencao([...manutencao, novaManutencaoData]);
-        setNovaManutencao({
-            tipo_manutencao: '',
-            desc_total: ''
-        });
-        setFormVisivel(false); // Oculta o formulário após adicionar a manutenção
+        try {
+            const response = await createManutencao(novaManutencaoData);
+            const manutencaoCriada = response.data; // Supondo que a API retorna o objeto da nova manutenção criada
+
+            setManutencao([...manutencao, manutencaoCriada]);
+            setNovaManutencao({
+                tipo_manutencao: '',
+                desc_total: ''
+            });
+            setFormVisivel(false); // Oculta o formulário após adicionar a manutenção
+        } catch (error) {
+            console.error('Erro ao adicionar manutenção:', error);
+            alert('Erro ao adicionar manutenção');
+        }
     };
 
     const cancelarManutencao = () => {
@@ -75,10 +90,17 @@ const ManutencaoLocatario = () => {
             desc_total: ''
         });
         setFormVisivel(false); // Oculta o formulário e reseta os campos
+        setEdicaoManutencao(null); // Reseta o estado de edição
     };
 
-    const excluirManutencao = (id) => {
-        setManutencao(manutencao.filter(item => item._id !== id));
+    const excluirManutencao = async (id) => {
+        try {
+            await deleteManutencao(id); // Chama o serviço para excluir a manutenção
+            setManutencao(manutencao.filter(item => item._id !== id)); // Atualiza o estado após exclusão
+        } catch (error) {
+            console.error('Erro ao excluir manutenção:', error);
+            alert('Erro ao excluir manutenção');
+        }
     };
 
     const verManutencao = (id) => {
@@ -88,8 +110,37 @@ const ManutencaoLocatario = () => {
     };
 
     const editarManutencao = (id) => {
-        console.log('Editar Manutenção:', id);
-        // Adicione a lógica para editar a manutenção
+        const manutencaoItem = manutencao.find(item => item._id === id);
+        setEdicaoManutencao(manutencaoItem);
+        setFormVisivel(true); // Exibe o formulário para edição
+    };
+
+    const salvarEdicao = async () => {
+        const { tipo_manutencao, desc_total } = edicaoManutencao;
+
+        if (!tipo_manutencao || !desc_total) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        const manutencaoAtualizada = {
+            tipo_manutencao,
+            desc_total,
+        };
+
+        try {
+            const response = await editManutencao(edicaoManutencao._id, manutencaoAtualizada);
+            const manutencaoAtualizadaData = response.data;
+
+            setManutencao(manutencao.map(item =>
+                item._id === manutencaoAtualizadaData._id ? manutencaoAtualizadaData : item
+            ));
+            setEdicaoManutencao(null); // Limpa o estado de edição
+            setFormVisivel(false); // Oculta o formulário de edição
+        } catch (error) {
+            console.error('Erro ao atualizar manutenção:', error);
+            alert('Erro ao atualizar manutenção');
+        }
     };
 
     if (loading) return <p>Carregando...</p>;
@@ -126,9 +177,33 @@ const ManutencaoLocatario = () => {
                 </button>
             )}
 
-            {formVisivel && (
+            {(formVisivel && edicaoManutencao) && (
                 <div className="novo-manutencao-form">
-                    <button className="add-manutencao" onClick={cancelarManutencao}>
+                    <button className="cancelar" onClick={cancelarManutencao}>
+                        Cancelar
+                    </button>
+                    <input
+                        type="text"
+                        name="tipo_manutencao"
+                        placeholder="Tipo de Manutenção"
+                        value={edicaoManutencao.tipo_manutencao}
+                        onChange={handleChange}
+                    />
+                    <textarea
+                        name="desc_total"
+                        placeholder="Descrição"
+                        value={edicaoManutencao.desc_total}
+                        onChange={handleChange}
+                    />
+                    <button className="add-manutencao" onClick={salvarEdicao}>
+                        Salvar Edição
+                    </button>
+                </div>
+            )}
+
+            {(formVisivel && !edicaoManutencao) && (
+                <div className="novo-manutencao-form">
+                    <button className="cancelar" onClick={cancelarManutencao}>
                         Cancelar
                     </button>
                     <input

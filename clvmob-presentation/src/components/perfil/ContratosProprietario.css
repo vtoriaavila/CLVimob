@@ -53,7 +53,7 @@
     background-color: #546e7a; /* Cor do botão ao passar o mouse */
 }
 
-.add-contrato {
+.toggle-form,.add-contrato {
     display: block;
     width: 100%;
     padding: 10px 0;
@@ -64,6 +64,7 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .add-contrato:hover {

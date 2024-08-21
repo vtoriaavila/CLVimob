@@ -10,7 +10,7 @@
 .documento-proprietario-container h2 {
     font-size: 24px;
     margin-bottom: 20px;
-    color: #444; /* Cor do título */
+    color: #444; /* Cor do título ajustada para mais contraste */
 }
 
 .documento-proprietario-list {
@@ -66,13 +66,14 @@
     cursor: pointer;
     font-size: 16px;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .add-documento:hover {
     background-color: #455a64; /* Cor do botão adicionar ao passar o mouse */
 }
 
-.novo-documento-form{
+.novo-documento-form {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
@@ -82,9 +83,8 @@
 
 .novo-documento-form input {
     padding: 10px;
-    width: 80%;
+    width: 100%; /* Ajusta o width para ocupar o espaço disponível */
     box-sizing: border-box;
-    
 }
 
 .modal {
@@ -98,9 +98,9 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
@@ -108,19 +108,19 @@
     max-width: 90%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: left;
-  }
+}
 
-  .modal-content h2 {
+.modal-content h2 {
     margin-bottom: 20px;
     color: #455a64;
-  }
+}
 
-  .modal-content p {
+.modal-content p {
     margin-bottom: 10px;
     color: #555;
-  }
+}
 
-  .modal-button{
+.modal-button {
     background-color: #607d8b;
     border: none;
     color: white;
@@ -129,9 +129,8 @@
     cursor: pointer;
     float: right;
     transition: background-color 0.3s ease;
+}
 
-  }
-
-  .modal-button:hover{
+.modal-button:hover {
     background-color: #455a64;
-  }
+}

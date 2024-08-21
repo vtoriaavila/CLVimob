@@ -27,39 +27,6 @@ const PagamentoProprietario = () => {
     fetchPagamentos();
   }, []);
 
-  const adicionarPagamento = () => {
-    const { tipo, valor, data, vencimento, status, contrato, emissor, destinatario } = novoPagamento;
-
-    if (!tipo || !valor || !data || !vencimento || !status || !contrato || !emissor || !destinatario) {
-      alert('Por favor, preencha todos os campos.');
-      return;
-    }
-
-    const novoPagamentoData = {
-      _id: pagamentos.length + 1, // Ou gerar um ID único
-      tipo,
-      valor: parseFloat(valor),
-      data,
-      vencimento,
-      status,
-      contrato,
-      emissor,
-      destinatario
-    };
-
-    setPagamentos([...pagamentos, novoPagamentoData]);
-    setNovoPagamento({
-      tipo: '',
-      valor: '',
-      data: '',
-      vencimento: '',
-      status: '',
-      contrato: '',
-      emissor: '',
-      destinatario: ''
-    });
-  };
-
   const excluirPagamento = (id) => {
     // Lógica para excluir pagamento (se necessário)
   };
@@ -111,9 +78,6 @@ const PagamentoProprietario = () => {
           </div>
         ))}
       </div>
-      <button className="add-pagamento" onClick={adicionarPagamento}>
-        Adicionar Pagamento +
-      </button>
 
       {modalVisivel && (
         <Modal
@@ -133,6 +97,7 @@ const Modal = ({ pagamento, onClose, imob }) => {
 
 
   const formatarData = (data) => new Date(data).toLocaleDateString();
+  const valorExibido = pagamento.valor.toFixed(2).replace('.', ',');
 
   return (
     <div className="modal">

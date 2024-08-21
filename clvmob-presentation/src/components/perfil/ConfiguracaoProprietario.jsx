@@ -142,7 +142,18 @@ const ConfiguracaoProprietario = () => {
             name="email"
             value={configuracoes.email}
             onChange={handleChange}
-            disabled={!modoEdicao}
+            disabled
+          />
+        </div>
+        <div className="configuracao-field">
+          <label htmlFor="documento">Documento:</label>
+          <input
+            type="text"
+            id="documento"
+            name="documento"
+            value={configuracoes.documento}
+            onChange={handleChange}
+            disabled
           />
         </div>
         {editandoSenha && (
@@ -150,7 +161,7 @@ const ConfiguracaoProprietario = () => {
             <div className="configuracao-field">
               <label htmlFor="senha">Nova Senha:</label>
               <input
-                type="password"
+                type="text" // Mudei de "password" para "text" para mostrar a senha
                 id="senha"
                 name="senha"
                 value={configuracoes.senha}
@@ -160,7 +171,7 @@ const ConfiguracaoProprietario = () => {
             <div className="configuracao-field">
               <label htmlFor="confirmacaoSenha">Confirmar Senha:</label>
               <input
-                type="password"
+                type="text" // Mudei de "password" para "text" para mostrar a confirmação da senha
                 id="confirmacaoSenha"
                 name="confirmacaoSenha"
                 value={configuracoes.confirmacaoSenha}
@@ -209,17 +220,6 @@ const ConfiguracaoProprietario = () => {
             id="endereco"
             name="endereco"
             value={configuracoes.endereco}
-            onChange={handleChange}
-            disabled={!modoEdicao}
-          />
-        </div>
-        <div className="configuracao-field">
-          <label htmlFor="documento">Documento:</label>
-          <input
-            type="text"
-            id="documento"
-            name="documento"
-            value={configuracoes.documento}
             onChange={handleChange}
             disabled={!modoEdicao}
           />
@@ -307,7 +307,7 @@ const ConfiguracaoProprietario = () => {
           />
         </div>
         <div className="configuracao-buttons">
-          <button className="editar-configuracoes"onClick={() => setModoEdicao(!modoEdicao)}>
+          <button className="editar-configuracoes" onClick={() => setModoEdicao(!modoEdicao)}>
             {modoEdicao ? 'Cancelar' : 'Editar Configurações'}
           </button>
           {modoEdicao && (

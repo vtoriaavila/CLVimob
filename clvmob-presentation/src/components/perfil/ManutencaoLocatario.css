@@ -247,3 +247,19 @@ h2 {
     background-color: #45a049;
 }
 
+.cancelar {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    background-color: #607d8b; /* Cor do botão adicionar */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.cancelar:hover {
+    background-color: #c73511; /* Cor do botão adicionar ao passar o mouse */
+}

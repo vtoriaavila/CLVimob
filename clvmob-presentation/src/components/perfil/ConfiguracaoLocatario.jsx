@@ -239,28 +239,7 @@ const ConfiguracaoLocatario = () => {
             disabled={!modoEdicao}
           />
         </div>
-        <div className="configuracao-field">
-          <label htmlFor="notificacoesSMS">Notificações por SMS:</label>
-          <input
-            type="checkbox"
-            id="notificacoesSMS"
-            name="notificacoesSMS"
-            checked={configuracoes.notificacoesSMS}
-            onChange={handleChange}
-            disabled={!modoEdicao}
-          />
-        </div>
-        <div className="configuracao-field">
-          <label htmlFor="atualizacoesAutomáticas">Atualizações Automáticas:</label>
-          <input
-            type="checkbox"
-            id="atualizacoesAutomáticas"
-            name="atualizacoesAutomáticas"
-            checked={configuracoes.atualizacoesAutomáticas}
-            onChange={handleChange}
-            disabled={!modoEdicao}
-          />
-        </div>
+       
         <div className="configuracao-actions">
           {modoEdicao ? (
             <>
