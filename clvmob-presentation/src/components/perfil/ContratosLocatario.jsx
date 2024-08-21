@@ -13,6 +13,7 @@ const ImovelInfo = ({ imovel }) => (
 );
 
 const LocatarioDetails = ({ locatario }) => {
+  console.log(locatario);
   if (!locatario) {
     return <p>Informações do locatário não disponíveis</p>;
   }
@@ -22,7 +23,7 @@ const LocatarioDetails = ({ locatario }) => {
       <h3>Detalhes do Locatário</h3>
       <p><strong>Nome:</strong> {locatario.name}</p>
       <p><strong>CPF:</strong> {locatario.documento}</p>
-      <p><strong>Contato:</strong> {locatario.contato}</p>
+      <p><strong>Contato:</strong> {locatario.email}</p>
     </div>
   );
 };
@@ -131,11 +132,12 @@ const ContratosLocatario = () => {
       {contratos.map((contrato) => {
         // Filtra os pagamentos relacionados ao contrato atual
         const pagamentosContrato = pagamentos.filter(pagamento => pagamento.contratoId === contrato._id);
+        console.log(contrato)
 
         return (
           <div key={contrato._id} className="contrato-locacao-item">
             <ImovelInfo imovel={contrato.imob} />
-            <LocatarioDetails locatario={contrato.locatario} />
+            <LocatarioDetails locatario={contrato.locatorio} />
             <ContratoDetails contrato={contrato} imovel={contrato.imob} />
             <HistoricoPagamento pagamentos={pagamentosContrato} />
           </div>
