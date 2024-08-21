@@ -54,6 +54,11 @@ const Login = () => {
         navigate('/cadastro-opcoes');
   };
 
+  const handleSenhaClick = () =>{
+        navigate('/esqueceu-senha');
+  }
+
+
   return (
     <div className='container'>
       <div className='bloco-azul'>
@@ -77,7 +82,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-            <a href="/esqueceu-senha">ESQUECEU A SENHA?</a>
+            <a href="/esqueceu-senha" onClick={handleSenhaClick}>ESQUECEU A SENHA?</a>
             <a href="/cadastro-opcoes"  onClick={handleCadastroClick}>Não possui conta? Cadastre-se aqui!</a>
           <button type="submit">Entrar</button>
         </form>
