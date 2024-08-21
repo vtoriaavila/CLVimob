@@ -8,12 +8,11 @@ import { getManutencao } from '../../services/manutencao.service.js';
 import { getDespesa } from '../../services/despesa.service.js';
 
 export default function DashboardProprietario() {
-  
   const [pagamentos, setPagamentos] = useState([]);
   const [contratos, setContratos] = useState([]);
   const [imoveis, setImoveis] = useState([]);
   const [manutencoes, setManutencoes] = useState([]);
-  const [despesas, setDespesas] = useState([]); // Novo estado para despesas
+  const [despesas, setDespesas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -31,10 +30,10 @@ export default function DashboardProprietario() {
 
         const manutencaoResponse = await getManutencao();
         setManutencoes(manutencaoResponse.data);
-       
 
-        const despesaResponse = await getDespesa(); // Buscar despesas
-        setDespesas(despesaResponse.data); // Atualiza o estado de despesas
+        const despesaResponse = await getDespesa();
+        setDespesas(despesaResponse.data);
+        console.log(despesaResponse.data);
       } catch (err) {
         setError('Erro ao buscar dados.');
       } finally {
@@ -70,9 +69,14 @@ export default function DashboardProprietario() {
   };
 
   const calcularDespesaPorImovel = (imovelId) => {
-    return despesas
-      .filter(d => d.imob.id === imovelId)
-      .reduce((total, d) => total + d.agua + d.condominio+ d.seguro +d.eletricidade, 0);
+    const despesa = despesas.find(d => d.imob.id === imovelId);
+    if (!despesa) {
+      return { total: 0, condominio: 0, iptu: 0, seguro: 0, eletricidade: 0, agua: 0 };
+    }
+    return {
+      total: despesa.agua + despesa.condominio + despesa.seguro + despesa.eletricidade,
+      ...despesa
+    };
   };
 
   const data = [
@@ -81,9 +85,9 @@ export default function DashboardProprietario() {
       const receita = pagamentos
         .filter(p => p.imob === imovel._id)
         .reduce((total, p) => total + p.valor, 0);
-      const despesa = calcularDespesaPorImovel(imovel._id); // Calcula a despesa para o imóvel
+      const despesa = calcularDespesaPorImovel(imovel._id);
 
-      return [imovel.tipo, receita, despesa];
+      return [imovel.tipo, receita, despesa.total];
     })
   ];
 
@@ -118,8 +122,7 @@ export default function DashboardProprietario() {
         </div>
       </div>
       <div className="dashboard-proprietario-properties">
-      {imoveis.map(imovel => {
-
+        {imoveis.map(imovel => {
           const atualizarStatusImoveis = (imovelId) => {
             const contratoAtivo = contratos.find(contrato => contrato.imob._id === imovelId);
             return contratoAtivo ? 'Alugado' : 'Disponível';
@@ -144,6 +147,27 @@ export default function DashboardProprietario() {
             data={data}
             options={options}
           />
+        </div>
+      </div>
+      <div className="dashboard-proprietario-expenses">
+        <h3>Despesas por Imóvel</h3>
+        <div className="expenses-list">
+          {imoveis.map(imovel => {
+            const despesa = calcularDespesaPorImovel(imovel._id);
+
+            return (
+              <div className="expense-card" key={imovel._id}>
+                <h4>{imovel.tipo}</h4>
+                <p><strong>Endereço:</strong> {imovel.endereco}</p>
+                <p><strong>Condomínio:</strong> R$ {despesa.condominio.toFixed(2)}</p>
+                <p><strong>IPTU:</strong> R$ {despesa.iptu.toFixed(2)}</p>
+                <p><strong>Seguro:</strong> R$ {despesa.seguro.toFixed(2)}</p>
+                <p><strong>Eletricidade:</strong> R$ {despesa.eletricidade.toFixed(2)}</p>
+                <p><strong>Água:</strong> R$ {despesa.agua.toFixed(2)}</p>
+                <p><strong>Despesa Total:</strong> R$ {despesa.total.toFixed(2)}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
