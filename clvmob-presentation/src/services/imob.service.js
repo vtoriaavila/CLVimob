@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const baseURL = "https://api-clvimob.onrender.com";
+// const baseURL = "http://localhost:10001";
 
 export async function getImobs() {
   try {

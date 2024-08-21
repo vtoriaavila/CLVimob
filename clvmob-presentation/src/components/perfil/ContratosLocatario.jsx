@@ -13,7 +13,6 @@ const ImovelInfo = ({ imovel }) => (
 );
 
 const LocatarioDetails = ({ locatario }) => {
-  console.log(locatario);
   if (!locatario) {
     return <p>Informações do locatário não disponíveis</p>;
   }
@@ -132,7 +131,7 @@ const ContratosLocatario = () => {
       {contratos.map((contrato) => {
         // Filtra os pagamentos relacionados ao contrato atual
         const pagamentosContrato = pagamentos.filter(pagamento => pagamento.contratoId === contrato._id);
-        console.log(contrato)
+        
 
         return (
           <div key={contrato._id} className="contrato-locacao-item">

@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { getPagamentoAdmin } from '../../services/pagamento.service.js'; // Ajuste o caminho conforme a sua estrutura
 import './Pagamentos.css';
+import { getIdContract } from '../../services/contrato.service.js';
 
 const Pagamentos = () => {
-  const [pagamentos, setPagamentos] = useState([
-    { id: 1, locatario: 'João da Silva', valor: 'R$ 1500,00', dataPagamento: '05/08/2024' },
-    { id: 2, locatario: 'Maria Oliveira', valor: 'R$ 2000,00', dataPagamento: '10/08/2024' },
-    { id: 3, locatario: 'Carlos Santos', valor: 'R$ 1800,00', dataPagamento: '15/08/2024' },
-  ]);
-
+  const [pagamentos, setPagamentos] = useState([]);
   const [novoPagamento, setNovoPagamento] = useState({
     tipo: '',
     valor: '',
@@ -18,9 +15,22 @@ const Pagamentos = () => {
     emissor: '',
     destinatario: ''
   });
-
   const [pagamentoSelecionado, setPagamentoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [contrato, setContrato] = useState(null);
+
+  useEffect(() => {
+    const fetchPagamentos = async () => {
+      try {
+        const response = await getPagamentoAdmin();
+        setPagamentos(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar pagamentos:', error);
+      }
+    };
+
+    fetchPagamentos();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,13 +74,21 @@ const Pagamentos = () => {
   };
 
   const excluirPagamento = (id) => {
-    setPagamentos(pagamentos.filter(pagamento => pagamento.id !== id));
+    setPagamentos(pagamentos.filter(pagamento => pagamento._id !== id));
   };
 
-  const verPagamento = (id) => {
-    const pagamento = pagamentos.find(pagamento => pagamento.id === id);
-    setPagamentoSelecionado(pagamento);
-    setModalVisivel(true);
+  const verPagamento = async (id) => {
+    try {
+      const pagamento = pagamentos.find(pagamento => pagamento._id === id);
+      if (pagamento) {
+        const contratoResponse = await getIdContract(pagamento.contrato._id); // Passa o ID do contrato
+        setPagamentoSelecionado(pagamento);
+        setContrato(contratoResponse.data.contract);
+        setModalVisivel(true);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar detalhes do contrato:', error);
+    }
   };
 
   const editarPagamento = (id) => {
@@ -83,21 +101,21 @@ const Pagamentos = () => {
       <h2>Pagamentos</h2>
       <div className="pagamentos-list">
         {pagamentos.map(pagamento => (
-          <div key={pagamento.id} className="pagamento-item">
-            <span>{pagamento.locatario}</span>
-            <span>{pagamento.valor}</span>
-            <span>{pagamento.dataPagamento}</span>
+          <div key={pagamento._id} className="pagamento-item">
+            <span>{pagamento.tipo}</span>
+            <span>R$ {pagamento.valor}</span>
+            <span>{new Date(pagamento.data).toLocaleDateString()}</span>
             <div className="pagamento-actions">
-              <button onClick={() => editarPagamento(pagamento.id)}>editar</button>
-              <button onClick={() => excluirPagamento(pagamento.id)}>excluir</button>
-              <button onClick={() => verPagamento(pagamento.id)}>ver</button>
+              {/* <button onClick={() => editarPagamento(pagamento._id)}>editar</button> */}
+              {/* <button onClick={() => excluirPagamento(pagamento._id)}>excluir</button> */}
+              <button onClick={() => verPagamento(pagamento._id)}>ver</button>
             </div>
           </div>
         ))}
       </div>
 
       {/* Formulário para Adicionar Novo Pagamento */}
-      <div className="novo-pagamento-form">
+      {/* <div className="novo-pagamento-form">
         <input
           type="text"
           name="tipo"
@@ -156,12 +174,13 @@ const Pagamentos = () => {
         />
         <button className="add-pagamento" onClick={adicionarPagamento}>
           Adicionar Pagamento +
-        </button>
-      </div>
+        </button> 
+      </div>*/}
 
       {modalVisivel && (
         <Modal 
           pagamento={pagamentoSelecionado} 
+          contrato={contrato} 
           onClose={() => setModalVisivel(false)} 
         />
       )}
@@ -169,25 +188,34 @@ const Pagamentos = () => {
   );
 };
 
-const Modal = ({ pagamento, onClose }) => {
-  if (!pagamento) return null;
+const Modal = ({ pagamento, onClose, contrato }) => {
+  if (!pagamento || !contrato) return null;
+
+ 
 
   return (
     <div className="modal">
       <div className="modal-content">
         <h2>Detalhes do Pagamento</h2>
         <p>Tipo de Pagamento: {pagamento.tipo}</p>
-        <p>Valor: R$ {pagamento.valor}</p>
+        <p>Valor: R$ {pagamento.valor.toFixed(2)}</p>
         <p>Data: {new Date(pagamento.data).toLocaleDateString()}</p>
         <p>Vencimento: {new Date(pagamento.vencimento).toLocaleDateString()}</p>
         <p>Status: {pagamento.status}</p>
-        <p>Contrato: {pagamento.contrato}</p>
-        <p>Emissor: {pagamento.emissor}</p>
-        <p>Destinatário: {pagamento.destinatario}</p>
+        <p>Contrato ID: {pagamento.contrato._id}</p> {/* Aqui é o ID do contrato, que deve ser uma string */}
+
+        {/* Acessa propriedades específicas do contrato */}
+        <p>Proprietário do Contrato: {(contrato.proprietario.name)}</p>
+        <p>Locatário do Contrato: {(contrato.locatorio.name)}</p>
+        <p>Imóvel do Contrato: {(contrato.imob.tipo)}</p>
+
+        <p>Emissor: {(pagamento.emissor.name)}</p>
+        <p>Destinatário: {(pagamento.destinatario.name)}</p>
         <button className="modal-button" onClick={onClose}>Fechar</button>
       </div>
     </div>
   );
 };
+
 
 export default Pagamentos;
