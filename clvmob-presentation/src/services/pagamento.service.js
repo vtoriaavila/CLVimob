@@ -18,6 +18,21 @@ export async function getPagamento() {
     }
   }
 
+  export async function getAllPagamento() {  
+    try {
+      const response = await axios.get(`${baseURL}/pagamento/`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+      
+      return response
+    } catch (error) {
+      console.error('Erro ao buscar pagamentos:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }
+
   export async function getPagamentoAdmin() {
     try {
       const response = await axios.get(`${baseURL}/pagamento/admin/`, {

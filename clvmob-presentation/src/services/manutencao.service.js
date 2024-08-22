@@ -18,6 +18,22 @@ export async function getManutencao() {
   }
 }
 
+
+export async function getAllManutencao() {
+  try {
+    const response = await axios.get(`${baseURL}/manutencao/`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      },
+    });
+
+    return response
+  } catch (error) {
+    console.error('Erro ao buscar imóveis:', error);
+    throw error; // Lança o erro para ser tratado onde a função é chamada
+  }
+}
+
 export async function createManutencao(newManutencao) {
   try {
     const response = await axios.post(`${baseURL}/manutencao/`, newManutencao, {

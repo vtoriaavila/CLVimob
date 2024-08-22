@@ -18,6 +18,21 @@ export async function getImobs() {
   }
 }
 
+export async function getAllImobs() {
+  try {
+    const response = await axios.get(`${baseURL}/imob/`, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Erro ao buscar imóveis:', error);
+    throw error; // Lança o erro para ser tratado onde a função é chamada
+  }
+}
+
+
 export async function createImob(novoImovel) {
   try {
     const response = await axios.post(`${baseURL}/imob/`, novoImovel, {

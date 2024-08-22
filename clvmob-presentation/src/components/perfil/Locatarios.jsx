@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Locatarios.css';
+import { getAllUsersLoc } from '../../services/user.service';
 
 const Locatarios = () => {
-  const [locatarios, setLocatarios] = useState([
-    { id: 1, nome: 'João da Silva', telefone: '(11) 99999-1234', email: 'joao@email.com', estado: 'SP', cidade: 'São Paulo', endereco: 'Rua A, 123', data_nascimento: '1990-01-01' },
-    { id: 2, nome: 'Maria Oliveira', telefone: '(21) 98888-5678', email: 'maria@email.com', estado: 'RJ', cidade: 'Rio de Janeiro', endereco: 'Av. B, 456', data_nascimento: '1985-05-12' },
-    { id: 3, nome: 'Carlos Santos', telefone: '(31) 97777-9101', email: 'carlos@email.com', estado: 'MG', cidade: 'Belo Horizonte', endereco: 'Praça C, 789', data_nascimento: '1988-08-21' },
-    { id: 4, nome: 'Ana Souza', telefone: '(41) 96666-1123', email: 'ana@email.com', estado: 'PR', cidade: 'Curitiba', endereco: 'Rua D, 1011', data_nascimento: '1992-02-10' },
-  ]);
-
+  const [locatarios, setLocatarios] = useState([]);
   const [novoLocatario, setNovoLocatario] = useState({
     nome: '',
     telefone: '',
@@ -18,9 +13,23 @@ const Locatarios = () => {
     endereco: '',
     data_nascimento: ''
   });
-
   const [locatarioSelecionado, setLocatarioSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
+
+  useEffect(() => {
+    // Função para buscar locatários da API
+    const fetchLocatarios = async () => {
+      try {
+        const response = await getAllUsersLoc(); // Ajuste a URL conforme necessário
+        console.log(response)
+        setLocatarios(response.data);
+      } catch (error) {
+        console.error('Erro ao buscar locatários:', error);
+      }
+    };
+
+    fetchLocatarios();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -78,13 +87,13 @@ const Locatarios = () => {
       <h2>Locatários</h2>
       <div className="locatarios-list">
         {locatarios.map(locatario => (
-          <div key={locatario.id} className="locatario-item">
-            <span>{locatario.nome}</span>
-            <span>{locatario.telefone}</span>
+          <div key={locatario._id} className="locatario-item">
+            <span>{locatario.name}</span>
+            <span>{locatario.email}</span>
             <div className="locatario-actions">
-              <button onClick={() => editarLocatario(locatario.id)}>Editar</button>
-              <button onClick={() => excluirLocatario(locatario.id)}>Excluir</button>
-              <button onClick={() => verLocatario(locatario.id)}>Ver</button>
+              <button onClick={() => editarLocatario(locatario._id)}>Editar</button>
+              <button onClick={() => excluirLocatario(locatario._id)}>Excluir</button>
+              <button onClick={() => verLocatario(locatario._id)}>Ver</button>
             </div>
           </div>
         ))}

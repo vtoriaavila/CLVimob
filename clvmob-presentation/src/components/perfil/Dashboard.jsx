@@ -3,15 +3,19 @@ import DespesaReceita from '../graficos/DespesaReceita';
 import Ocupacao from '../graficos/Ocupacao';
 import Manutencao from '../graficos/Manutencao';
 import './Dashboard.css';
-import { getPagamentoAdmin } from '../../services/pagamento.service.js'; 
-import { getContract } from '../../services/contrato.service.js'; 
-import { getImobs } from '../../services/imob.service.js';
-import { getManutencao } from '../../services/manutencao.service.js';
-import { getDespesa } from '../../services/despesa.service.js';
+import { getAllPagamento } from '../../services/pagamento.service.js'; 
+import { getAllContract } from '../../services/contrato.service.js'; 
+import { getAllImobs } from '../../services/imob.service.js';
+import { getAllManutencao } from '../../services/manutencao.service.js';
+import { getAllDespesa } from '../../services/despesa.service.js';
+import { getAllUsers, getAllUsersLoc, getAllUsersProp } from '../../services/user.service.js';
 
 export default function Dashboard() {
   
   const [pagamentos, setPagamentos] = useState([]);
+  const [Users, setUsers] = useState([]);
+  const [Loc, setLoc] = useState([]);
+  const [Prop, setProp] = useState([]);
   const [contratos, setContratos] = useState([]);
   const [imoveis, setImoveis] = useState([]);
   const [manutencoes, setManutencoes] = useState([]);
@@ -22,20 +26,27 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchDados = async () => {
       try {
-        const pagamentoResponse = await getPagamentoAdmin();
+        const pagamentoResponse = await getAllPagamento();
         setPagamentos(pagamentoResponse.data);
 
-        const contractResponse = await getContract();
+        const contractResponse = await getAllContract();
         setContratos(contractResponse.data.results);
 
-        const imobsResponse = await getImobs();
+        const imobsResponse = await getAllImobs();
         setImoveis(imobsResponse.data.results);
 
-        const manutencaoResponse = await getManutencao();
+        const manutencaoResponse = await getAllManutencao();
         setManutencoes(manutencaoResponse.data);
        
+        const propResponse = await getAllUsersProp(); // Buscar despesas
+        setProp(propResponse.data); // Atualiza o estado de despesas
+        console.log(propResponse.data)
 
-        const despesaResponse = await getDespesa(); // Buscar despesas
+        const locResponse = await getAllUsersLoc(); // Buscar despesas
+        setLoc(locResponse.data); // Atualiza o estado de despesas
+        console.log(locResponse.data)
+
+        const despesaResponse = await getAllDespesa(); // Buscar despesas
         setDespesas(despesaResponse.data); // Atualiza o estado de despesas
       } catch (err) {
         setError('Erro ao buscar dados.');
@@ -47,12 +58,12 @@ export default function Dashboard() {
     fetchDados();
   }, []);
 
-  const calcularTotalPropriedades = () => contratos.length;
-  const calcularTotalLocatarios = () => contratos.length;
+  const calcularTotalPropriedades = () => imoveis.length;
+  const calcularTotalLocatarios = () => Loc.length;
   const calcularTotalContratosAtivos = () => contratos.length;
   const calcularReceitaMensal = () => pagamentos.reduce((total, p) => total + p.valor, 0);
   const calcularManutencoesPendentes = () => manutencoes.filter(m => m.status === 'Solicitado' || m.status === 'Em andamento').length;
-  const calcularTotalProprietarios = () => contratos.length;
+  const calcularTotalProprietarios = () => Prop.length;
 
   if (loading) {
     return <div>Carregando...</div>;

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Imoveis.css';
-import { createImob, getImobs } from '../../services/imob.service'; // Importe as funções da API
+import { createImob, getAllImobs } from '../../services/imob.service'; // Importe as funções da API
 
 const Imoveis = () => {
   const [imoveis, setImoveis] = useState([]);
@@ -25,7 +25,7 @@ const Imoveis = () => {
   useEffect(() => {
     const fetchImoveis = async () => {
       try {
-        const response = await getImobs();
+        const response = await getAllImobs();
         const data = response.data.results; // Acessando o array de imóveis na resposta
         setImoveis(data);
       } catch (err) {

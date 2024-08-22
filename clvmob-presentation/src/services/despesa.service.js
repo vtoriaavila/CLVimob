@@ -17,3 +17,18 @@ export async function getDespesa() {
       throw error; // Lança o erro para ser tratado onde a função é chamada
     }
   }
+
+  export async function getAllDespesa() {
+    try {
+      const response = await axios.get(`${baseURL}/despesa/`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+      
+      return response
+    } catch (error) {
+      console.error('Erro ao buscar imóveis:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }

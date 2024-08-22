@@ -58,3 +58,50 @@ export async function userEdit(data) {
 }
 
 
+
+export async function getAllUsers() {
+    try {
+      const response = await axios.get(`${baseURL}/user/`, {  
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+      
+      return response
+    } catch (error) {
+      console.error('Erro ao buscar contratos:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }
+
+
+  export async function getAllUsersProp() {
+    try {
+      const response = await axios.get(`${baseURL}/user/prop`, {  
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+      
+      return response
+    } catch (error) {
+      console.error('Erro ao buscar contratos:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }
+
+  export async function getAllUsersLoc() {
+    try {
+      const response = await axios.get(`${baseURL}/user/loc`, {  
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+      
+      return response
+    } catch (error) {
+      console.error('Erro ao buscar contratos:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }
+  
