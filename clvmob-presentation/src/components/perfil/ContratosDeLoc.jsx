@@ -21,6 +21,7 @@ const ContratosDeLoc = () => {
 
   const [contratoSelecionado, setContratoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [edicaoContrato, setEdicaoContrato] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -28,6 +29,12 @@ const ContratosDeLoc = () => {
       ...novoContrato,
       [name]: value,
     });
+    if (edicaoContrato) {
+      setEdicaoContrato({
+        ...edicaoContrato,
+        [name]: value,
+      });
+    }
   };
 
   const adicionarContrato = () => {
@@ -74,8 +81,45 @@ const ContratosDeLoc = () => {
   };
 
   const editarContrato = (id) => {
-    console.log('Editar Contrato:', id);
-    // Adicione a lógica para editar o contrato
+    const contrato = contratos.find(contrato => contrato.id === id);
+    setEdicaoContrato(contrato);
+    setNovoContrato(contrato);
+  };
+
+  const salvarEdicao = () => {
+    const { locatario, imovel, dataInicio, dataFim, proprietario, admin, locatorio, imob } = edicaoContrato;
+
+    if (!locatario || !imovel || !dataInicio || !dataFim || !proprietario || !admin || !locatorio || !imob) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    const contratoAtualizado = {
+      id: edicaoContrato.id,
+      locatario,
+      imovel,
+      dataInicio,
+      dataFim,
+      proprietario,
+      admin,
+      locatorio,
+      imob
+    };
+
+    setContratos(contratos.map(contrato => 
+      contrato.id === contratoAtualizado.id ? contratoAtualizado : contrato
+    ));
+    setEdicaoContrato(null);
+    setNovoContrato({
+      locatario: '',
+      imovel: '',
+      dataInicio: '',
+      dataFim: '',
+      proprietario: '',
+      admin: '',
+      locatorio: '',
+      imob: ''
+    });
   };
 
   return (
@@ -159,9 +203,15 @@ const ContratosDeLoc = () => {
           value={novoContrato.imob}
           onChange={handleChange}
         />
-        <button className="add-contrato" onClick={adicionarContrato}>
-          Adicionar Contrato +
-        </button>
+        {edicaoContrato ? (
+          <button className="save-contrato" onClick={salvarEdicao}>
+            Salvar Edição
+          </button>
+        ) : (
+          <button className="add-contrato" onClick={adicionarContrato}>
+            Adicionar Contrato +
+          </button>
+        )}
       </div>
 
       {modalVisivel && (

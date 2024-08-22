@@ -18,25 +18,31 @@ const Documentos = () => {
 
   const [documentoSelecionado, setDocumentoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [formEdicaoVisivel, setFormEdicaoVisivel] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNovoDocumento({
-      ...novoDocumento,
-      [name]: value,
-    });
+    if (documentoSelecionado) {
+      setDocumentoSelecionado({
+        ...documentoSelecionado,
+        [name]: value,
+      });
+    } else {
+      setNovoDocumento({
+        ...novoDocumento,
+        [name]: value,
+      });
+    }
   };
 
   const adicionarDocumento = () => {
     const { nome, tipo, data, locatario, proprietario } = novoDocumento;
 
-    // Verifica se todos os campos obrigatórios estão preenchidos
     if (!nome || !tipo || !data || !locatario || !proprietario) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    // Adiciona o novo documento
     const novoDocumentoData = {
       id: documentos.length + 1,
       nome,
@@ -67,8 +73,48 @@ const Documentos = () => {
   };
 
   const editarDocumento = (id) => {
-    console.log('Editar Documento:', id);
-    // Adicionar a lógica para editar o documento
+    const documento = documentos.find(documento => documento.id === id);
+    setDocumentoSelecionado(documento);
+    setFormEdicaoVisivel(true);
+  };
+
+  const salvarEdicao = async () => {
+    const { id, nome, tipo, data, locatario, proprietario } = documentoSelecionado;
+
+    if (!nome || !tipo || !data || !locatario || !proprietario) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    const documentoAtualizado = {
+      id,
+      nome,
+      tipo,
+      data,
+      locatario,
+      proprietario
+    };
+
+    try {
+      // Simulação de chamada à API para atualizar o documento
+      const response = { data: documentoAtualizado };
+
+      const documentoAtualizadoData = response.data;
+
+      setDocumentos(documentos.map(doc =>
+        doc.id === documentoAtualizadoData.id ? documentoAtualizadoData : doc
+      ));
+      setDocumentoSelecionado(null);
+      setFormEdicaoVisivel(false);
+    } catch (error) {
+      console.error('Erro ao atualizar documento:', error);
+      alert('Erro ao atualizar documento');
+    }
+  };
+
+  const cancelarEdicao = () => {
+    setDocumentoSelecionado(null);
+    setFormEdicaoVisivel(false);
   };
 
   return (
@@ -83,55 +129,100 @@ const Documentos = () => {
             <span>{documento.locatario}</span>
             <span>{documento.proprietario}</span>
             <div className="documento-actions">
-              <button onClick={() => editarDocumento(documento.id)}>editar</button>
-              <button onClick={() => excluirDocumento(documento.id)}>excluir</button>
-              <button onClick={() => verDocumento(documento.id)}>ver</button>
+              <button onClick={() => editarDocumento(documento.id)}>Editar</button>
+              <button onClick={() => excluirDocumento(documento.id)}>Excluir</button>
+              <button onClick={() => verDocumento(documento.id)}>Ver</button>
             </div>
           </div>
         ))}
       </div>
 
       {/* Formulário para Adicionar Novo Documento */}
-      <div className="novo-documento-form">
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome do Documento"
-          value={novoDocumento.nome}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="tipo"
-          placeholder="Tipo"
-          value={novoDocumento.tipo}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="dataUpload"
-          placeholder="Data de Upload"
-          value={novoDocumento.data}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="locatario"
-          placeholder="Locatário"
-          value={novoDocumento.locatario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="proprietario"
-          placeholder="Proprietário"
-          value={novoDocumento.proprietario}
-          onChange={handleChange}
-        />
-        <button className="add-documento" onClick={adicionarDocumento}>
-          Adicionar Documento +
-        </button>
-      </div>
+      {!formEdicaoVisivel && (
+        <div className="novo-documento-form">
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome do Documento"
+            value={novoDocumento.nome}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="tipo"
+            placeholder="Tipo"
+            value={novoDocumento.tipo}
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            name="data"
+            placeholder="Data de Upload"
+            value={novoDocumento.data}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="locatario"
+            placeholder="Locatário"
+            value={novoDocumento.locatario}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="proprietario"
+            placeholder="Proprietário"
+            value={novoDocumento.proprietario}
+            onChange={handleChange}
+          />
+          <button className="add-documento" onClick={adicionarDocumento}>
+            Adicionar Documento +
+          </button>
+        </div>
+      )}
+
+      {/* Formulário para Editar Documento */}
+      {formEdicaoVisivel && (
+        <div className="edicao-documento-form">
+          <input
+            type="text"
+            name="nome"
+            placeholder="Nome do Documento"
+            value={documentoSelecionado.nome}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="tipo"
+            placeholder="Tipo"
+            value={documentoSelecionado.tipo}
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            name="data"
+            placeholder="Data de Upload"
+            value={documentoSelecionado.data}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="locatario"
+            placeholder="Locatário"
+            value={documentoSelecionado.locatario}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="proprietario"
+            placeholder="Proprietário"
+            value={documentoSelecionado.proprietario}
+            onChange={handleChange}
+          />
+          <button className='save-doc' onClick={salvarEdicao}>Salvar</button>
+          <button className='cancel-doc' onClick={cancelarEdicao}>Cancelar</button>
+        </div>
+      )}
 
       {modalVisivel && (
         <Modal 

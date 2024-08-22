@@ -54,7 +54,7 @@
     background-color: #aaa;
 }
 
-.add-manutencao {
+.add-manutencao, .save-manutencao,.cancel-manutencao{
     display: block;
     width: 100%;
     padding: 10px 0;
@@ -67,11 +67,13 @@
     margin-top: 20px;
 }
 
-.add-manutencao:hover {
+
+
+.add-manutencao, .save-manutencao,.cancel-manutencao:hover {
     background-color: #455a64;
 }
 
-.nova-manutencao-form{
+.nova-manutencao-form, .edicao-manutencao-form{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
