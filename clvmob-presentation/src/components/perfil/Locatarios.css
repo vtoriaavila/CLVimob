@@ -119,7 +119,7 @@ h2 {
     color: #555;
   }
 
-  .modal-button{
+  .modal-button,  .save-locatario{
     background-color: #607d8b;
     border: none;
     color: white;
@@ -131,6 +131,6 @@ h2 {
 
   }
 
-  .modal-button:hover{
+  .modal-button,  .save-locatario:hover{
     background-color: #455a64;
   }

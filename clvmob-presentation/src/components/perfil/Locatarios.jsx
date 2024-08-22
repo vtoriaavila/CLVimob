@@ -15,13 +15,13 @@ const Locatarios = () => {
   });
   const [locatarioSelecionado, setLocatarioSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
+  const [showForm, setShowForm] = useState(false);
 
   useEffect(() => {
-    // Função para buscar locatários da API
     const fetchLocatarios = async () => {
       try {
-        const response = await getAllUsersLoc(); // Ajuste a URL conforme necessário
-        console.log(response)
+        const response = await getAllUsersLoc();
+        console.log(response);
         setLocatarios(response.data);
       } catch (error) {
         console.error('Erro ao buscar locatários:', error);
@@ -65,6 +65,7 @@ const Locatarios = () => {
       endereco: '',
       data_nascimento: ''
     });
+    setShowForm(false); // Fechar o formulário após adicionar o locatário
   };
 
   const excluirLocatario = (id) => {
@@ -80,6 +81,19 @@ const Locatarios = () => {
   const editarLocatario = (id) => {
     console.log('Editar Locatário:', id);
     // Adicione a lógica para editar o locatário
+  };
+
+  const cancelarAdicao = () => {
+    setShowForm(false);
+    setNovoLocatario({
+      nome: '',
+      telefone: '',
+      email: '',
+      estado: '',
+      cidade: '',
+      endereco: '',
+      data_nascimento: ''
+    });
   };
 
   return (
@@ -99,63 +113,69 @@ const Locatarios = () => {
         ))}
       </div>
 
-      <div className="novo-locatario-form">
-        <input
-          type="text"
-          name="nome"
-          placeholder="Nome"
-          value={novoLocatario.nome}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="telefone"
-          placeholder="Telefone"
-          value={novoLocatario.telefone}
-          onChange={handleChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={novoLocatario.email}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="estado"
-          placeholder="Estado"
-          value={novoLocatario.estado}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="cidade"
-          placeholder="Cidade"
-          value={novoLocatario.cidade}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="endereco"
-          placeholder="Endereço"
-          value={novoLocatario.endereco}
-          onChange={handleChange}
-        />
-        <div className="form-group">
-          <label htmlFor="data_nascimento">Data de Nascimento:</label>
+      <button className="add-locatario" onClick={() => setShowForm(!showForm)}>
+        {showForm ? 'Cancelar' : 'Adicionar Locatário +'}
+      </button>
+
+      {showForm && (
+        <div className="novo-locatario-form">
           <input
-            type="date"
-            name="data_nascimento"
-            placeholder="Data de Nascimento"
-            value={novoLocatario.data_nascimento}
+            type="text"
+            name="nome"
+            placeholder="Nome"
+            value={novoLocatario.nome}
             onChange={handleChange}
           />
+          <input
+            type="text"
+            name="telefone"
+            placeholder="Telefone"
+            value={novoLocatario.telefone}
+            onChange={handleChange}
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={novoLocatario.email}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="estado"
+            placeholder="Estado"
+            value={novoLocatario.estado}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="cidade"
+            placeholder="Cidade"
+            value={novoLocatario.cidade}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="endereco"
+            placeholder="Endereço"
+            value={novoLocatario.endereco}
+            onChange={handleChange}
+          />
+          <div className="form-group">
+            <label htmlFor="data_nascimento">Data de Nascimento:</label>
+            <input
+              type="date"
+              name="data_nascimento"
+              placeholder="Data de Nascimento"
+              value={novoLocatario.data_nascimento}
+              onChange={handleChange}
+            />
+          </div>
+          <button className="save-locatario" onClick={adicionarLocatario}>
+            Adicionar Locatário
+          </button>
         </div>
-        <button className="add-locatario" onClick={adicionarLocatario}>
-          Adicionar Locatário +
-        </button>
-      </div>
+      )}
 
       {modalVisivel && (
         <Modal 
@@ -179,8 +199,8 @@ const Modal = ({ locatario, onClose }) => {
         <p>Email: {locatario.email}</p>
         <p>Estado: {locatario.estado}</p>
         <p>Cidade: {locatario.cidade}</p>
-        <p>Endereco: {locatario.endereco}</p>
-        <p>Data Nascimento: {locatario.data_nascimento}</p>
+        <p>Endereço: {locatario.endereco}</p>
+        <p>Data de Nascimento: {locatario.data_nascimento}</p>
         <button className="modal-button" onClick={onClose}>Fechar</button>
       </div>
     </div>

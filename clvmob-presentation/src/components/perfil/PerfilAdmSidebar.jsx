@@ -19,7 +19,7 @@ export default function PerfilAdmSidebar() {
                 <li><button className='button'onClick={() => navigate('/perfil/administrador/documentos')}><FaFileAlt className="icon" /> Documentos</button></li>
                 <li><button className='button'onClick={() => navigate('/perfil/administrador/proprietarios')}><FaUserTie className="icon"onClick={() => navigate('/perfil/administrador/proprietarios')} /> Proprietários</button></li>
             </ul>
-            <button className='button-sair'>Sair</button>
+            <button className='button-sair' onClick={()=> navigate('/')}>Sair</button>
         </div>
     );
 }

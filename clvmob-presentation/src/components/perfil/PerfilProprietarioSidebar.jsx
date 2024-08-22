@@ -61,7 +61,7 @@ export default function PerfilProprietarioSidebar() {
                     </button>
                 </li>
             </ul>
-            <button className='button-sair'>Sair</button>
+            <button className='button-sair'  onClick={()=> navigate('/')}>Sair</button>
         </div>
     );
 }

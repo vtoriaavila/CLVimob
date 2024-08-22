@@ -52,7 +52,7 @@ export default function PerfilLocatarioSidebar() {
                     </button>
                 </li>
             </ul>
-            <button className='button-sair'>Sair</button>
+            <button className='button-sair'  onClick={()=> navigate('/')}>Sair</button>
         </div>
     );
 }
