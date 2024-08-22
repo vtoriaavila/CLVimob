@@ -34,6 +34,7 @@ import ManutencaoLocatario from "./components/perfil/ManutencaoLocatario";
 import PagamentosLocatario from "./components/perfil/PagamentosLocatarios";
 import DocumentosLocatario from "./components/perfil/DocumentosLocatario";
 import CadastroProprietario from "./components/cadastro/CadastroProprietario";
+import EsqueceuSenha from "./components/EsqueceuSenha.jsx";
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
     {
         path: '/login',
         element: <Login />
+    },
+    {
+        path:'/esqueceu-senha',
+        element: <EsqueceuSenha/>
     },
     {
         path: '/cadastro-opcoes',
