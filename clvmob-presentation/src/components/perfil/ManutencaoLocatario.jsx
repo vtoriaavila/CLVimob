@@ -179,9 +179,7 @@ const ManutencaoLocatario = () => {
 
             {(formVisivel && edicaoManutencao) && (
                 <div className="novo-manutencao-form">
-                    <button className="cancelar" onClick={cancelarManutencao}>
-                        Cancelar
-                    </button>
+    
                     <input
                         type="text"
                         name="tipo_manutencao"
@@ -195,6 +193,9 @@ const ManutencaoLocatario = () => {
                         value={edicaoManutencao.desc_total}
                         onChange={handleChange}
                     />
+                    <button className="cancelar" onClick={cancelarManutencao}>
+                        Cancelar
+                    </button>
                     <button className="add-manutencao" onClick={salvarEdicao}>
                         Salvar Edição
                     </button>
@@ -203,9 +204,7 @@ const ManutencaoLocatario = () => {
 
             {(formVisivel && !edicaoManutencao) && (
                 <div className="novo-manutencao-form">
-                    <button className="cancelar" onClick={cancelarManutencao}>
-                        Cancelar
-                    </button>
+                   
                     <input
                         type="text"
                         name="tipo_manutencao"
@@ -221,6 +220,9 @@ const ManutencaoLocatario = () => {
                     />
                     <button className="add-manutencao" onClick={adicionarManutencao}>
                         Adicionar Manutenção
+                    </button>
+                    <button className="cancelar" onClick={cancelarManutencao}>
+                        Cancelar
                     </button>
                 </div>
             )}
