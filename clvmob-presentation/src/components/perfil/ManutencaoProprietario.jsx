@@ -8,11 +8,6 @@ const ManutencaoProprietario = () => {
   const [error, setError] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [manutencaoSelecionada, setManutencaoSelecionada] = useState(null);
-  const [novaManutencao, setNovaManutencao] = useState({
-    imob: '',
-    tipo_manutencao: '',
-    desc_total: ''
-  });
 
   useEffect(() => {
     const fetchManutencao = async () => {
@@ -30,38 +25,6 @@ const ManutencaoProprietario = () => {
 
     fetchManutencao();
   }, []);
-
-  const handleChange = (e) => {
-    setNovaManutencao({
-      ...novaManutencao,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const adicionarManutencao = () => {
-    const { imob, tipo_manutencao, desc_total } = novaManutencao;
-
-    if (!imob || !tipo_manutencao || !desc_total) {
-      alert('Por favor, preencha todos os campos.');
-      return;
-    }
-
-    const novaManutencaoData = {
-      id: manutencao.length + 1,
-      imob,
-      tipo_manutencao,
-      desc_total,
-      data_solicitacao: new Date().toISOString(),
-      status: 'Pendente'
-    };
-
-    setManutencao([...manutencao, novaManutencaoData]);
-    setNovaManutencao({
-      imob: '',
-      tipo_manutencao: '',
-      desc_total: ''
-    });
-  };
 
   const excluirManutencao = (id) => {
     setManutencao(manutencao.filter(item => item._id !== id));
@@ -117,32 +80,6 @@ const ManutencaoProprietario = () => {
           onClose={() => setModalVisivel(false)} 
         />
       )}
-      
-      <div className="novo-manutencao-form">
-        <input
-          type="text"
-          name="imob"
-          placeholder="Imóvel"
-          value={novaManutencao.imob}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="tipo_manutencao"
-          placeholder="Tipo de Manutenção"
-          value={novaManutencao.tipo_manutencao}
-          onChange={handleChange}
-        />
-        <textarea
-          name="desc_total"
-          placeholder="Descrição"
-          value={novaManutencao.desc_total}
-          onChange={handleChange}
-        />
-        <button className="add-manutencao" onClick={adicionarManutencao}>
-          Adicionar Manutenção +
-        </button>
-      </div>
     </div>
   );
 };
@@ -177,6 +114,5 @@ const Modal = ({ manutencao, onClose }) => {
     </div>
   );
 };
-
 
 export default ManutencaoProprietario;

@@ -105,12 +105,13 @@ const Locatarios = () => {
             <span>{locatario.name}</span>
             <span>{locatario.email}</span>
             <div className="locatario-actions">
-              <button onClick={() => editarLocatario(locatario._id)}>Editar</button>
-              <button onClick={() => excluirLocatario(locatario._id)}>Excluir</button>
-              <button onClick={() => verLocatario(locatario._id)}>Ver</button>
+              <button onClick={() => editarLocatario(locatario.id)}>Editar</button>
+              <button onClick={() => excluirLocatario(locatario.id)}>Excluir</button>
+              <button onClick={() => verLocatario(locatario.id)}>Ver</button>
             </div>
           </div>
-        ))}
+        ))
+       }
       </div>
 
       <button className="add-locatario" onClick={() => setShowForm(!showForm)}>
