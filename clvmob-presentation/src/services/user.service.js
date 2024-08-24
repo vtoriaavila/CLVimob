@@ -1,6 +1,6 @@
 import axios from "axios";
-// const baseURL = "http://localhost:10001";
-const baseURL = "https://api-clvimob.onrender.com";
+const baseURL = "http://localhost:10001";
+// const baseURL = "https://api-clvimob.onrender.com";
 import Cookies from "js-cookie";
 
 
@@ -101,6 +101,21 @@ export async function getAllUsers() {
       return response
     } catch (error) {
       console.error('Erro ao buscar contratos:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }
+
+  export async function editLocatario(id, data) {
+    try {
+      const response = await axios.patch(`${baseURL}/user/update/${id}`, data, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+  
+      return response;
+    } catch (error) {
+      console.error('Erro ao atualizar manutenção:', error);
       throw error; // Lança o erro para ser tratado onde a função é chamada
     }
   }

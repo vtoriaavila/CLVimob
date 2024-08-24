@@ -1,21 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './Locatarios.css';
-import { getAllUsersLoc } from '../../services/user.service';
+import { getAllUsersLoc, editLocatario } from '../../services/user.service';
 
 const Locatarios = () => {
   const [locatarios, setLocatarios] = useState([]);
   const [novoLocatario, setNovoLocatario] = useState({
-    nome: '',
-    telefone: '',
+    name: '',
     email: '',
     estado: '',
     cidade: '',
+    bairro: '',
     endereco: '',
+    documento: '',
     data_nascimento: ''
   });
   const [locatarioSelecionado, setLocatarioSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [edicaoLocatario, setEdicaoLocatario] = useState(null);
 
   useEffect(() => {
     const fetchLocatarios = async () => {
@@ -31,69 +33,113 @@ const Locatarios = () => {
     fetchLocatarios();
   }, []);
 
+  const formatDate = (dateString) => {
+    if (!dateString) return ''; // Retorna string vazia se o valor for nulo ou indefinido
+    const date = new Date(dateString);
+    // Extrai ano, mês e dia e formata para YYYY-MM-DD
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // meses começam em 0
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNovoLocatario({ ...novoLocatario, [name]: value });
+    if (edicaoLocatario) {
+      setEdicaoLocatario({ ...edicaoLocatario, [name]: value });
+    } else {
+      setNovoLocatario({ ...novoLocatario, [name]: value });
+    }
   };
 
   const adicionarLocatario = () => {
-    const { nome, telefone, email, estado, cidade, endereco, data_nascimento } = novoLocatario;
+    const { name, email, estado, cidade, bairro, endereco, documento, data_nascimento } = novoLocatario;
 
-    if (!nome || !telefone || !email || !estado || !cidade || !endereco || !data_nascimento) {
+    if (!name || !email || !estado || !cidade || !bairro || !endereco || !documento || !data_nascimento) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
     const novoLocatarioData = {
       id: locatarios.length + 1,
-      nome,
-      telefone,
+      name,
       email,
       estado,
       cidade,
+      bairro,
       endereco,
+      documento,
       data_nascimento,
     };
 
     setLocatarios([...locatarios, novoLocatarioData]);
     setNovoLocatario({
-      nome: '',
-      telefone: '',
+      name: '',
       email: '',
       estado: '',
       cidade: '',
+      bairro: '',
       endereco: '',
+      documento: '',
       data_nascimento: ''
     });
-    setShowForm(false); // Fechar o formulário após adicionar o locatário
+    setShowForm(false);
   };
 
   const excluirLocatario = (id) => {
-    setLocatarios(locatarios.filter(locatario => locatario.id !== id));
+    setLocatarios(locatarios.filter(locatario => locatario._id !== id));
   };
 
   const verLocatario = (id) => {
-    const locatario = locatarios.find(locatario => locatario.id === id);
+    const locatario = locatarios.find(locatario => locatario._id === id);
     setLocatarioSelecionado(locatario);
     setModalVisivel(true);
   };
 
   const editarLocatario = (id) => {
-    console.log('Editar Locatário:', id);
-    // Adicione a lógica para editar o locatário
+    const locatario = locatarios.find(locatario => locatario._id === id);
+    setEdicaoLocatario(locatario);
+    setShowForm(true);
   };
 
-  const cancelarAdicao = () => {
+  const salvarEdicao = async () => {
+    const { _id, name, email, estado, cidade, bairro, endereco, documento, data_nascimento } = edicaoLocatario;
+
+    if (!name || !email || !estado || !cidade || !bairro || !endereco || !documento || !data_nascimento) {
+      alert('Por favor, preencha todos os campos.');
+      return;
+    }
+
+    try {
+      // Verifica se data_nascimento está no formato correto
+      const formattedData = {
+        name,
+        email,
+        estado,
+        cidade,
+        bairro,
+        endereco,
+        documento,
+        data_nascimento: formatDate(data_nascimento), // Garante que data_nascimento esteja no formato YYYY-MM-DD
+      };
+    
+      const response = await editLocatario(_id, formattedData);
+      const locatarioAtualizado = response.data;
+    
+      setLocatarios(locatarios.map(item =>
+        item._id === locatarioAtualizado._id ? locatarioAtualizado : item
+      ));
+      setEdicaoLocatario(null);
+      setShowForm(false);
+    } catch (error) {
+      console.error('Erro ao atualizar locatário:', error);
+      alert('Erro ao atualizar locatário. Verifique o console para mais detalhes.');
+    }
+  };
+
+  const cancelarEdicao = () => {
+    setEdicaoLocatario(null);
     setShowForm(false);
-    setNovoLocatario({
-      nome: '',
-      telefone: '',
-      email: '',
-      estado: '',
-      cidade: '',
-      endereco: '',
-      data_nascimento: ''
-    });
   };
 
   return (
@@ -105,13 +151,12 @@ const Locatarios = () => {
             <span>{locatario.name}</span>
             <span>{locatario.email}</span>
             <div className="locatario-actions">
-              <button onClick={() => editarLocatario(locatario.id)}>Editar</button>
-              <button onClick={() => excluirLocatario(locatario.id)}>Excluir</button>
-              <button onClick={() => verLocatario(locatario.id)}>Ver</button>
+              <button onClick={() => editarLocatario(locatario._id)}>Editar</button>
+              <button onClick={() => excluirLocatario(locatario._id)}>Excluir</button>
+              <button onClick={() => verLocatario(locatario._id)}>Ver</button>
             </div>
           </div>
-        ))
-       }
+        ))}
       </div>
 
       <button className="add-locatario" onClick={() => setShowForm(!showForm)}>
@@ -122,44 +167,51 @@ const Locatarios = () => {
         <div className="novo-locatario-form">
           <input
             type="text"
-            name="nome"
+            name="name"
             placeholder="Nome"
-            value={novoLocatario.nome}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="telefone"
-            placeholder="Telefone"
-            value={novoLocatario.telefone}
+            value={edicaoLocatario ? edicaoLocatario.name : novoLocatario.name}
             onChange={handleChange}
           />
           <input
             type="email"
             name="email"
             placeholder="Email"
-            value={novoLocatario.email}
+            value={edicaoLocatario ? edicaoLocatario.email : novoLocatario.email}
             onChange={handleChange}
           />
           <input
             type="text"
             name="estado"
             placeholder="Estado"
-            value={novoLocatario.estado}
+            value={edicaoLocatario ? edicaoLocatario.estado : novoLocatario.estado}
             onChange={handleChange}
           />
           <input
             type="text"
             name="cidade"
             placeholder="Cidade"
-            value={novoLocatario.cidade}
+            value={edicaoLocatario ? edicaoLocatario.cidade : novoLocatario.cidade}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="bairro"
+            placeholder="Bairro"
+            value={edicaoLocatario ? edicaoLocatario.bairro : novoLocatario.bairro}
             onChange={handleChange}
           />
           <input
             type="text"
             name="endereco"
             placeholder="Endereço"
-            value={novoLocatario.endereco}
+            value={edicaoLocatario ? edicaoLocatario.endereco : novoLocatario.endereco}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="documento"
+            placeholder="Documento"
+            value={edicaoLocatario ? edicaoLocatario.documento : novoLocatario.documento}
             onChange={handleChange}
           />
           <div className="form-group">
@@ -167,14 +219,24 @@ const Locatarios = () => {
             <input
               type="date"
               name="data_nascimento"
-              placeholder="Data de Nascimento"
-              value={novoLocatario.data_nascimento}
+              value={edicaoLocatario ? formatDate(edicaoLocatario.data_nascimento) : formatDate(novoLocatario.data_nascimento)}
               onChange={handleChange}
             />
           </div>
-          <button className="save-locatario" onClick={adicionarLocatario}>
-            Adicionar Locatário
-          </button>
+          {edicaoLocatario ? (
+            <>
+              <button className="save-locatario" onClick={salvarEdicao}>
+                Salvar
+              </button>
+              <button className="cancel-locatario" onClick={cancelarEdicao}>
+                Cancelar
+              </button>
+            </>
+          ) : (
+            <button className="save-locatario" onClick={adicionarLocatario}>
+              Adicionar Locatário
+            </button>
+          )}
         </div>
       )}
 
@@ -194,13 +256,14 @@ const Modal = ({ locatario, onClose }) => {
   return (
     <div className="modal">
       <div className="modal-content">
-        <h2>{locatario.nome}</h2>
-        <p>Nome: {locatario.nome}</p>
-        <p>Telefone: {locatario.telefone}</p>
+        <h2>{locatario.name}</h2>
+        <p>Nome: {locatario.name}</p>
         <p>Email: {locatario.email}</p>
         <p>Estado: {locatario.estado}</p>
         <p>Cidade: {locatario.cidade}</p>
+        <p>Bairro: {locatario.bairro}</p>
         <p>Endereço: {locatario.endereco}</p>
+        <p>Documento: {locatario.documento}</p>
         <p>Data de Nascimento: {locatario.data_nascimento}</p>
         <button className="modal-button" onClick={onClose}>Fechar</button>
       </div>
