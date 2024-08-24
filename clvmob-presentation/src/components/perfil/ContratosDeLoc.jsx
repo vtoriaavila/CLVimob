@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
-import './ContratosDeLoc.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import './ContratosDeLoc.css'; // Assumindo que o método getAllContract está em um arquivo chamado api.js
+import { getAllContract } from '../../services/contrato.service';
 
 const ContratosDeLoc = () => {
-  const [contratos, setContratos] = useState([
-    { id: 1, locatario: 'João da Silva', imovel: 'Apartamento 101', dataInicio: '01/01/2024', dataFim: '01/01/2025', proprietario: 'José da Silva', admin: 'Admin1', locatorio: 'Locatório1', imob: '101' },
-    { id: 2, locatario: 'Maria Oliveira', imovel: 'Casa na Rua X', dataInicio: '15/02/2024', dataFim: '15/02/2025', proprietario: 'Carlos Oliveira', admin: 'Admin2', locatorio: 'Locatório2', imob: '102' },
-    { id: 3, locatario: 'Carlos Santos', imovel: 'Loja no Centro', dataInicio: '10/03/2024', dataFim: '10/03/2025', proprietario: 'Ana Santos', admin: 'Admin3', locatorio: 'Locatório3', imob: '103' },
-  ]);
-
+  const [contratos, setContratos] = useState([]);
   const [novoContrato, setNovoContrato] = useState({
-    locatario: '',
+    locatorio: '',
     imovel: '',
     dataInicio: '',
     dataFim: '',
@@ -22,6 +20,20 @@ const ContratosDeLoc = () => {
   const [contratoSelecionado, setContratoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [edicaoContrato, setEdicaoContrato] = useState(null);
+
+  useEffect(() => {
+    const fetchContratos = async () => {
+      try {
+        const response = await getAllContract();
+        console.log(response.data.results)
+        setContratos(response.data.results); // Assumindo que os contratos estão em response.data.results
+      } catch (error) {
+        console.error('Erro ao buscar contratos:', error);
+      }
+    };
+
+    fetchContratos();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -38,36 +50,41 @@ const ContratosDeLoc = () => {
   };
 
   const adicionarContrato = () => {
-    const { locatario, imovel, dataInicio, dataFim, proprietario, admin, locatorio, imob } = novoContrato;
+    const { locatorio, dataInicio, dataFim, proprietario, admin, imob } = novoContrato;
 
-    if (!locatario || !imovel || !dataInicio || !dataFim || !proprietario || !admin || !locatorio || !imob) {
+    if (!locatorio  || !dataInicio || !dataFim || !proprietario || !admin || !imob) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
     const novoContratoData = {
       id: contratos.length + 1,
-      locatario,
-      imovel,
+      locatorio,
       dataInicio,
       dataFim,
       proprietario,
       admin,
-      locatorio,
       imob
     };
 
     setContratos([...contratos, novoContratoData]);
     setNovoContrato({
-      locatario: '',
-      imovel: '',
+      locatorio: '',
       dataInicio: '',
       dataFim: '',
       proprietario: '',
       admin: '',
-      locatorio: '',
       imob: ''
     });
+  };
+
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const excluirContrato = (id) => {
@@ -87,22 +104,20 @@ const ContratosDeLoc = () => {
   };
 
   const salvarEdicao = () => {
-    const { locatario, imovel, dataInicio, dataFim, proprietario, admin, locatorio, imob } = edicaoContrato;
+    const { locatorio, dataInicio, dataFim, proprietario, admin, imob } = edicaoContrato;
 
-    if (!locatario || !imovel || !dataInicio || !dataFim || !proprietario || !admin || !locatorio || !imob) {
+    if (!locatorio || !dataInicio || !dataFim || !proprietario || !admin|| !imob) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
     const contratoAtualizado = {
       id: edicaoContrato.id,
-      locatario,
-      imovel,
+      locatorio,
       dataInicio,
       dataFim,
       proprietario,
       admin,
-      locatorio,
       imob
     };
 
@@ -111,13 +126,11 @@ const ContratosDeLoc = () => {
     ));
     setEdicaoContrato(null);
     setNovoContrato({
-      locatario: '',
-      imovel: '',
+      locatorio: '',
       dataInicio: '',
       dataFim: '',
       proprietario: '',
       admin: '',
-      locatorio: '',
       imob: ''
     });
   };
@@ -128,9 +141,9 @@ const ContratosDeLoc = () => {
       <div className="contratos-list">
         {contratos.map(contrato => (
           <div key={contrato.id} className="contrato-item">
-            <span>{contrato.locatario}</span>
-            <span>{contrato.imovel}</span>
-            <span>{contrato.dataInicio} - {contrato.dataFim}</span>
+            <span>{contrato.locatorio.name}</span>
+            <span>{contrato.imob.tipo}</span>
+            <span>{formatDate(contrato.dt_inicio)} - {formatDate(contrato.dt_vencimento)}</span>
             <div className="contrato-actions">
               <button onClick={() => editarContrato(contrato.id)}>Editar</button>
               <button onClick={() => excluirContrato(contrato.id)}>Excluir</button>
@@ -143,9 +156,9 @@ const ContratosDeLoc = () => {
       <div className="novo-contrato-form">
         <input
           type="text"
-          name="locatario"
+          name="locatorio"
           placeholder="Locatário"
-          value={novoContrato.locatario}
+          value={novoContrato.locatorio}
           onChange={handleChange}
         />
         <input
@@ -231,7 +244,7 @@ const Modal = ({ contrato, onClose }) => {
     <div className="modal">
       <div className="modal-content">
         <h2>Detalhes do Contrato</h2>
-        <p>Locatário: {contrato.locatario}</p>
+        <p>Locatário: {contrato.locatorio}</p>
         <p>Imóvel: {contrato.imovel}</p>
         <p>Data de Início: {contrato.dataInicio}</p>
         <p>Data de Vencimento: {contrato.dataFim}</p>

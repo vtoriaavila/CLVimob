@@ -1,209 +1,254 @@
-import React, { useState } from 'react';
-import './Manutencao.css';
+import React, { useState, useEffect } from 'react';
+import './manutencao.css';
+import { getAllManutencao, createManutencao, deleteManutencao, editManutencao } from '../../services/manutencao.service';
+import { getContract } from '../../services/contrato.service'; // Importa o serviço de contratos
 
-const Manutencao = () => {
-  const [manutencoes, setManutencoes] = useState([
-    { id: 1, imob: 'Casa na Rua X', tipo_manutencao: 'Reparos no telhado', desc_total: 'Reparos completos no telhado', data_solicitacao: '2024-08-05T00:00:00.000Z', status: 'Concluído' },
-    { id: 2, imob: 'Apartamento 101', tipo_manutencao: 'Pintura externa', desc_total: 'Pintura da fachada externa', data_solicitacao: '2024-08-10T00:00:00.000Z', status: 'Em Andamento' },
-    { id: 3, imob: 'Loja no Centro', tipo_manutencao: 'Revisão elétrica', desc_total: 'Revisão completa do sistema elétrico', data_solicitacao: '2024-08-15T00:00:00.000Z', status: 'Pendente' },
-  ]);
-
-  const [novaManutencao, setNovaManutencao] = useState({
-    imob: '',
-    tipo_manutencao: '',
-    desc_total: '',
-  });
-
-  const [edicaoManutencao, setEdicaoManutencao] = useState(null);
-  const [modalVisivel, setModalVisivel] = useState(false);
-  const [formVisivel, setFormVisivel] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (edicaoManutencao) {
-      setEdicaoManutencao({
-        ...edicaoManutencao,
-        [name]: value,
-      });
-    } else {
-      setNovaManutencao({
-        ...novaManutencao,
-        [name]: value,
-      });
-    }
-  };
-
-  const adicionarManutencao = () => {
-    const { imob, tipo_manutencao, desc_total } = novaManutencao;
-
-    if (!imob || !tipo_manutencao || !desc_total) {
-      alert('Por favor, preencha todos os campos.');
-      return;
-    }
-
-    const novaManutencaoData = {
-      id: manutencoes.length + 1,
-      imob,
-      tipo_manutencao,
-      desc_total,
-      data_solicitacao: new Date().toISOString(),
-      status: 'Pendente'
-    };
-
-    setManutencoes([...manutencoes, novaManutencaoData]);
-    setNovaManutencao({
-      imob: '',
-      tipo_manutencao: '',
-      desc_total: ''
+const manutencao = () => {
+    const [manutencao, setManutencao] = useState([]);
+    const [imobId, setImobId] = useState(null); // Estado para armazenar o ID do imóvel
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [modalVisivel, setModalVisivel] = useState(false);
+    const [manutencaoSelecionada, setManutencaoSelecionada] = useState(null);
+    const [novaManutencao, setNovaManutencao] = useState({
+        tipo_manutencao: '',
+        desc_total: ''
     });
-  };
+    const [formVisivel, setFormVisivel] = useState(false); // Estado para controlar a visibilidade do formulário
+    const [edicaoManutencao, setEdicaoManutencao] = useState(null); // Estado para manutenção em edição
 
-  const excluirManutencao = (id) => {
-    setManutencoes(manutencoes.filter(manutencao => manutencao.id !== id));
-  };
+    useEffect(() => {
+        const fetchManutencao = async () => {
+            try {
+                const response = await getAllManutencao();
+                setManutencao(response.data);
 
-  const verManutencao = (id) => {
-    const manutencao = manutencoes.find(manutencao => manutencao.id === id);
-    setEdicaoManutencao(manutencao);
-    setModalVisivel(true);
-  };
+                // Busca o contrato do locatário
+                const responseContrato = await getContract();
+                const contrato = responseContrato.data.results[0]; // Assumindo que há apenas 1 contrato
+                if (contrato && contrato.imob) {
+                    setImobId(contrato.imob._id); // Armazena o ID do imóvel
+                }
+            } catch (err) {
+                console.error('Erro ao buscar manutenções:', err);
+                setError('Erro ao carregar manutenções');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-  const editarManutencao = (id) => {
-    const manutencao = manutencoes.find(manutencao => manutencao.id === id);
-    setEdicaoManutencao(manutencao);
-    setFormVisivel(true);
-  };
+        fetchManutencao();
+    }, []);
 
-  const salvarEdicao = async () => {
-    const { tipo_manutencao, desc_total } = edicaoManutencao;
-
-    if (!tipo_manutencao || !desc_total) {
-      alert('Por favor, preencha todos os campos.');
-      return;
-    }
-
-    const manutencaoAtualizada = {
-      tipo_manutencao,
-      desc_total,
+    const handleChange = (e) => {
+        if (edicaoManutencao) {
+            setEdicaoManutencao({
+                ...edicaoManutencao,
+                [e.target.name]: e.target.value
+            });
+        } else {
+            setNovaManutencao({
+                ...novaManutencao,
+                [e.target.name]: e.target.value
+            });
+        }
     };
 
-    try {
-      // Simulação de uma chamada API para salvar a edição
-      const response = { data: { ...edicaoManutencao, ...manutencaoAtualizada } };
+    const adicionarManutencao = async () => {
+        const { tipo_manutencao, desc_total } = novaManutencao;
 
-      const manutencaoAtualizadaData = response.data;
+        if (!tipo_manutencao || !desc_total) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
 
-      setManutencoes(manutencoes.map(item =>
-        item.id === manutencaoAtualizadaData.id ? manutencaoAtualizadaData : item
-      ));
-      setEdicaoManutencao(null); // Limpa o estado de edição
-      setFormVisivel(false); // Oculta o formulário de edição
-    } catch (error) {
-      console.error('Erro ao atualizar manutenção:', error);
-      alert('Erro ao atualizar manutenção');
-    }
-  };
+        const novaManutencaoData = {
+            imob: imobId,
+            tipo_manutencao,
+            desc_total,
+        };
 
-  const cancelarEdicao = () => {
-    setEdicaoManutencao(null);
-    setFormVisivel(false);
-  };
+        try {
+            const response = await createManutencao(novaManutencaoData);
+            const manutencaoCriada = response.data; // Supondo que a API retorna o objeto da nova manutenção criada
 
-  return (
-    <div className="manutencao-container">
-      <h2>Manutenção</h2>
-      <div className="manutencao-list">
-        {manutencoes.map(manutencao => (
-          <div key={manutencao.id} className="manutencao-item">
-            <span>{manutencao.imob}</span>
-            <span>{manutencao.tipo_manutencao}</span>
-            <span>{manutencao.status}</span>
-            <span>{new Date(manutencao.data_solicitacao).toLocaleDateString()}</span>
-            <div className="manutencao-actions">
-              <button onClick={() => editarManutencao(manutencao.id)}>Editar</button>
-              <button onClick={() => excluirManutencao(manutencao.id)}>Excluir</button>
-              <button onClick={() => verManutencao(manutencao.id)}>Ver</button>
+            setManutencao([...manutencao, manutencaoCriada]);
+            setNovaManutencao({
+                tipo_manutencao: '',
+                desc_total: ''
+            });
+            setFormVisivel(false); // Oculta o formulário após adicionar a manutenção
+        } catch (error) {
+            console.error('Erro ao adicionar manutenção:', error);
+            alert('Erro ao adicionar manutenção');
+        }
+    };
+
+    const cancelarManutencao = () => {
+        setNovaManutencao({
+            tipo_manutencao: '',
+            desc_total: ''
+        });
+        setFormVisivel(false); // Oculta o formulário e reseta os campos
+        setEdicaoManutencao(null); // Reseta o estado de edição
+    };
+
+    const excluirManutencao = async (id) => {
+        try {
+            await deleteManutencao(id); // Chama o serviço para excluir a manutenção
+            setManutencao(manutencao.filter(item => item._id !== id)); // Atualiza o estado após exclusão
+        } catch (error) {
+            console.error('Erro ao excluir manutenção:', error);
+            alert('Erro ao excluir manutenção');
+        }
+    };
+
+    const verManutencao = (id) => {
+        const manutencaoItem = manutencao.find(item => item._id === id);
+        setManutencaoSelecionada(manutencaoItem);
+        setModalVisivel(true);
+    };
+
+    const editarManutencao = (id) => {
+        const manutencaoItem = manutencao.find(item => item._id === id);
+        setEdicaoManutencao(manutencaoItem);
+        setFormVisivel(true); // Exibe o formulário para edição
+    };
+
+    const salvarEdicao = async () => {
+        const { tipo_manutencao, desc_total } = edicaoManutencao;
+
+        if (!tipo_manutencao || !desc_total) {
+            alert('Por favor, preencha todos os campos.');
+            return;
+        }
+
+        const manutencaoAtualizada = {
+            tipo_manutencao,
+            desc_total,
+        };
+
+        try {
+            const response = await editManutencao(edicaoManutencao._id, manutencaoAtualizada);
+            const manutencaoAtualizadaData = response.data;
+
+            setManutencao(manutencao.map(item =>
+                item._id === manutencaoAtualizadaData._id ? manutencaoAtualizadaData : item
+            ));
+            setEdicaoManutencao(null); // Limpa o estado de edição
+            setFormVisivel(false); // Oculta o formulário de edição
+        } catch (error) {
+            console.error('Erro ao atualizar manutenção:', error);
+            alert('Erro ao atualizar manutenção');
+        }
+    };
+
+    if (loading) return <p>Carregando...</p>;
+    if (error) return <p>{error}</p>;
+
+    return (
+        <div className="manutencao-Locatario-container">
+            <h2>Manutenções</h2>
+            <div className="manutencao-Locatario-list">
+                {manutencao.map(item => (
+                    <div key={item._id} className="manutencao-item">
+                        <span>{item.tipo_manutencao}</span>
+                        <span>{new Date(item.data_solicitacao).toLocaleDateString('pt-BR')}</span>
+                        <span>{item.status}</span>
+                        <div className="manutencao-actions">
+                            <button onClick={() => editarManutencao(item._id)}>Editar</button>
+                            <button onClick={() => excluirManutencao(item._id)}>Excluir</button>
+                            <button onClick={() => verManutencao(item._id)}>Ver</button>
+                        </div>
+                    </div>
+                ))}
             </div>
-          </div>
-        ))}
-      </div>
 
-      {/* Formulário de Adição */}
-      {!formVisivel && (
-        <div className="nova-manutencao-form">
-          <input
-            type="text"
-            name="imob"
-            placeholder="Imóvel"
-            value={novaManutencao.imob}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="tipo_manutencao"
-            placeholder="Tipo de Manutenção"
-            value={novaManutencao.tipo_manutencao}
-            onChange={handleChange}
-          />
-          <textarea
-            name="desc_total"
-            placeholder="Descrição Completa"
-            value={novaManutencao.desc_total}
-            onChange={handleChange}
-          />
-          <button className="add-manutencao" onClick={adicionarManutencao}>
-            Adicionar Manutenção +
-          </button>
+            {modalVisivel && (
+                <Modal
+                    manutencao={manutencaoSelecionada}
+                    onClose={() => setModalVisivel(false)}
+                />
+            )}
+
+            {!formVisivel && (
+                <button className="add-manutencao" onClick={() => setFormVisivel(true)}>
+                    Adicionar Manutenção +
+                </button>
+            )}
+
+            {(formVisivel && edicaoManutencao) && (
+                <div className="novo-manutencao-form">
+    
+                    <input
+                        type="text"
+                        name="tipo_manutencao"
+                        placeholder="Tipo de Manutenção"
+                        value={edicaoManutencao.tipo_manutencao}
+                        onChange={handleChange}
+                    />
+                    <textarea
+                        name="desc_total"
+                        placeholder="Descrição"
+                        value={edicaoManutencao.desc_total}
+                        onChange={handleChange}
+                    />
+                    <button className="cancelar" onClick={cancelarManutencao}>
+                        Cancelar
+                    </button>
+                    <button className="add-manutencao" onClick={salvarEdicao}>
+                        Salvar Edição
+                    </button>
+                </div>
+            )}
+
+            {(formVisivel && !edicaoManutencao) && (
+                <div className="novo-manutencao-form">
+                   
+                    <input
+                        type="text"
+                        name="tipo_manutencao"
+                        placeholder="Tipo de Manutenção"
+                        value={novaManutencao.tipo_manutencao}
+                        onChange={handleChange}
+                    />
+                    <textarea
+                        name="desc_total"
+                        placeholder="Descrição"
+                        value={novaManutencao.desc_total}
+                        onChange={handleChange}
+                    />
+                    <button className="add-manutencao" onClick={adicionarManutencao}>
+                        Adicionar Manutenção
+                    </button>
+                    <button className="cancelar" onClick={cancelarManutencao}>
+                        Cancelar
+                    </button>
+                </div>
+            )}
         </div>
-      )}
-
-      {/* Formulário de Edição */}
-      {formVisivel && (
-        <div className="edicao-manutencao-form">
-          <input
-            type="text"
-            name="tipo_manutencao"
-            placeholder="Tipo de Manutenção"
-            value={edicaoManutencao.tipo_manutencao}
-            onChange={handleChange}
-          />
-          <textarea
-            name="desc_total"
-            placeholder="Descrição Completa"
-            value={edicaoManutencao.desc_total}
-            onChange={handleChange}
-          />
-          <button className="save-manutencao"onClick={salvarEdicao}>Salvar</button>
-          <button className="cancel-manutencao" onClick={cancelarEdicao}>Cancelar</button>
-        </div>
-      )}
-
-      {modalVisivel && (
-        <Modal 
-          manutencao={edicaoManutencao} 
-          onClose={() => setModalVisivel(false)} 
-        />
-      )}
-    </div>
-  );
+    );
 };
 
 const Modal = ({ manutencao, onClose }) => {
-  if (!manutencao) return null;
+    if (!manutencao) return null;
 
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Detalhes da Manutenção</h2>
-        <p>Imóvel: {manutencao.imob}</p>
-        <p>Tipo de Manutenção: {manutencao.tipo_manutencao}</p>
-        <p>Descrição Completa: {manutencao.desc_total}</p>
-        <p>Data da Solicitação: {new Date(manutencao.data_solicitacao).toLocaleDateString()}</p>
-        <p>Status: {manutencao.status}</p>
-        <button className="modal-button" onClick={onClose}>Fechar</button>
-      </div>
-    </div>
-  );
+    // Extraia o objeto `imob` se estiver presente
+    const imob = manutencao.imob || {};
+
+    return (
+        <div className="modal">
+            <div className="modal-content">
+                <h2>Detalhes da Manutenção</h2>
+                <p><strong>Imóvel:</strong> {imob.tipo}</p>
+                <p><strong>Tipo de Manutenção:</strong> {manutencao.tipo_manutencao}</p>
+                <p><strong>Descrição:</strong> {manutencao.desc_total}</p>
+                <p><strong>Data de Solicitação:</strong> {new Date(manutencao.data_solicitacao).toLocaleDateString('pt-BR')}</p>
+                <p><strong>Status:</strong> {manutencao.status}</p>
+                <button className='modal-button' onClick={onClose}>Fechar</button>
+            </div>
+        </div>
+    );
 };
 
-export default Manutencao;
+export default manutencao;
