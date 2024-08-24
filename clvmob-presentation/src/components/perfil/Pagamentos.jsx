@@ -106,8 +106,8 @@ const Pagamentos = () => {
             <span>R$ {pagamento.valor}</span>
             <span>{new Date(pagamento.data).toLocaleDateString()}</span>
             <div className="pagamento-actions">
-              {/* <button onClick={() => editarPagamento(pagamento._id)}>editar</button> */}
-              {/* <button onClick={() => excluirPagamento(pagamento._id)}>excluir</button> */}
+              { <button onClick={() => editarPagamento(pagamento._id)}>editar</button> }
+              { <button onClick={() => excluirPagamento(pagamento._id)}>excluir</button> }
               <button onClick={() => verPagamento(pagamento._id)}>ver</button>
             </div>
           </div>

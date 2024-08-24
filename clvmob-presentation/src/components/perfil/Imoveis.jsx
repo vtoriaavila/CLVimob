@@ -9,6 +9,7 @@ const Imoveis = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false); 
 
   const [novoImovel, setNovoImovel] = useState({
     tipo: '',
@@ -102,8 +103,21 @@ const Imoveis = () => {
   };
 
   const editarImovel = (id) => {
-    console.log('Editar Imóvel:', id);
-    // Adicione a lógica para editar o imóvel
+    const imovel = imoveis.find(imovel => imovel.id === id);
+    setNovoImovel({
+      tipo: imovel.tipo,
+      cep: imovel.cep,
+      endereco: imovel.endereco,
+      cidade: imovel.cidade,
+      estado: imovel.estado,
+      quartos: imovel.quartos.toString(),
+      banheiro: imovel.banheiro.toString(),
+      tamanho: imovel.tamanho.toString(),
+      aluguel: imovel.aluguel.toString()
+    });
+    setImovelSelecionado(imovel);
+    setShowForm(true);
+    setIsEditing(true); // Muda o estado para edição
   };
 
   if (loading) return <p>Carregando...</p>;

@@ -178,3 +178,121 @@
 }
 
 
+  .carousel-section {
+    width: 100%;
+    padding: 40px 20px;
+    background-color: #f0f0f0;
+    text-align: center;
+    position: relative;
+    margin-top: 50px; /* Adiciona espaço entre o carrossel e o retângulo superior */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona um sombreamento sutil para destacá-lo */
+    border-radius: 8px; /* Adiciona bordas arredondadas para um visual mais suave */
+  }
+  
+  .carousel-section h3 {
+    font-size: 32px;
+    color: #013088;
+    margin-bottom: 30px;
+  }
+
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.carousel {
+  display: flex;
+  overflow: hidden;
+  scroll-behavior: smooth;
+  gap: 20px;
+  flex-grow: 1;
+}
+
+.carousel-item {
+  min-width: 300px;
+  max-width: 300px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.carousel-item h4 {
+  font-size: 24px;
+  color: #013088;
+  margin-bottom: 10px;
+}
+
+.carousel-item p {
+  font-size: 16px;
+  color: #555;
+}
+
+.carousel-item:hover {
+  transform: scale(1.05);
+}
+
+.carousel-btn {
+  background-color: #013088;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+  transition: background-color 0.3s ease;
+}
+
+.carousel-btn:hover {
+  background-color: #0056b3;
+}
+
+.prev-btn {
+  left: 10px;
+}
+
+.next-btn {
+  right: 10px;
+}
+
+
+.footer {
+  width: 100%;
+  padding: 20px;
+  background-color: #08082e;
+  color: white;
+  text-align: center;
+}
+
+.footer-nav {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.footer-nav a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-nav a:hover {
+  color: #ff6600;
+}
+
+
