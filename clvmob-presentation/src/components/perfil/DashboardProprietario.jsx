@@ -99,9 +99,7 @@ export default function DashboardProprietario() {
     colors: ['#1b9e77', '#d95f02'],
   };
 
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
+  if (loading) return <div className="loading-spinner"></div>;
 
   if (error) {
     return <div>{error}</div>;

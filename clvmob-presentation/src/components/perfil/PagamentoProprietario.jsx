@@ -52,9 +52,7 @@ const PagamentoProprietario = () => {
     // Adicione a lógica para editar o pagamento
   };
 
-  if (loading) {
-    return <div>Carregando...</div>; // Exibe uma mensagem de carregamento
-  }
+  if (loading) return <div className="loading-spinner"></div>;
 
   if (error) {
     return <div>{error}</div>; // Exibe a mensagem de erro, se houver

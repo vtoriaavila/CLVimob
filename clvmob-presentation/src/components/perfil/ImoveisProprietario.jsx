@@ -125,7 +125,7 @@ const ImoveisProprietario = () => {
     setShowForm(true); // Mostrar o formulário de edição
   };
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <div className="loading-spinner"></div>;
   if (error) return <p>{error}</p>;
 
   return (

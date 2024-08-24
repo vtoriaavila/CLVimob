@@ -120,7 +120,7 @@ const Imoveis = () => {
     setIsEditing(true); // Muda o estado para edição
   };
 
-  if (loading) return <p>Carregando...</p>;
+  if (loading) return <div className="loading-spinner"></div>;
   if (error) return <p>{error}</p>;
 
   return (
