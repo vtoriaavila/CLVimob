@@ -13,7 +13,7 @@
   }
   
   .informacoes-imovel, .detalhes-locatario, .detalhes-contrato, .historico-pagamento {
-    background-color: #e0e0e0;
+    background-color: #fff;
     padding: 15px;
     border-radius: 6px;
     margin-bottom: 15px;
@@ -41,6 +41,9 @@
     padding: 8px;
     text-align: left;
   }
+  .historico-pagamento {
+    background-color: #dae6f8;
+}
   
   .visualizar-contrato {
     display: block;
@@ -59,6 +62,30 @@
 
   .contrato-locacao-container {
   padding: 20px;
+}
+
+.contrato-locacao-container table {
+  background-color: #ffffff; /* Cor de fundo da tabela */
+  color: #333; /* Cor do texto na tabela */
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px; /* Espaçamento abaixo da tabela */
+}
+
+.contrato-locacao-container th,
+.contrato-locacao-container td {
+  border: 1px solid #ccc; /* Cor da borda das células */
+  padding: 10px; /* Espaçamento interno das células */
+  text-align: left;
+}
+
+.contrato-locacao-container th {
+  background-color: #18305F; /* Cor de fundo dos cabeçalhos */
+  color: white; /* Cor do texto nos cabeçalhos */
+}
+
+.contrato-locacao-container tr:hover {
+  background-color: #e0e0e0; /* Cor ao passar o mouse por cima da linha */
 }
 
 .informacoes-imovel, .detalhes-locatario, .detalhes-contrato, .historico-pagamento {
@@ -118,6 +145,34 @@ button.visualizar-contrato:hover {
   margin: 0;
   font-size: 1em;
   color: #ffffff;
+}
+
+.tabela-detalhes-contrato {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #ffffff; /* Fundo branco para a tabela */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tabela-detalhes-contrato th, 
+.tabela-detalhes-contrato td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  color: #333; /* Cor do texto */
+  
+}
+
+.tabela-detalhes-contrato th {
+  background-color: #f2f2f2; /* Fundo ligeiramente cinza para o cabeçalho */
+  color: #18305F; /* Cor do texto do cabeçalho */
+}
+
+.tabela-detalhes-contrato tr:hover {
+  background-color: #f5f5f5; /* Cor de fundo ao passar o mouse sobre a linha */
 }
 
   

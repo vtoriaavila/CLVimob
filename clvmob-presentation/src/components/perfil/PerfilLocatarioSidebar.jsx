@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import './PerfilSidebar.css';
 import { FaHandshake, FaTools, FaMoneyBillWave, FaFileAlt, FaCog } from 'react-icons/fa';
+import logoBranco from '../logo_branco_1.png';
 
 export default function PerfilLocatarioSidebar() {
     const navigate = useNavigate();
@@ -9,7 +10,10 @@ export default function PerfilLocatarioSidebar() {
 
     return (
         <div className="sidebar">
-            <h2>Locatário</h2>
+            
+            <div className='logo'>
+          <img src={logoBranco} alt='CLVimob logo' />
+        </div>
             <ul>
                 <li>
                     <button 

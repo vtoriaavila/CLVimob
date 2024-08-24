@@ -29,20 +29,26 @@ const LocatarioDetails = ({ locatario }) => {
 
 const ContratoDetails = ({ contrato, imovel }) => (
   <div className="detalhes-contrato">
-    <div className="contrato-quadro">
-      <h4>Data de Início</h4>
-      <p>{new Date(contrato.dt_inicio).toLocaleDateString()}</p>
-    </div>
-    <div className="contrato-quadro">
-      <h4>Data de Término</h4>
-      <p>{new Date(contrato.dt_vencimento).toLocaleDateString()}</p>
-    </div>
-    <div className="contrato-quadro">
-      <h4>Valor do Aluguel</h4>
-      <p>{`R$ ${imovel.aluguel.toFixed(2).replace('.', ',')}`}</p>
-    </div>
+    <h3>Detalhes do Contrato</h3>
+    <table className="tabela-detalhes-contrato">
+      <thead>
+        <tr>
+          <th>Aluguel</th>
+          <th>Data de Início</th>
+          <th>Data de Término</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{`R$ ${imovel.aluguel.toFixed(2).replace('.', ',')}`}</td>
+          <td>{new Date(contrato.dt_inicio).toLocaleDateString()}</td>
+          <td>{new Date(contrato.dt_vencimento).toLocaleDateString()}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 );
+
 
 const HistoricoPagamento = ({ pagamentos = [] }) => (
   <div className="historico-pagamento">

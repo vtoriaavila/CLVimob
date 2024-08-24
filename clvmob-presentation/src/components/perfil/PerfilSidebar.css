@@ -74,3 +74,23 @@
     border: 2px solid #003366; /* Cor da borda para o botão ativo */
     box-shadow: 0px 4px 8px #072c50; /* Sombra azul escura */
 }
+
+.sidebar .logo {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    margin-top: -39px;
+    margin-bottom: 80px;
+  }
+  
+  .sidebar .logo > img {
+    max-width: 1500px;
+    position: relative;
+    width: 58%; /* Aumente este valor para aumentar a largura da logo */
+    height: auto; 
+    left:30%;
+    top: 59px;
+
+  }
+
+  

@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FaChartPie, FaBuilding, FaUserFriends, FaCog, FaMoneyBillWave, FaFileAlt, FaUserTie, FaHandshake, FaTools } from 'react-icons/fa';
 import './PerfilSidebar.css'; 
+import logoBranco from '../logo_branco_1.png';
 
 export default function PerfilAdmSidebar() {
     const navigate = useNavigate();
@@ -9,7 +10,10 @@ export default function PerfilAdmSidebar() {
 
     return (
         <div className="sidebar">
-            <h2>Administração</h2>
+           
+            <div className='logo'>
+          <img src={logoBranco} alt='CLVimob logo' />
+        </div>
             <ul>
                 <li>
                     <button 
