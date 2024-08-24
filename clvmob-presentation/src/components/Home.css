@@ -1,16 +1,27 @@
 
 .home-container {
   font-family: Arial, sans-serif;
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 30px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  
+  max-height: 95vh; /* Limita a altura máxima ao tamanho da janela */
+  overflow-y: scroll; /* Adiciona barra de rolagem vertical */
 }
 
+/* Oculta a barra de rolagem no WebKit (Chrome, Safari) */
+.home-container::-webkit-scrollbar {
+  width: 0;
+  background: transparent; /* Opcional: define o fundo transparente para a área de rolagem */
+}
+
+/* Oculta a barra de rolagem no Firefox */
+.home-container {
+  scrollbar-width: none; /* Oculta a barra de rolagem */
+}
 .header {
   display: flex;
   justify-content: space-between;
@@ -20,7 +31,7 @@
 .logo {
   display: flex;
   align-items: center;
-  height: auto;
+  position: relative;
   
 }
 
@@ -28,7 +39,7 @@
   position: absolute;
   width: 297px;
   height: 302px;
-  left: -10px;
+  left: 60px;
   top: -75px;
 }
 
@@ -51,10 +62,10 @@
   color: #013088;
   border: none;
   padding: 10px 20px;
-  margin-left: 18px;
+  margin-left: 38px;
   cursor: pointer;
   letter-spacing: 0;
-  margin-right: -60px;
+  margin-right: 40px;
 }
 
 .button-entrar:hover,
@@ -179,14 +190,19 @@
 
 
   .carousel-section {
-    width: 100%;
+    
+    width: calc(100% - 50px); 
     padding: 40px 20px;
     background-color: #f0f0f0;
     text-align: center;
     position: relative;
+    margin-left: auto; /* Ajuste este valor conforme necessário */
+    margin-right: auto;
     margin-top: 50px; /* Adiciona espaço entre o carrossel e o retângulo superior */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona um sombreamento sutil para destacá-lo */
     border-radius: 8px; /* Adiciona bordas arredondadas para um visual mais suave */
+    max-width: 1300px; /* Certifique-se de que isso corresponda ao max-width do contêiner principal */
+    margin: 10 auto;
   }
   
   .carousel-section h3 {
@@ -199,6 +215,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 }
 
 .carousel {
@@ -272,6 +289,7 @@
 
 .footer {
   width: 100%;
+  margin-left: -22px;
   padding: 20px;
   background-color: #08082e;
   color: white;
@@ -294,5 +312,4 @@
 .footer-nav a:hover {
   color: #ff6600;
 }
-
 

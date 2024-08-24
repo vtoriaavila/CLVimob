@@ -6,6 +6,7 @@ import homem from './homem.png';
 import gestao from './gestaoEficiente.jpg';
 import relatorio from './relatorios.jpg';
 import integracao from './integração.jpg';
+import imagem from './facilidadeDeUso.jpg';
 
 
 const Home = () => {
@@ -58,7 +59,7 @@ const Home = () => {
       <p>Tenha acesso a relatórios completos que facilitam a tomada de decisões.</p>
     </div>
     <div className='carousel-item'>
-      <img src="" alt="Facilidade de Uso" />
+      <img src={imagem} alt="Facilidade de Uso" />
       <h4>Facilidade de Uso</h4>
       <p>Interface intuitiva e fácil de usar, projetada para simplificar sua experiência.</p>
     </div>
