@@ -5,6 +5,7 @@ html, body {
   height: 100%;
   width: 100%;
   overflow: hidden; 
+  
 }
 
 .cadastro-container {
@@ -26,18 +27,21 @@ html, body {
   overflow: hidden;
 }
 
-.logo {
+.cadastro-form .logoCadastro{
   width: 350px;
   margin-bottom: 0px -5px 10px;
   padding: 0;
-  margin-left: -100px;
-  margin-top: -80px;
+  margin-top: -120px;
+  margin-bottom: 40px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
 }
 
 .cadastro-form h1 {
   font-size: 38px;
   margin-top: -270px;
-  margin-left: -227px;
+  margin-left: -247px;
   position: absolute;
   font-style: normal;
   font-weight: 400;
@@ -46,9 +50,9 @@ html, body {
 }
 
 .cadastro-form p {
-  margin-bottom: 10px;
-  margin-top: -120px ;
-  margin-left: -159px;
+  margin-bottom: 30px;
+  margin-top: -140px ;
+  margin-left: -179px;
   
 }
 

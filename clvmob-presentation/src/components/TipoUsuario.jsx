@@ -22,7 +22,7 @@ const TipoUsuario = () => {
   return (
     <div className="tipoUsuarioContainer">
       <div className="leftPanel">
-        <img src={logo_branco} alt="CLVimob Logo" className="logo" />
+        <img src={logo_branco} alt="CLVimob Logo" className="logoTipo" />
         <h1>Cadastro</h1>
         <p>Escolha o tipo de usuário</p>
         <button className="usuarioButton" onClick={handleAdministradorClick}>Administrador</button>

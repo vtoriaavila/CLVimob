@@ -62,7 +62,7 @@ const Login = () => {
   return (
     <div className='container'>
       <div className='bloco-azul'>
-        <img src={logo_branco} alt="logo-branco" className='logo' />
+        <img src={logo_branco} alt="logo-branco" className='logoEntrar' />
         <h1 className='entrar'>Entrar</h1>
         <p className='paragrafo'>Insira suas credenciais abaixo</p>
         <form onSubmit={handleSubmit} className='login-form'>

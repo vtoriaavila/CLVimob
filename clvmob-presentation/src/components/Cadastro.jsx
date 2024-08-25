@@ -37,7 +37,7 @@ const Cadastro = () => {
     return (
         <div className="cadastro-container">
             <div className="cadastro-form">
-                <img src={logo_branco} alt="CLVimob Logo" className="logo" />
+                <img src={logo_branco} alt="CLVimob Logo" className="logoCadastro" />
                 <h1>Cadastro</h1>
                 <p>Insira suas informações abaixo</p>
                 <form onSubmit={handleSubmit} className="login-form">
