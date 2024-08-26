@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Locatarios.css';
-import { getAllUsersLoc, editLocatario } from '../../services/user.service';
+import { getAllUsersLoc, editLocatario, deleteUser } from '../../services/user.service';
 
 const Locatarios = () => {
   const [locatarios, setLocatarios] = useState([]);
@@ -21,7 +21,6 @@ const Locatarios = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
- 
   useEffect(() => {
     const fetchLocatarios = async () => {
       try {
@@ -31,7 +30,7 @@ const Locatarios = () => {
       } catch (error) {
         console.error('Erro ao buscar locatários:', error);
       } finally {
-        setLoading(false); // Concluímos o carregamento, independente de sucesso ou falha
+        setLoading(false);
       }
     };
 
@@ -39,11 +38,10 @@ const Locatarios = () => {
   }, []);
 
   const formatDate = (dateString) => {
-    if (!dateString) return ''; // Retorna string vazia se o valor for nulo ou indefinido
+    if (!dateString) return '';
     const date = new Date(dateString);
-    // Extrai ano, mês e dia e formata para YYYY-MM-DD
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // meses começam em 0
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
   };
@@ -91,8 +89,14 @@ const Locatarios = () => {
     setShowForm(false);
   };
 
-  const excluirLocatario = (id) => {
-    setLocatarios(locatarios.filter(locatario => locatario._id !== id));
+  const excluirLocatario = async (id) => {
+    try {
+      await deleteUser(id);
+      setLocatarios(locatarios.filter(locatario => locatario._id !== id));
+    } catch (error) {
+      console.error('Erro ao excluir locatário:', error);
+      alert('Erro ao excluir locatário. Verifique o console para mais detalhes.');
+    }
   };
 
   const verLocatario = (id) => {
@@ -116,7 +120,6 @@ const Locatarios = () => {
     }
 
     try {
-      // Verifica se data_nascimento está no formato correto
       const formattedData = {
         name,
         email,
@@ -125,12 +128,12 @@ const Locatarios = () => {
         bairro,
         endereco,
         documento,
-        data_nascimento: formatDate(data_nascimento), // Garante que data_nascimento esteja no formato YYYY-MM-DD
+        data_nascimento: formatDate(data_nascimento),
       };
-    
+
       const response = await editLocatario(_id, formattedData);
       const locatarioAtualizado = response.data;
-    
+
       setLocatarios(locatarios.map(item =>
         item._id === locatarioAtualizado._id ? locatarioAtualizado : item
       ));

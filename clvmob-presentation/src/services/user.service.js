@@ -1,6 +1,6 @@
 import axios from "axios";
-// const baseURL = "http://localhost:10001";
-const baseURL = "https://api-clvimob.onrender.com";
+const baseURL = "http://localhost:10001";
+// const baseURL = "https://api-clvimob.onrender.com";
 import Cookies from "js-cookie";
 
 
@@ -119,4 +119,20 @@ export async function getAllUsers() {
       throw error; // Lança o erro para ser tratado onde a função é chamada
     }
   }
+
+  export async function deleteUser(id) {
+    try {
+      const response = await axios.delete(`${baseURL}/user/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get('token')}`,
+        },
+      });
+  
+      return response;
+    } catch (error) {
+      console.error('Erro ao atualizar manutenção:', error);
+      throw error; // Lança o erro para ser tratado onde a função é chamada
+    }
+  }
+  
   

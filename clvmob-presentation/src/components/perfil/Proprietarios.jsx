@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Proprietarios.css';
-import { getAllUsersProp, editLocatario } from '../../services/user.service';
+import { getAllUsersProp, editLocatario, deleteUser } from '../../services/user.service';
 
 
 const formatDate = (dateString) => {
@@ -91,8 +91,14 @@ const formatDate = (dateString) => {
     setShowForm(false);
   };
 
-  const excluirProprietario = (id) => {
-    setProprietarios(proprietarios.filter(proprietario => proprietario._id !== id));
+  const excluirProprietario = async (id) => {
+    try {
+      await deleteUser(id);
+      setProprietarios(proprietarios.filter(proprietario => proprietario._id !== id));
+    } catch (error) {
+      console.error('Erro ao excluir locatário:', error);
+      alert('Erro ao excluir locatário. Verifique o console para mais detalhes.');
+    }
   };
 
   const verProprietario = (id) => {
