@@ -25,7 +25,6 @@ const TipoUsuario = () => {
         <img src={logo_branco} alt="CLVimob Logo" className="logoTipo" />
         <h1>Cadastro</h1>
         <p>Escolha o tipo de usuário</p>
-        <button className="usuarioButton" onClick={handleAdministradorClick}>Administrador</button>
         <button className="usuarioButton" onClick={handleProprietarioClick}>Proprietário</button>
         <button className="usuarioButton" onClick={handleLocatarioClick}>Locatário</button>
       </div>
