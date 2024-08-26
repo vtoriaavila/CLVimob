@@ -65,9 +65,7 @@ export default function Dashboard() {
   const calcularManutencoesPendentes = () => manutencoes.filter(m => m.status === 'Solicitado' || m.status === 'Em andamento').length;
   const calcularTotalProprietarios = () => Prop.length;
 
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
+  if (loading) return <div className="loading-spinner"></div>;
 
   if (error) {
     return <div>{error}</div>;

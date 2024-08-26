@@ -35,13 +35,8 @@ const PagamentosLocatario = () => {
   }, []);
   
 
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  if (loading) return <div className="loading-spinner"></div>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="pagamentos-container">
