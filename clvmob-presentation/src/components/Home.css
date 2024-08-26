@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 .home-container {
   font-family: Arial, sans-serif;
@@ -9,7 +12,8 @@
   justify-content: center;
   width: 100%;
   max-height: 95vh; /* Limita a altura máxima ao tamanho da janela */
-  overflow-y: scroll; /* Adiciona barra de rolagem vertical */
+  overflow-y: auto; /* Permite o scroll vertical */
+  scroll-behavior: smooth;
 }
 
 /* Oculta a barra de rolagem no WebKit (Chrome, Safari) */
@@ -26,6 +30,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid #0056b3;
+  margin-top: 10px;
+  padding: 0.70%;
 }
 
 .logo {
@@ -39,7 +46,7 @@
   position: absolute;
   width: 297px;
   height: 302px;
-  left: 60px;
+  left: 68px;
   top: -75px;
 }
 
@@ -110,32 +117,33 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 12%;
+  margin-top: 6%;
   position: relative;
-  min-height: 300px; /*adc uma altura mínima para garantir que o conteúdo apareça */
+  min-height: 200px; /*adc uma altura mínima para garantir que o conteúdo apareça */
 }
 
 .retangulo-cinza {
-  background-color: #D9D9D9;
+  background-color: #ebebeb;
   position: absolute;
-  width: 2400px;
+  width: 1500px;
   height: 104%;
-  left: -395px;
-  bottom: -36px;
+  left: -355px;
+  bottom: -16px;
   z-index: -1;
 }
 
 .texto-pagPrincipal {
   max-width: 400px;
   z-index: 1;
-  margin-left: 5%;
+  margin-left: 10%;
 }
 
 .texto-pagPrincipal h2 {
   font-size: 36px;
   font-style: italic;
-  text-align: center;
-  margin-left: -5%;
+  text-align:left;
+  font-family: "Sarabun", sans-serif;
+  font-weight: 100px;
 }
 
 .texto-pagPrincipal .text-cor {
@@ -144,22 +152,25 @@
 
 .texto-pagPrincipal p {
   font-size: 20px;
-  margin: 20px 0;
+  margin: 10px 0;
+  font-family: "Anek Devanagari", sans-serif;
+  font-weight: 10;
+  color: #3b3838;
 }
 
 
-.criarCt-button {
+ .criarCt-button {
   background-color: #013088;
   color: white;
   border: none;
   padding: 15px 30px;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
   font-size: 30px;
   width: 360px;
   height: 75px;
   left: 61px;
-  top: 639px;
+  top: 629px;
 }
 
 .imagem-content {
@@ -171,44 +182,61 @@
   max-height: 300px;
   position: relative;
   z-index: 2;
-  left: -50px;
-  top: 45px;
+  left: -125px;
+  top: 39px;
   
 }
 
 
 .bola-laranja {
-  background-color: #FF5733;
+  background-color: #FFA07A;
   width: 360px;
-  height: 360px;
-  border-radius: 50%;
+  height: 370px;
   position: absolute;
   right: -10px;
-  top: -20px;
+  top: -31px;
+  left: 50px;
   z-index: 0;
+  border-radius: 20%;
+  opacity: 92%;
+}
+.bola-laranja::before {
+  content: "";
+  background-color: #FF5733; /* Laranja mais claro */
+  width: 360px; /* Um pouco maior para criar sobreposição */
+  height: 370px;
+  position: absolute;
+  top: -1px; /* Desloca para baixo */
+  left: -30px; /* Desloca para a direita */
+  z-index: 1; /* Garante que este quadrado fique atrás do principal */
+  border-radius: 30%;
 }
 
 
   .carousel-section {
     
-    width: calc(100% - 50px); 
-    padding: 40px 20px;
-    background-color: #f0f0f0;
+    width: calc(100% - 30px); 
+    padding: 24px 20px;
+    background-color: #dae6f8;
     text-align: center;
     position: relative;
-    margin-left: auto; /* Ajuste este valor conforme necessário */
+    margin-left: -7px; /* Ajuste este valor conforme necessário */
     margin-right: auto;
     margin-top: 50px; /* Adiciona espaço entre o carrossel e o retângulo superior */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adiciona um sombreamento sutil para destacá-lo */
     border-radius: 8px; /* Adiciona bordas arredondadas para um visual mais suave */
     max-width: 1300px; /* Certifique-se de que isso corresponda ao max-width do contêiner principal */
     margin: 10 auto;
+    margin-bottom: 15px;
+    min-height: 400px;
+    max-height: 600px;
   }
   
   .carousel-section h3 {
     font-size: 32px;
     color: #013088;
     margin-bottom: 30px;
+    font-family: "Roboto Mono", monospace;
   }
 
 .carousel-container {
@@ -227,27 +255,33 @@
 }
 
 .carousel-item {
-  min-width: 300px;
-  max-width: 300px;
+  min-width: 370px;
+  max-width: 370px;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 5px;
   padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
   transition: transform 0.3s ease;
+  min-height: 390px;
+  max-height: 390px;
+  font-family: "Anek Devanagari", sans-serif;
+  font-weight: 100;
 }
 
 .carousel-item img {
   width: 100%;
   height: auto;
   border-radius: 5px;
-  margin-bottom: 15px;
+  margin-bottom: 14px;
+  margin-top: 5px;
 }
 
 .carousel-item h4 {
   font-size: 24px;
   color: #013088;
   margin-bottom: 10px;
+  margin-top: 15px;
 }
 
 .carousel-item p {
@@ -294,6 +328,7 @@
   background-color: #08082e;
   color: white;
   text-align: center;
+  margin-bottom: 5%;
 }
 
 .footer-nav {
