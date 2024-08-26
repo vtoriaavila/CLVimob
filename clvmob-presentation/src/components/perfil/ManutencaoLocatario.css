@@ -6,6 +6,7 @@
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
 }
 
 h2 {
@@ -19,7 +20,9 @@ h2 {
     margin: 20px auto;
     padding: 20px;
     background-color: #f9f9f9; /* Fundo claro */
-    border-radius: 8px;
+    border-radius: 2px;
+    border: 1px solid  rgb(221, 220, 220);
+    
 }
 
 .manutencao-Locatario-container h2 {
@@ -113,6 +116,7 @@ h2 {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    
   }
   
   .modal-content {
@@ -123,6 +127,7 @@ h2 {
     max-width: 90%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     text-align: left;
+    
   }
 
   .modal-content h2 {
@@ -262,4 +267,7 @@ h2 {
 
 .cancelar:hover {
     background-color: #c73511; /* Cor do botão adicionar ao passar o mouse */
+}
+.content{
+    background-color: white;
 }

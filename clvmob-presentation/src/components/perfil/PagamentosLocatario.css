@@ -3,19 +3,36 @@
     margin: 0 auto;
     padding: 20px;
     background-color: #f5f5f5;
-    border-radius: 8px;
+    border-radius: 2px;
+    border: 1px solid  rgb(221, 220, 220);
 }
 
 .resumo-pagamentos {
-    background-color: #e0e0e0;
+    background-color: #edf7fc;
+    color: rgb(46, 46, 46);
     padding: 15px;
-    border-radius: 6px;
+    border-radius: 2px;
     margin-bottom: 20px;
     font-size: 18px;
+    border: solid 2px #c2c2c2;
+}
+.resumo-pagamentos:hover{
+    background-color: #4fa9d6;
+    color:#edf7fc;
+    border: solid 2px #4fa9d6;
+}
+.pagamentos-container .historico-pagamento{
+    background-color: white;
+    color: #0b3246;
+    display: block;
 }
 
 .historico-pagamento, .pendencias-pagamento {
     margin-bottom: 20px;
+    color: #0b3246;
+}
+.historico-pagamento h3, .pendencias-pagamento h3{
+color: #1d1d1d;
 }
 
 table {
@@ -33,17 +50,17 @@ th, td {
     margin-right: 10px;
     padding: 5px 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 2px;
     cursor: pointer;
 }
 
 .btn-pagar {
-    background-color: #607d8b;
+    background-color: #357696;
     color: white;
 }
 
 .btn-lembrete {
-    background-color: #607d8b;
+    background-color: #357696;
     color: white;
 }
 
@@ -56,4 +73,8 @@ th, td {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+.pendencias-pagamento tbody{
+    background-color: white;
+    color: #383737;
 }
