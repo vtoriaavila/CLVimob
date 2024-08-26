@@ -33,7 +33,7 @@ export default function DashboardProprietario() {
 
         const despesaResponse = await getDespesa();
         setDespesas(despesaResponse.data);
-        console.log(despesaResponse.data);
+        console.log(despesas)
       } catch (err) {
         setError('Erro ao buscar dados.');
       } finally {
@@ -69,22 +69,32 @@ export default function DashboardProprietario() {
   };
 
   const calcularDespesaPorImovel = (imovelId) => {
-    const despesa = despesas.find(d => d.imob.id === imovelId);
+    // Encontre a despesa correspondente ao id do imóvel
+    const despesa = despesas.find(d => d.imob.id === imovelId); // Certifique-se de que a propriedade é '_id', como no exemplo
+  
+    // Verifique se a despesa foi encontrada
     if (!despesa) {
       return { total: 0, condominio: 0, iptu: 0, seguro: 0, eletricidade: 0, agua: 0 };
     }
+  
+    // Retorne o total das despesas, incluindo as despesas individuais
     return {
-      total: despesa.agua + despesa.condominio + despesa.seguro + despesa.eletricidade,
-      ...despesa
+      total: despesa.agua + despesa.condominio + despesa.seguro + despesa.eletricidade, // Inclua iptu no total
+      condominio: despesa.condominio,
+      iptu: despesa.iptu,
+      seguro: despesa.seguro,
+      eletricidade: despesa.eletricidade,
+      agua: despesa.agua
     };
   };
-
+  
   const data = [
     ['Imóvel', 'Receita', 'Despesa'],
     ...imoveis.map(imovel => {
-      const receita = pagamentos
-        .filter(p => p.imob === imovel._id)
-        .reduce((total, p) => total + p.valor, 0);
+      // const receita = pagamentos
+      //   .filter(p => p.imob === imovel._id)
+      //   .reduce((total, p) => total + p.valor, 0);
+      const receita = imovel.aluguel;
       const despesa = calcularDespesaPorImovel(imovel._id);
 
       return [imovel.tipo, receita, despesa.total];

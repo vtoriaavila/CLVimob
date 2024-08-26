@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './ImoveisProprietario.css';
-import { createImob, getImobs, deleteImob } from '../../services/imob.service';
+import { createImob, getImobs, deleteImob, editimob } from '../../services/imob.service'; // Adicionar a função de editar
 
 const ImoveisProprietario = () => {
   const [imoveis, setImoveis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const [imovelSelecionado, setImovelSelecionado] = useState(null);
   const [modalVisivelExcluir, setModalVisivelExcluir] = useState(false);
   const [modalVisivelVisualizar, setModalVisivelVisualizar] = useState(false);
@@ -56,17 +57,27 @@ const ImoveisProprietario = () => {
       return;
     }
 
-    console.log('Novo Imóvel:', novoImovel);
+    const imovelData = {
+      tipo,
+      cep,
+      endereco,
+      cidade,
+      estado,
+      quartos: parseInt(quartos),
+      banheiro: parseInt(banheiro),
+      tamanho: parseFloat(tamanho),
+      aluguel: parseFloat(aluguel)
+    };
 
     try {
-      if (imovelSelecionado) {
+      if (isEditing) {
         // Atualizar imóvel existente
-        const imovelAtualizado = await updateImob(imovelSelecionado.id, novoImovel);
-        setImoveis(imoveis.map(imovel => (imovel.id === imovelSelecionado.id ? imovelAtualizado : imovel)));
-        setImovelSelecionado(null);
+        const updatedImovel = await editimob(imovelSelecionado.id, imovelData);
+        setImoveis(imoveis.map(imovel => (imovel.id === imovelSelecionado.id ? updatedImovel : imovel)));
+        setIsEditing(false);
       } else {
         // Adicionar novo imóvel
-        const imovelCriado = await createImob(novoImovel);
+        const imovelCriado = await createImob(imovelData);
         setImoveis([...imoveis, imovelCriado]);
       }
 
@@ -99,8 +110,7 @@ const ImoveisProprietario = () => {
     }
 
     try {
-      // Substitua 'senha' pelo campo correto se necessário
-      const response = await deleteImob(imovelSelecionado, senha);
+      await deleteImob(imovelSelecionado, senha);
       alert('Imóvel excluído com sucesso.');
       setImoveis(imoveis.filter(imovel => imovel.id !== imovelSelecionado));
       setModalVisivelExcluir(false);
@@ -120,9 +130,20 @@ const ImoveisProprietario = () => {
 
   const editarImovel = (id) => {
     const imovel = imoveis.find(imovel => imovel.id === id);
+    setNovoImovel({
+      tipo: imovel.tipo,
+      cep: imovel.cep,
+      endereco: imovel.endereco,
+      cidade: imovel.cidade,
+      estado: imovel.estado,
+      quartos: imovel.quartos.toString(),
+      banheiro: imovel.banheiro.toString(),
+      tamanho: imovel.tamanho.toString(),
+      aluguel: imovel.aluguel.toString()
+    });
     setImovelSelecionado(imovel);
-    setNovoImovel(imovel); // Definir os dados do imóvel no formulário
-    setShowForm(true); // Mostrar o formulário de edição
+    setShowForm(true);
+    setIsEditing(true);
   };
 
   if (loading) return <div className="loading-spinner"></div>;
@@ -219,7 +240,7 @@ const ImoveisProprietario = () => {
             onChange={handleChange}
           />
           <button className="add-imovel" onClick={adicionarImovel}>
-            {imovelSelecionado ? 'Atualizar Imóvel' : 'Adicionar Imóvel +'}
+            {isEditing ? 'Salvar Alterações' : 'Adicionar Imóvel +'}
           </button>
         </div>
       )}
@@ -245,50 +266,46 @@ const ImoveisProprietario = () => {
   );
 };
 
-const ModalExcluir = ({ imovel, onClose, onConfirm, senha, setSenha, senhaError }) => {
-  if (!imovel) return null;
+const ModalExcluir = ({ imovel, onClose, onConfirm, senha, setSenha, senhaError }) => (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Confirmar Exclusão</h3>
+      <p>Você tem certeza que deseja excluir o imóvel?</p>
+      <input
+        type="password"
+        placeholder="Digite sua senha"
+        value={senha}
+        onChange={(e) => setSenha(e.target.value)}
+      />
+      {senhaError && <p className="error">{senhaError}</p>}
+      <button onClick={onConfirm}>Confirmar</button>
+      <button onClick={onClose}>Cancelar</button>
+    </div>
+  </div>
+);
 
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Confirmar Exclusão</h2>
-        <p>Tem certeza que deseja excluir o imóvel <strong>{imovel.tipo}</strong>?</p>
-        <input
-          type="password"
-          placeholder="Digite sua senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-        />
-        {senhaError && <p className="error-message">{senhaError}</p>}
-        <div className="modal-buttons">
-          <button className="modal-button" onClick={onConfirm}>Excluir</button>
-          <button className="modal-button" onClick={onClose}>Cancelar</button>
+const ModalVisualizar = ({ imovel, onClose }) => (
+  <div className="modal">
+    <div className="modal-content">
+      <h3>Detalhes do Imóvel</h3>
+      {imovel ? (
+        <div>
+          <p><strong>Tipo:</strong> {imovel.tipo}</p>
+          <p><strong>CEP:</strong> {imovel.cep}</p>
+          <p><strong>Endereço:</strong> {imovel.endereco}</p>
+          <p><strong>Cidade:</strong> {imovel.cidade}</p>
+          <p><strong>Estado:</strong> {imovel.estado}</p>
+          <p><strong>Quartos:</strong> {imovel.quartos}</p>
+          <p><strong>Banheiros:</strong> {imovel.banheiro}</p>
+          <p><strong>Tamanho:</strong> {imovel.tamanho} m²</p>
+          <p><strong>Aluguel:</strong> R${imovel.aluguel}</p>
         </div>
-      </div>
+      ) : (
+        <p>Imóvel não encontrado.</p>
+      )}
+      <button onClick={onClose}>Fechar</button>
     </div>
-  );
-};
-
-const ModalVisualizar = ({ imovel, onClose }) => {
-  if (!imovel) return null;
-
-  return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Detalhes do Imóvel</h2>
-        <p><strong>Tipo:</strong> {imovel.tipo}</p>
-        <p><strong>CEP:</strong> {imovel.cep}</p>
-        <p><strong>Endereço:</strong> {imovel.endereco}</p>
-        <p><strong>Cidade:</strong> {imovel.cidade}</p>
-        <p><strong>Estado:</strong> {imovel.estado}</p>
-        <p><strong>Quartos:</strong> {imovel.quartos}</p>
-        <p><strong>Banheiros:</strong> {imovel.banheiro}</p>
-        <p><strong>Tamanho (m²):</strong> {imovel.tamanho}</p>
-        <p><strong>Valor do Aluguel:</strong> {imovel.aluguel}</p>
-        <button className="modal-button" onClick={onClose}>Fechar</button>
-      </div>
-    </div>
-  );
-};
+  </div>
+);
 
 export default ImoveisProprietario;

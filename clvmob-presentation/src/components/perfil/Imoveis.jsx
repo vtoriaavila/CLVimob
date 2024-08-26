@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Imoveis.css';
-import { createImob, getAllImobs } from '../../services/imob.service'; // Importe as funções da API
+import { createImob, getAllImobs, deleteImob, editimob } from '../../services/imob.service'; // Importa a função de editar imóvel
 
 const Imoveis = () => {
   const [imoveis, setImoveis] = useState([]);
@@ -9,7 +9,11 @@ const Imoveis = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
-  const [isEditing, setIsEditing] = useState(false); 
+  const [isEditing, setIsEditing] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false); // Controle para mostrar o diálogo de exclusão
+  const [imovelAExcluir, setImovelAExcluir] = useState(null); // Imóvel que será excluído
+  const [senha, setSenha] = useState(''); // Novo estado para a senha
+  const [senhaError, setSenhaError] = useState(''); // Novo estado para erros de senha
 
   const [novoImovel, setNovoImovel] = useState({
     tipo: '',
@@ -27,7 +31,7 @@ const Imoveis = () => {
     const fetchImoveis = async () => {
       try {
         const response = await getAllImobs();
-        const data = response.data.results; // Acessando o array de imóveis na resposta
+        const data = response.data.results;
         setImoveis(data);
       } catch (err) {
         setError('Erro ao carregar imóveis');
@@ -44,6 +48,20 @@ const Imoveis = () => {
       ...novoImovel,
       [e.target.name]: e.target.value
     });
+  };
+
+  const handleSenhaChange = (e) => {
+    setSenha(e.target.value);
+  };
+
+  const getUpdatedFields = () => {
+    const fields = {};
+    for (const key in novoImovel) {
+      if (novoImovel[key] !== imovelSelecionado[key] && novoImovel[key] !== '') {
+        fields[key] = novoImovel[key];
+      }
+    }
+    return fields;
   };
 
   const adicionarImovel = async () => {
@@ -67,8 +85,20 @@ const Imoveis = () => {
     };
 
     try {
-      const imovelCriado = await createImob(novoImovelData);
-      setImoveis([...imoveis, imovelCriado]);
+      if (isEditing) {
+        // Editar imóvel existente
+        const updatedFields = getUpdatedFields();
+        if (Object.keys(updatedFields).length > 0) {
+          await editimob(imovelSelecionado.id, updatedFields);
+          setImoveis(imoveis.map(imovel => imovel.id === imovelSelecionado.id ? { ...imovelSelecionado, ...updatedFields } : imovel));
+        }
+        setIsEditing(false);
+      } else {
+        // Adicionar novo imóvel
+        const imovelCriado = await createImob(novoImovelData);
+        setImoveis([...imoveis, imovelCriado]);
+      }
+
       setNovoImovel({
         tipo: '',
         cep: '',
@@ -82,17 +112,32 @@ const Imoveis = () => {
       });
       setShowForm(false);
     } catch (error) {
-      alert('Erro ao adicionar imóvel');
+      alert('Erro ao adicionar/editar imóvel');
     }
   };
 
-  const excluirImovel = async (id) => {
+  const pedirSenhaParaExcluir = (id) => {
+    setImovelAExcluir(id);
+    setShowDeleteDialog(true);
+  };
+
+  const confirmarExcluirImovel = async () => {
+    if (!senha) {
+      setSenhaError('Por favor, insira sua senha para confirmar a exclusão.');
+      return;
+    }
+
     try {
-      // Adicione a lógica para excluir o imóvel da API aqui
-      // await deleteImob(id); // Supondo que você tenha uma função para deletar imóveis
-      setImoveis(imoveis.filter(imovel => imovel.id !== id));
+      // Substitua 'senha' pelo campo correto se necessário
+      const response = await deleteImob(imovelAExcluir, senha);
+      alert('Imóvel excluído com sucesso.');
+      setImoveis(imoveis.filter(imovel => imovel.id !== imovelAExcluir));
+      setShowDeleteDialog(false);
+      setSenha('');
+      setSenhaError('');
     } catch (err) {
       console.error('Erro ao excluir imóvel:', err);
+      alert('Erro ao excluir imóvel. Verifique a senha e tente novamente.');
     }
   };
 
@@ -117,7 +162,7 @@ const Imoveis = () => {
     });
     setImovelSelecionado(imovel);
     setShowForm(true);
-    setIsEditing(true); // Muda o estado para edição
+    setIsEditing(true);
   };
 
   if (loading) return <div className="loading-spinner"></div>;
@@ -136,7 +181,7 @@ const Imoveis = () => {
               <span>{imovel.endereco}</span>
               <div className="imovel-actions">
                 <button onClick={() => editarImovel(imovel.id)}>Editar</button>
-                <button onClick={() => excluirImovel(imovel.id)}>Excluir</button>
+                <button onClick={() => pedirSenhaParaExcluir(imovel.id)}>Excluir</button>
                 <button onClick={() => verImovel(imovel.id)}>Ver</button>
               </div>
             </div>
@@ -214,7 +259,7 @@ const Imoveis = () => {
             onChange={handleChange}
           />
           <button className="add-imovel" onClick={adicionarImovel}>
-            Adicionar Imóvel +
+            {isEditing ? 'Salvar Alterações' : 'Adicionar Imóvel +'}
           </button>
         </div>
       )}
@@ -224,6 +269,24 @@ const Imoveis = () => {
           imovel={imovelSelecionado} 
           onClose={() => setModalVisivel(false)} 
         />
+      )}
+
+      {showDeleteDialog && (
+        <div className="senha-modal">
+          <div className="senha-modal-content">
+            <h2>Confirme a Exclusão</h2>
+            <input
+              type="password"
+              name="senha"
+              placeholder="Digite sua senha"
+              value={senha}
+              onChange={handleSenhaChange}
+            />
+            {senhaError && <p className="error-message">{senhaError}</p>}
+            <button onClick={confirmarExcluirImovel}>Confirmar Exclusão</button>
+            <button onClick={() => setShowDeleteDialog(false)}>Cancelar</button>
+          </div>
+        </div>
       )}
     </div>
   );

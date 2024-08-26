@@ -77,3 +77,19 @@ export async function idImovel(idImovel) {
     throw error;
   }
 }
+
+export async function editimob(idImovel, data) {
+  try {
+    const response = await axios.patch(`${baseURL}/imob/${idImovel}`, data, {
+      headers: {
+        Authorization: `Bearer ${Cookies.get('token')}`,
+        'Content-Type': 'application/json' // Certifique-se de que o formato de dados está correto
+      },
+    });
+    console.log('Imóvel editado com sucesso:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Erro ao editar imóvel:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+}

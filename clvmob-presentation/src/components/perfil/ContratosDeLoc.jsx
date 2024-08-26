@@ -4,7 +4,16 @@ import Cookies from 'js-cookie';
 import './ContratosDeLoc.css'; // Assumindo que o método getAllContract está em um arquivo chamado api.js
 import { getAllContract } from '../../services/contrato.service';
 
+const formatDateToDDMMYYYY = (isoString) => {
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const year = date.getFullYear();
+  return `${day}/${month}/${year}`;
+};
+
 const ContratosDeLoc = () => {
+  
   const [contratos, setContratos] = useState([]);
   const [novoContrato, setNovoContrato] = useState({
     locatorio: '',
@@ -97,10 +106,15 @@ const ContratosDeLoc = () => {
     setModalVisivel(true);
   };
 
+  
+
   const editarContrato = (id) => {
     const contrato = contratos.find(contrato => contrato.id === id);
     setEdicaoContrato(contrato);
-    setNovoContrato(contrato);
+    setNovoContrato({
+      ...contrato,
+      imovel: contrato.imob._id // Ajuste se necessário
+    });
   };
 
   const salvarEdicao = () => {
@@ -143,7 +157,7 @@ const ContratosDeLoc = () => {
           <div key={contrato.id} className="contrato-item">
             <span>{contrato.locatorio.name}</span>
             <span>{contrato.imob.tipo}</span>
-            <span>{formatDate(contrato.dt_inicio)} - {formatDate(contrato.dt_vencimento)}</span>
+            <span>{formatDateToDDMMYYYY(contrato.dt_inicio)} - {formatDateToDDMMYYYY(contrato.dt_vencimento)}</span>
             <div className="contrato-actions">
               <button onClick={() => editarContrato(contrato.id)}>Editar</button>
               <button onClick={() => excluirContrato(contrato.id)}>Excluir</button>
@@ -244,18 +258,17 @@ const Modal = ({ contrato, onClose }) => {
     <div className="modal">
       <div className="modal-content">
         <h2>Detalhes do Contrato</h2>
-        <p>Locatário: {contrato.locatorio}</p>
-        <p>Imóvel: {contrato.imovel}</p>
-        <p>Data de Início: {contrato.dataInicio}</p>
-        <p>Data de Vencimento: {contrato.dataFim}</p>
-        <p>Proprietário: {contrato.proprietario}</p>
-        <p>Admin: {contrato.admin}</p>
-        <p>Locatório: {contrato.locatorio}</p>
-        <p>Imóvel ID: {contrato.imob}</p>
+        <p>Locatário: {contrato.locatorio.name}</p>
+        <p>Imóvel: {contrato.imob.tipo}</p>
+        <p>Data de Início: {formatDateToDDMMYYYY(contrato.dt_inicio)}</p>
+        <p>Data de Vencimento: {formatDateToDDMMYYYY(contrato.dt_vencimento)}</p>
+        <p>Proprietário: {contrato.proprietario.name}</p>
+        <p>Admin: {contrato.admin.name}</p>
         <button className="modal-button" onClick={onClose}>Fechar</button>
       </div>
     </div>
   );
 };
+
 
 export default ContratosDeLoc;
