@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Documentos.css';
+import { getAllDocuments } from '../../services/documento.service'; // Importando a função da API
 
 const Documentos = () => {
   const [documentos, setDocumentos] = useState([]);
@@ -18,21 +19,19 @@ const Documentos = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Simulação de carregamento
-    setTimeout(() => {
+    const fetchDocumentos = async () => {
       try {
-        // Simulação de documentos carregados
-        setDocumentos([
-          { id: 1, nome: 'Contrato de Locação', tipo: 'PDF', data: '01/08/2024', locatario: 'João Silva', proprietario: 'Ana Souza' },
-          { id: 2, nome: 'Laudo de Vistoria', tipo: 'PDF', data: '03/08/2024', locatario: 'Maria Oliveira', proprietario: 'Pedro Lima' },
-          { id: 3, nome: 'Recibo de Pagamento', tipo: 'JPEG', data: '05/08/2024', locatario: 'Carlos Mendes', proprietario: 'Carlos Mendes' },
-        ]);
-        setLoading(false);
+        const response = await getAllDocuments();
+        console.log(response)
+        setDocumentos(response.data);
       } catch (error) {
         setError('Erro ao carregar documentos.');
+      } finally {
         setLoading(false);
       }
-    }, 2000); // Simula um carregamento de 2 segundos
+    };
+
+    fetchDocumentos();
   }, []);
 
   const handleChange = (e) => {
@@ -82,10 +81,11 @@ const Documentos = () => {
   };
 
   const verDocumento = (id) => {
-    const documento = documentos.find(documento => documento.id === id);
+    const documento = documentos.find(documento => documento._id === id);
     setDocumentoSelecionado(documento);
     setModalVisivel(true);
-  };
+};
+
 
   const editarDocumento = (id) => {
     const documento = documentos.find(documento => documento.id === id);
@@ -139,23 +139,26 @@ const Documentos = () => {
     <div className="documentos-container">
       <h2>Documentos</h2>
       <div className="documentos-list">
-        {documentos.map(documento => (
-          <div key={documento.id} className="documento-item">
-            <span>{documento.nome}</span>
-            <span>{documento.tipo}</span>
-            <span>{documento.data}</span>
-            <span>{documento.locatario}</span>
-            <span>{documento.proprietario}</span>
-            <div className="documento-actions">
-              <button onClick={() => editarDocumento(documento.id)}>Editar</button>
-              <button onClick={() => excluirDocumento(documento.id)}>Excluir</button>
-              <button onClick={() => verDocumento(documento.id)}>Ver</button>
-            </div>
+      {documentos.map(documento => {
+      // Formata a data para o formato 'pt-BR'
+      const dataFormatada = documento.data ? new Date(documento.data).toLocaleDateString('pt-BR') : 'Não disponível';
+      
+      return (
+        <div key={documento._id} className="documento-item">
+          <span>{documento.titulo}</span>
+          <span>{documento.tipo}</span>
+          <span>{dataFormatada}</span>
+          <span>{documento.imob.tipo}</span>
+          <div className="documento-actions">
+            <button onClick={() => editarDocumento(documento._id)}>Editar</button>
+            <button onClick={() => excluirDocumento(documento._id)}>Excluir</button>
+            <button onClick={() => verDocumento(documento._id)}>Ver</button>
           </div>
-        ))}
+        </div>
+      );
+    })}
       </div>
 
-      {/* Formulário para Adicionar Novo Documento */}
       {!formEdicaoVisivel && (
         <div className="novo-documento-form">
           <input
@@ -199,7 +202,6 @@ const Documentos = () => {
         </div>
       )}
 
-      {/* Formulário para Editar Documento */}
       {formEdicaoVisivel && (
         <div className="edicao-documento-form">
           <input
@@ -255,15 +257,16 @@ const Documentos = () => {
 const Modal = ({ documento, onClose }) => {
   if (!documento) return null;
 
+  const dataFormatada = documento.data ? new Date(documento.data).toLocaleDateString('pt-BR') : 'Não disponível';
+
   return (
     <div className="modal">
       <div className="modal-content">
         <h2>Detalhes do Documento</h2>
-        <p><strong>Nome:</strong> {documento.nome || 'Não disponível'}</p>
+        <p><strong>Nome:</strong> {documento.titulo || 'Não disponível'}</p>
         <p><strong>Tipo:</strong> {documento.tipo || 'Não disponível'}</p>
-        <p><strong>Data de Upload:</strong> {documento.data || 'Não disponível'}</p>
-        <p><strong>Locatário:</strong> {documento.locatario || 'Não disponível'}</p>
-        <p><strong>Proprietário:</strong> {documento.proprietario || 'Não disponível'}</p>
+        <p><strong>Data de Upload:</strong> {dataFormatada}</p>
+        <p><strong>Imóvel:</strong> {documento.imob.tipo || 'Não disponível'}</p>
         <button onClick={onClose}>Fechar</button>
       </div>
     </div>
