@@ -4,7 +4,8 @@
     margin: 20px auto;
     padding: 20px;
     background-color: #f9f9f9; /* Fundo claro */
-    border-radius: 8px;
+    border-radius: 2px;
+    border: 1px solid rgb(221, 220, 220);
 }
 
 .configuracao-proprietario-container h2 {
@@ -43,14 +44,14 @@
     gap: 10px;
 }
 
-.editar-configuracoes,
-.salvar-configuracoes,
-.editar-senha,
-.cancelar-edicao {
-    background-color: #607d8b; /* Cor dos botões */
+.configuracao-buttons-prop .editar-configuracoes,
+.configuracao-buttons-prop .salvar-configuracoes,
+.configuracao-buttons-prop .editar-senha,
+.configuracao-buttons-prop .cancelar-edicao {
+    background-color: #18305F; /* Cor dos botões */
     border: none;
     padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: 2px;
     cursor: pointer;
     font-size: 16px;
     color: #fff;
@@ -59,9 +60,9 @@
     justify-content: space-between;
 }
 
-.editar-configuracoes:hover,
-.salvar-configuracoes:hover,
-.editar-senha:hover,
-.cancelar-edicao:hover {
-    background-color: #455a64; /* Cor dos botões ao passar o mouse */
+.configuracao-buttons-prop .editar-configuracoes:hover,
+.configuracao-buttons-prop .salvar-configuracoes:hover,
+.configuracao-buttons-prop .editar-senha:hover,
+.configuracao-buttons-prop .cancelar-edicao:hover {
+    background-color: #1b7ce4; /* Cor dos botões ao passar o mouse */
 }

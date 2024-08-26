@@ -172,7 +172,7 @@ export default function DashboardProprietario() {
                 <p><strong>Seguro:</strong> R$ {despesa.seguro.toFixed(2)}</p>
                 <p><strong>Eletricidade:</strong> R$ {despesa.eletricidade.toFixed(2)}</p>
                 <p><strong>Água:</strong> R$ {despesa.agua.toFixed(2)}</p>
-                <p><strong>Despesa Total:</strong> R$ {despesa.total.toFixed(2)}</p>
+                <p className = "despesaTot"><strong>Despesa Total:</strong> R$ {despesa.total.toFixed(2)}</p>
               </div>
             );
           })}

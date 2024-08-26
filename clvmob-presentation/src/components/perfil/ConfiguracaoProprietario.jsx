@@ -306,7 +306,7 @@ const ConfiguracaoProprietario = () => {
             disabled={!modoEdicao}
           />
         </div>
-        <div className="configuracao-buttons">
+        <div className="configuracao-buttons-prop">
           <button className="editar-configuracoes" onClick={() => setModoEdicao(!modoEdicao)}>
             {modoEdicao ? 'Cancelar' : 'Editar Configurações'}
           </button>
