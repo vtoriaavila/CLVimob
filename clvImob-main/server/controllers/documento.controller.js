@@ -3,7 +3,8 @@ import {
     getAllDocumentosService,
     getDocumentoByIdService,
     deleteDocumentoService,
-    updateDocumentoService
+    updateDocumentoService,
+    getDocumentosByUserService
 } from '../services/documento.service.js';
 
 // Controller para criar um novo documento
@@ -31,6 +32,31 @@ export const getAllDocumentos = async (req, res) => {
         return res.status(500).send({ message: err.message });
     }
 };
+
+// Controller para obter documentos por ID do usuário
+export const getDocumentosByUser = async (req, res) => {
+    try {
+        const userId = req.userId; // ID do usuário vem do middleware de autenticação
+
+        // Verifica se o ID do usuário está presente
+        if (!userId) {
+            return res.status(400).send({ message: "User ID is required" });
+        }
+        
+        console.log(userId)
+        const documentos = await getDocumentosByUserService(userId);
+        console.log(documentos)
+
+        if (documentos.length === 0) {
+            return res.status(404).send({ message: "No documents found for the user" });
+        }
+
+        return res.status(200).send(documentos);
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
+    }
+};
+
 
 // Controller para obter um documento por ID
 export const getDocumentoById = async (req, res) => {

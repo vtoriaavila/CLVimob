@@ -4,6 +4,7 @@ import {
     findManutencaoByIdService,
     updateManutencaoService,
     deleteManutencaoService,
+    findByUserService,
 } from "../services/manutencao.service.js";
 
 // Create a new manutencao
@@ -36,6 +37,22 @@ export const findAllManutencao = async (req, res) => {
         if (manutencao.length === 0) {
             return res.status(404).send({ message: "No manutencao records found" });
         }
+        return res.send(manutencao);
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
+    }
+};
+
+// Find manutencao records by user (proprietario)
+export const findByUser = async (req, res) => {
+    try {
+        const userId = req.params.userId; // Supondo que o ID do usuário vem como parâmetro na URL
+        const manutencao = await findByUserService(userId);
+
+        if (manutencao.length === 0) {
+            return res.status(404).send({ message: "No manutencao records found for this user" });
+        }
+
         return res.send(manutencao);
     } catch (err) {
         return res.status(500).send({ message: err.message });
@@ -83,6 +100,33 @@ export const updateManutencao = async (req, res) => {
         return res.status(500).send({ message: err.message });
     }
 };
+
+export const editManutencao = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { tipo_manutencao, desc_total } = req.body;
+
+        // Verifica se os campos tipo_manutencao e desc_total estão presentes na requisição
+        if (tipo_manutencao === undefined || desc_total === undefined) {
+            return res.status(400).send({ message: "Tipo de manutenção e descrição são obrigatórios" });
+        }
+
+        // Busca a manutenção atual pelo ID
+        const manutencao = await findManutencaoByIdService(id);
+        if (!manutencao) {
+            return res.status(404).send({ message: "Manutencao not found" });
+        }
+
+        // Atualiza apenas os campos permitidos
+        const updatedFields = { tipo_manutencao, desc_total };
+        const updatedManutencao = await updateManutencaoService(id, updatedFields);
+
+        return res.send(updatedManutencao);
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
+    }
+};
+
 
 
 // Delete a manutencao by ID

@@ -16,13 +16,31 @@ export const createDocumentoService = async (dados) => {
 
 // Serviço para obter todos os documentos
 export const getAllDocumentosService = async () => {
-    return await Documento.find();
+    return await Documento.find().populate('imob');
 };
 
 // Serviço para obter um documento por ID
 export const getDocumentoByIdService = async (id) => {
     return await Documento.findById(id);
 };
+
+export const getDocumentosByUserService = async (userId) => {
+    try {
+        console.log("User ID:", userId); // Adicione este log para depuração
+        
+        const documentos = await Documento.find({
+            "imob.proprietario": userId
+        }).populate('imob');
+
+        console.log("Documentos encontrados:", documentos); // Adicione este log para verificação
+
+        return documentos;
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
+
 
 // Serviço para deletar um documento
 export const deleteDocumentoService = async (id) => {

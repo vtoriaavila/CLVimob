@@ -39,6 +39,7 @@ export const authMiddleware = async (req, res, next) => {
             }
             
             req.userId = user.id;
+            req.userRole = user.role;
             // Passa para o próximo middleware se o token for válido
             return next();
         });

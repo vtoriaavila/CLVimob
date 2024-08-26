@@ -5,6 +5,7 @@ import {
     getDocumentoById, 
     deleteDocumento, 
     updateDocumento, 
+    getDocumentosByUser,
 } from "../controllers/documento.controller.js";
 
 import {authMiddleware} from "../middlewares/auth.middlewares.js"
@@ -17,6 +18,8 @@ router.post("/",authMiddleware, createDocumento);
 
 // Route to get all manutencao records
 router.get("/",authMiddleware, getAllDocumentos);
+
+router.get("/user", authMiddleware, getDocumentosByUser);
 
 // Route to get a specific manutencao by ID
 router.get("/:id", authMiddleware,getDocumentoById);

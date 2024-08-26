@@ -1,4 +1,4 @@
-import { createDespesasService, findAllDespesasService, findDespesaByIdService, updateDespesasService, deleteDespesasService } from '../services/despesas.service.js';
+import { createDespesasService, findAllDespesasService, findDespesaByIdService, updateDespesasService, deleteDespesasService,findByUserService } from '../services/despesa.service.js';
 
 export const createDespesas = async (req, res) => {
     try {
@@ -40,6 +40,21 @@ export const findDespesaById = async (req, res) => {
         }
 
         return res.status(200).send(despesa);
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
+    }
+};
+
+export const findByUser = async (req, res) => {
+    try {
+        const userId = req.params.userId; // Supondo que o ID do usuário vem como parâmetro na URL
+        const despesa = await findByUserService(userId);
+
+        if (despesa.length === 0) {
+            return res.status(404).send({ message: "No manutencao records found for this user" });
+        }
+
+        return res.send(despesa);
     } catch (err) {
         return res.status(500).send({ message: err.message });
     }

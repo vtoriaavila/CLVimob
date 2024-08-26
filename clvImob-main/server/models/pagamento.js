@@ -7,6 +7,11 @@ const PagamentoSchema = new mongoose.Schema({
         required: true 
     },
 
+    tipo: {
+        type: String,
+        required: true
+    },
+
     emissor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
@@ -22,6 +27,12 @@ const PagamentoSchema = new mongoose.Schema({
     valor: {
         type: Number,
         required: true,  
+    },
+
+    status: {
+        type: String,
+        required: true,
+        enum: ["Solicitado", "Em andamento", "Concluído"], // Only these options are allowed
     },
 
     data: {

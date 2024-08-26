@@ -29,12 +29,13 @@ export const searchByCepService = (cep) => Imob.find({
 
 export const byUseService = (id) => Imob.find({ proprietario: id }).sort({ _id: -1 }).populate("proprietario")
 
-export const updateService = (id, cep, num_casa, rua, bairro, cidade, estado) =>
+export const updateService = (id, updateFields) =>
     Imob.findOneAndUpdate(
         { _id: id },
-        { cep, num_casa, rua, bairro, cidade, estado },
+        { $set: updateFields }, // Usa $set para atualizar apenas os campos fornecidos
         { new: true, rawResult: true }
     );
+
 
 export const deleteImobService = (id) => {
     return Imob.findOneAndDelete({ _id: id });

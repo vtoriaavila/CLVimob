@@ -20,3 +20,8 @@ export const updateDespesasService = async (id, updateData) => {
 export const deleteDespesasService = async (id) => {
     return await Despesas.findByIdAndDelete(id);
 };
+
+// Find Despesas records by user (proprietario)
+export const findByUserService = async (userId) => {
+    return Despesas.find({ "imob.proprietario": userId }).populate("imob");
+};

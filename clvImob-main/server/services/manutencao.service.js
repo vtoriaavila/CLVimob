@@ -16,6 +16,11 @@ export const findManutencaoByIdService = async (id) => {
     return Manutencao.findById(id).populate("imob");
 };
 
+// Find manutencao records by user (proprietario)
+export const findByUserService = async (userId) => {
+    return Manutencao.find({ "imob.proprietario": userId }).populate("imob");
+};
+
 
 export const updateManutencaoService = async (id, updateData) => {
         const updatedManutencao = await Manutencao.findByIdAndUpdate(

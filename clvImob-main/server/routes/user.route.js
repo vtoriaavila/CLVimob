@@ -1,14 +1,18 @@
 import { Router } from 'express';
-import userController from '../controllers/user.controller.js';
+import {create, findAll, findId, UpdateId,findLocs, findProps,UpdateIdConfig} from '../controllers/user.controller.js';
 import middlewares from '../middlewares/global.middlewares.js'; // Importa como objeto
+import {authMiddleware} from "../middlewares/auth.middlewares.js"
 
 const route = Router();
 
-const { validId, validUser } = middlewares; // Desestrutura o objeto
-
-route.post("/", userController.create);
-route.get("/", userController.findAll);
-route.get("/:id", validId, validUser, userController.findId);
-route.patch("/:id", validId, validUser, userController.UpdateId);
+// /user
+route.post("/", create);
+route.get("/", findAll);
+route.get("/cookie",authMiddleware,findId)
+route.get("/prop",authMiddleware,findProps)
+route.get("/loc",authMiddleware,findLocs)
+route.patch("/update", authMiddleware, UpdateIdConfig);
+route.patch("/update/:id", authMiddleware, UpdateId);
+route.get("/:id", authMiddleware, findId);
 
 export default route;

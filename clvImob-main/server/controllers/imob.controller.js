@@ -288,45 +288,51 @@ export const byUser = async (req, res) => {
 // Update Imob
 export const update = async (req, res) => {
     try {
-        const { tipo, cep, endereco, cidade, estado, quartos, banheiro,tamanho, aluguel } = req.body;
+        const { tipo, cep, endereco, cidade, estado, quartos, banheiro, tamanho, aluguel } = req.body;
         const { id } = req.params;
 
-        if (!tipo && !cep && !endereco && !cidade && !estado && !quartos && !banheiro && !tamanho && aluguel) {
+        // Verifica se pelo menos um campo foi fornecido para atualização
+        if (!tipo && !cep && !endereco && !cidade && !estado && !quartos && !banheiro && !tamanho && !aluguel) {
             return res.status(400).send({
-                message: "Submit all fields for update",
+                message: "At least one field is required for update",
             });
         }
 
+        // Encontra o imóvel pelo ID
         const imob = await findByIdService(id);
 
         if (!imob) {
             return res.status(404).send({ message: "Imob not found" });
         }
 
-        if (String(imob.proprietario._id) !== req.userId) {
-            return res.status(400).send({
-                message: "You didn't update this imob",
+        // Verifica se o usuário é um administrador ou o proprietário do imóvel
+        if (req.userRole !== 'admin' && String(imob.proprietario._id) !== req.userId) {
+            return res.status(403).send({
+                message: "You don't have permission to update this imob",
             });
         }
 
-        await updateService(
-            id,
-            tipo,
-            cep,
-            endereco,
-            cidade,
-            estado,
-            quartos,
-            banheiro,
-            tamanho,
-            aluguel
-        );
+        // Cria um objeto com os campos fornecidos
+        const updateFields = {};
+        if (tipo) updateFields.tipo = tipo;
+        if (cep) updateFields.cep = cep;
+        if (endereco) updateFields.endereco = endereco;
+        if (cidade) updateFields.cidade = cidade;
+        if (estado) updateFields.estado = estado;
+        if (quartos) updateFields.quartos = parseInt(quartos);
+        if (banheiro) updateFields.banheiro = parseInt(banheiro);
+        if (tamanho) updateFields.tamanho = parseFloat(tamanho);
+        if (aluguel) updateFields.aluguel = parseFloat(aluguel);
 
-        return res.send({ message: "Imob successfully updated" });
+        // Atualiza o imóvel com os campos fornecidos
+        const updatedImob = await updateService(id, updateFields);
+
+        return res.send({ message: "Imob successfully updated", updatedImob });
     } catch (err) {
         return res.status(500).send({ message: err.message });
     }
 };
+
 
 // Delete Imob
 export const deleteImob = async (req, res) => {
@@ -339,9 +345,9 @@ export const deleteImob = async (req, res) => {
             return res.status(404).send({ message: "Imob not found" });
         }
 
-        if (String(imob.proprietario._id) !== req.userId) {
-            return res.status(400).send({
-                message: "You didn't delete this imob",
+        if (req.userRole !== 'admin' && String(imob.proprietario._id) !== req.userId) {
+            return res.status(403).send({
+                message: "You don't have permission to update this imob",
             });
         }
 

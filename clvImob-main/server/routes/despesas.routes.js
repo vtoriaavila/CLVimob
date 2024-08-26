@@ -1,5 +1,5 @@
 import express from 'express';
-import { createDespesas, findAllDespesas, findDespesaById, updateDespesas, deleteDespesas } from '../controllers/despesas.controller.js';
+import { createDespesas, findAllDespesas, findDespesaById, updateDespesas, deleteDespesas,findByUser } from '../controllers/despesas.controller.js';
 import {authMiddleware} from "../middlewares/auth.middlewares.js"
 
 
@@ -10,6 +10,8 @@ router.post('/',authMiddleware, createDespesas);
 
 // Route to get all despesas with pagination
 router.get('/', authMiddleware,findAllDespesas);
+
+router.get('/byUser', authMiddleware,findByUser);
 
 // Route to get a specific despesa by ID
 router.get('/:id', authMiddleware,findDespesaById);

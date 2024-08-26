@@ -3,7 +3,9 @@ import {
     getAllPagamentosService,
     getPagamentoByIdService,
     deletePagamentoService,
-    updatePagamentoService
+    updatePagamentoService,
+    getPagamentosByUserService,
+    getPagamentosByAdminService
 } from '../services/pagamento.service.js';
 
 // Controller para criar um novo pagamento
@@ -26,6 +28,22 @@ export const getAllPagamentos = async (req, res) => {
     }
 };
 
+// Controlador para obter pagamentos por usuário
+export const getPagamentosByUser = async (req, res) => {
+    try {
+        const userId = req.userId; // Assumindo que userId está disponível na requisição
+        const pagamentos = await getPagamentosByUserService(userId);
+
+        if (pagamentos.length === 0) {
+            return res.status(404).send({ message: "Nenhum pagamento encontrado para o usuário" });
+        }
+
+        return res.status(200).send(pagamentos);
+    } catch (err) {
+        return res.status(500).send({ message: err.message });
+    }
+};
+
 // Controller para obter um pagamento por ID
 export const getPagamentoById = async (req, res) => {
     try {
@@ -33,7 +51,7 @@ export const getPagamentoById = async (req, res) => {
         const pagamento = await getPagamentoByIdService(id);
 
         if (!pagamento) {
-            return res.status(404).send({ message: "Pagamento not found" });
+            return res.status(404).send({ message: "Pagamento não encontrado" });
         }
 
         return res.status(200).send(pagamento);
@@ -42,6 +60,17 @@ export const getPagamentoById = async (req, res) => {
     }
 };
 
+export const getPagamentosByAdmin = async (req, res) => {
+    const { adminId } = req.userId;
+  
+    try {
+      const pagamentos = await getPagamentosByAdminService(adminId);
+      res.json(pagamentos);
+    } catch (err) {
+      res.status(500).json({ error: `Erro ao buscar pagamentos: ${err.message}` });
+    }
+  };
+
 // Controller para deletar um pagamento
 export const deletePagamento = async (req, res) => {
     try {
@@ -49,10 +78,10 @@ export const deletePagamento = async (req, res) => {
         const pagamento = await deletePagamentoService(id);
 
         if (!pagamento) {
-            return res.status(404).send({ message: "Pagamento not found" });
+            return res.status(404).send({ message: "Pagamento não encontrado" });
         }
 
-        return res.status(200).send({ message: "Pagamento deleted successfully" });
+        return res.status(200).send({ message: "Pagamento excluído com sucesso" });
     } catch (err) {
         return res.status(500).send({ message: err.message });
     }
@@ -65,7 +94,7 @@ export const updatePagamento = async (req, res) => {
         const updatedPagamento = await updatePagamentoService(id, req.body);
 
         if (!updatedPagamento) {
-            return res.status(404).send({ message: "Pagamento not found" });
+            return res.status(404).send({ message: "Pagamento não encontrado" });
         }
 
         return res.status(200).send(updatedPagamento);
