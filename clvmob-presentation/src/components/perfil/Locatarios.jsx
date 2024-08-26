@@ -18,7 +18,10 @@ const Locatarios = () => {
   const [modalVisivel, setModalVisivel] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [edicaoLocatario, setEdicaoLocatario] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+ 
   useEffect(() => {
     const fetchLocatarios = async () => {
       try {
@@ -27,6 +30,8 @@ const Locatarios = () => {
         setLocatarios(response.data);
       } catch (error) {
         console.error('Erro ao buscar locatários:', error);
+      } finally {
+        setLoading(false); // Concluímos o carregamento, independente de sucesso ou falha
       }
     };
 
@@ -141,6 +146,9 @@ const Locatarios = () => {
     setEdicaoLocatario(null);
     setShowForm(false);
   };
+
+  if (loading) return <div className="loading-spinner"></div>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="locatarios-container">

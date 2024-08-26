@@ -28,6 +28,8 @@ const formatDate = (dateString) => {
   const [modalVisivel, setModalVisivel] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [edicaoProprietario, setEdicaoProprietario] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchProprietarios = async () => {
@@ -36,6 +38,8 @@ const formatDate = (dateString) => {
         setProprietarios(response.data);
       } catch (error) {
         console.error('Erro ao buscar proprietários:', error);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -141,6 +145,10 @@ const formatDate = (dateString) => {
     setEdicaoProprietario(null);
     setShowForm(false);
   };
+
+  if (loading) return <div className="loading-spinner"></div>;
+  if (error) return <p>{error}</p>;
+
 
   return (
     <div className="proprietarios-container">

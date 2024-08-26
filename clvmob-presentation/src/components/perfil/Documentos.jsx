@@ -1,13 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Documentos.css';
 
 const Documentos = () => {
-  const [documentos, setDocumentos] = useState([
-    { id: 1, nome: 'Contrato de Locação', tipo: 'PDF', data: '01/08/2024', locatario: 'João Silva', proprietario: 'Ana Souza' },
-    { id: 2, nome: 'Laudo de Vistoria', tipo: 'PDF', data: '03/08/2024', locatario: 'Maria Oliveira', proprietario: 'Pedro Lima' },
-    { id: 3, nome: 'Recibo de Pagamento', tipo: 'JPEG', data: '05/08/2024', locatario: 'Carlos Mendes', proprietario: 'Carlos Mendes' },
-  ]);
-
+  const [documentos, setDocumentos] = useState([]);
   const [novoDocumento, setNovoDocumento] = useState({
     nome: '',
     tipo: '',
@@ -19,6 +14,26 @@ const Documentos = () => {
   const [documentoSelecionado, setDocumentoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [formEdicaoVisivel, setFormEdicaoVisivel] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Simulação de carregamento
+    setTimeout(() => {
+      try {
+        // Simulação de documentos carregados
+        setDocumentos([
+          { id: 1, nome: 'Contrato de Locação', tipo: 'PDF', data: '01/08/2024', locatario: 'João Silva', proprietario: 'Ana Souza' },
+          { id: 2, nome: 'Laudo de Vistoria', tipo: 'PDF', data: '03/08/2024', locatario: 'Maria Oliveira', proprietario: 'Pedro Lima' },
+          { id: 3, nome: 'Recibo de Pagamento', tipo: 'JPEG', data: '05/08/2024', locatario: 'Carlos Mendes', proprietario: 'Carlos Mendes' },
+        ]);
+        setLoading(false);
+      } catch (error) {
+        setError('Erro ao carregar documentos.');
+        setLoading(false);
+      }
+    }, 2000); // Simula um carregamento de 2 segundos
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,6 +131,9 @@ const Documentos = () => {
     setDocumentoSelecionado(null);
     setFormEdicaoVisivel(false);
   };
+
+  if (loading) return <div className="loading-spinner"></div>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="documentos-container">
@@ -243,10 +261,10 @@ const Modal = ({ documento, onClose }) => {
         <h2>Detalhes do Documento</h2>
         <p><strong>Nome:</strong> {documento.nome || 'Não disponível'}</p>
         <p><strong>Tipo:</strong> {documento.tipo || 'Não disponível'}</p>
-        <p><strong>Data de Upload:</strong> {documento.data}</p>
+        <p><strong>Data de Upload:</strong> {documento.data || 'Não disponível'}</p>
         <p><strong>Locatário:</strong> {documento.locatario || 'Não disponível'}</p>
         <p><strong>Proprietário:</strong> {documento.proprietario || 'Não disponível'}</p>
-        <button className='modal-button' onClick={onClose}>Fechar</button>
+        <button onClick={onClose}>Fechar</button>
       </div>
     </div>
   );

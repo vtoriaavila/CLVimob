@@ -29,6 +29,8 @@ const ContratosDeLoc = () => {
   const [contratoSelecionado, setContratoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [edicaoContrato, setEdicaoContrato] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchContratos = async () => {
@@ -38,6 +40,8 @@ const ContratosDeLoc = () => {
         setContratos(response.data.results); // Assumindo que os contratos estão em response.data.results
       } catch (error) {
         console.error('Erro ao buscar contratos:', error);
+      }finally{
+        setLoading(false); // Concluímos o carregamento, independente de sucesso ou falha
       }
     };
 
@@ -148,6 +152,10 @@ const ContratosDeLoc = () => {
       imob: ''
     });
   };
+
+  if (loading) return <div className="loading-spinner"></div>;
+  if (error) return <p>{error}</p>;
+
 
   return (
     <div className="contratos-container">

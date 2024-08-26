@@ -18,6 +18,8 @@ const Pagamentos = () => {
   const [pagamentoSelecionado, setPagamentoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [contrato, setContrato] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchPagamentos = async () => {
@@ -26,6 +28,8 @@ const Pagamentos = () => {
         setPagamentos(response.data);
       } catch (error) {
         console.error('Erro ao buscar pagamentos:', error);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -95,6 +99,9 @@ const Pagamentos = () => {
     console.log('Editar Pagamento:', id);
     // Adicionar a lógica para editar o pagamento
   };
+
+  if (loading) return <div className="loading-spinner"></div>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="pagamentos-container">

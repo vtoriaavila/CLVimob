@@ -5,7 +5,7 @@ import logo_azl from './logo_azl.png';
 import teste from '../assets/logo_azl.png';
 import homem from './homem.png'; 
 import gestao from './gestaoEficiente.jpg';
-import relatorio from './relatorios.jpg';
+import relatorio from './imagem_2.0.png';
 import integracao from './integração.jpg';
 import imagem from './facilidadeDeUso.jpg';
 
