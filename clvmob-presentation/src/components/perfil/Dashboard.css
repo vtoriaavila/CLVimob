@@ -90,8 +90,31 @@
 
 .dashboard-footer li {
     background-color: #ffffff;
+    border-left: 5px solid #003366;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
 }
+
+.dashboard-footer li:hover {
+    background-color: #e0e0e0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+}
+
+
+.dashboard-footer li:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+.dashboard-footer li:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.dashboard-footer li + li {
+    border-top: 1px solid #d0d0d0;
+    padding-top: 15px;
+    margin-top: 5px;
+}
+
+

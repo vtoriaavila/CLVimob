@@ -4,7 +4,8 @@
     margin: 20px auto;
     padding: 20px;
     background-color: #f1f1f1;
-    border-radius: 8px;
+    border-radius: 2px;
+    border: 1px solid rgb(221, 220, 220);
 }
 
 .pagamentos-container h2 {
@@ -136,17 +137,14 @@
   }
 
   .loading-spinner {
-    width: 48px;
-    height: 48px;
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
     border-radius: 50%;
-    display: inline-block;
-    position: relative;
-    border: 3px solid;
-    border-color: #192872 #192872 transparent;
-    box-sizing: border-box;
-    animation: rotation 1s linear infinite;
-    justify-content: center;
-    align-items: center;
+    animation: rotationWithMove 2s linear infinite;
+    margin-left: 45%;
+    margin-top: 20%;
     
   }
   .loading-spinner::after {
