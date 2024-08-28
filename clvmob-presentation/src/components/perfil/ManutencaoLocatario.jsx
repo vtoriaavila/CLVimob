@@ -151,7 +151,7 @@ const ManutencaoLocatario = () => {
             <h2>Manutenções</h2>
             <div className="manutencao-Locatario-list">
                 {manutencao.map(item => (
-                    <div key={item._id} className="manutencao-item">
+                    <div key={item._id} className="manutencao-locatario-item">
                         <span>{item.tipo_manutencao}</span>
                         <span>{new Date(item.data_solicitacao).toLocaleDateString('pt-BR')}</span>
                         <span>{item.status}</span>
@@ -178,7 +178,7 @@ const ManutencaoLocatario = () => {
             )}
 
             {(formVisivel && edicaoManutencao) && (
-                <div className="novo-manutencao-form">
+                <div className="novo-manutencao-form-loc">
     
                     <input
                         type="text"
@@ -203,7 +203,7 @@ const ManutencaoLocatario = () => {
             )}
 
             {(formVisivel && !edicaoManutencao) && (
-                <div className="novo-manutencao-form">
+                <div className="novo-manutencao-form-loc">
                    
                     <input
                         type="text"

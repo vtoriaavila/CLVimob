@@ -1,5 +1,5 @@
 /* Estilos Gerais */
-.manutencao-container {
+.manutencao-Locatario-container {
     font-family: Arial, sans-serif;
     margin: 0 auto;
     padding: 20px;
@@ -9,12 +9,12 @@
     
 }
 
-h2 {
+.manutencao-Locatario-container h2 {
     color: #333;
     margin-bottom: 20px;
 }
 
-/* Estilos da Tabela */.manutencao-Locatario-container {
+.manutencao-Locatario-container {
     width: 100%;
     max-width: 800px;
     margin: 20px auto;
@@ -37,7 +37,7 @@ h2 {
     gap: 15px;
 }
 
-.manutencao-item {
+.manutencao-locatario-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +47,7 @@ h2 {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra leve */
 }
 
-.manutencao-item span {
+.manutencao-locatario-item span {
     flex: 1;
     text-align: left;
     font-size: 16px;
@@ -90,7 +90,7 @@ h2 {
     background-color: #455a64; /* Cor do botão adicionar ao passar o mouse */
 }
 
-.novo-manutencao-form{
+.novo-manutencao-form-loc{
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
@@ -98,7 +98,7 @@ h2 {
     max-width: 1000px;
 }
 
-.novo-manutencao-form input {
+.novo-manutencao-form-loc input {
     padding: 10px;
     width: 80%;
     box-sizing: border-box;
@@ -266,7 +266,7 @@ h2 {
 }
 
 .cancelar:hover {
-    background-color: #c73511; /* Cor do botão adicionar ao passar o mouse */
+    background-color: #455a64;/* Cor do botão adicionar ao passar o mouse */
 }
 .content{
     background-color: white;

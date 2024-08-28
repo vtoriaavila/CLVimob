@@ -147,9 +147,9 @@ const manutencao = () => {
     if (error) return <p>{error}</p>;
 
     return (
-        <div className="manutencao-Locatario-container">
+        <div className="manutencao-container">
             <h2>Manutenções</h2>
-            <div className="manutencao-Locatario-list">
+            <div className="manutencao-list">
                 {manutencao.map(item => (
                     <div key={item._id} className="manutencao-item">
                         <span>{item.tipo_manutencao}</span>

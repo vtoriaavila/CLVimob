@@ -87,7 +87,7 @@ export default function Dashboard() {
       </div>
       <div className="dashboard-charts">
         <div className="chart-container"><DespesaReceita /></div>
-        <div className='chart-container'><Ocupacao/></div>
+        <div className='chart-container1'><Ocupacao/></div>
         <div className='chart-container2'><Manutencao/></div>
       </div>
       <div className="dashboard-footer">
