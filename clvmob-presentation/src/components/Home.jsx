@@ -117,7 +117,7 @@ const Home = () => {
                 </nav>
             </footer>
         </div>
-        </div>
+        </div>//terminando home 
     );
 };
 
