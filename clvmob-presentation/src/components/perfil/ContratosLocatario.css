@@ -175,5 +175,59 @@ button.visualizar-contrato:hover {
 .tabela-detalhes-contrato tr:hover {
   background-color: #f5f5f5; /* Cor de fundo ao passar o mouse sobre a linha */
 }
+.informacoes-imovel {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.informacoes-imovel h3 {
+  font-size: 24px;
+  color: #333;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.informacoes-imovel p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  margin: 8px 0;
+}
+
+.informacoes-imovel p strong {
+  color: #333;
+  font-weight: bold;
+}
+
+
+.detalhes-locatario {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.detalhes-locatario h3 {
+  font-size: 24px;
+  color: #444;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.detalhes-locatario p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.detalhes-locatario p strong {
+  color: #333;
+  font-weight: 600;
+}
+
+
 
   

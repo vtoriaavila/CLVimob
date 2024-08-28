@@ -100,7 +100,7 @@ const DocumentosLocatario = () => {
 
       <div className="documentos-list">
         {documentos.map(doc => (
-          <div key={doc.id} className="documentos-item">
+          <div key={doc.id} className="documentos-item-loc">
             <span>{doc.titulo}</span>
             <span>{doc.tipo}</span>
             <span>{new Date(doc.data).toLocaleDateString('pt-BR')}</span>

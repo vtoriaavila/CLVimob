@@ -8,7 +8,13 @@
     font-family: Arial, sans-serif;
   }
 
-  .documentos-item{
+  .documentos-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+  .documentos-item-loc{
     display: flex;
     justify-content: space-between;
     align-items: center;
