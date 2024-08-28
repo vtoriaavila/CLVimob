@@ -125,9 +125,9 @@
 .retangulo-cinza {
   background-color: #ebebeb;
   position: absolute;
-  width: 1500px;
+  width: 1800px;
   height: 104%;
-  left: -355px;
+  left: -655px;
   bottom: -16px;
   z-index: -1;
 }
