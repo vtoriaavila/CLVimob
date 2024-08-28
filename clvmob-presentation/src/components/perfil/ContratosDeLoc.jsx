@@ -29,6 +29,7 @@ const ContratosDeLoc = () => {
   const [contratoSelecionado, setContratoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [edicaoContrato, setEdicaoContrato] = useState(null);
+  const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -115,6 +116,7 @@ const ContratosDeLoc = () => {
   const editarContrato = (id) => {
     const contrato = contratos.find(contrato => contrato.id === id);
     setEdicaoContrato(contrato);
+    setShowForm(true);
     setNovoContrato({
       ...contrato,
       imovel: contrato.imob._id // Ajuste se necessário
@@ -143,6 +145,7 @@ const ContratosDeLoc = () => {
       contrato.id === contratoAtualizado.id ? contratoAtualizado : contrato
     ));
     setEdicaoContrato(null);
+    setShowForm(false);
     setNovoContrato({
       locatorio: '',
       dataInicio: '',
@@ -151,6 +154,11 @@ const ContratosDeLoc = () => {
       admin: '',
       imob: ''
     });
+  };
+
+  const cancelarEdicao = () => {
+    setEdicaoContrato(null);
+    setShowForm(false);
   };
 
   if (loading) return <div className="loading-spinner"></div>;
@@ -175,79 +183,79 @@ const ContratosDeLoc = () => {
         ))}
       </div>
 
+      <button className="add-contratoLoc" onClick={() => setShowForm(!showForm)}>
+        {showForm ? 'Cancelar' : 'Adicionar Novo Contrato +'}
+      </button>
+
+      {showForm && (
       <div className="novo-contrato-form">
-        <input
-          type="text"
-          name="locatorio"
-          placeholder="Locatário"
-          value={novoContrato.locatorio}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="imovel"
-          placeholder="Imóvel"
-          value={novoContrato.imovel}
-          onChange={handleChange}
-        />
-        <div className="form-group">
-          <label htmlFor="dataInicio">Data de Início:</label>
-          <input
-            type="date"
-            name="dataInicio"
-            placeholder="Data de Início"
-            value={novoContrato.dataInicio}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="dataFim">Data de Vencimento:</label>
-          <input
-            type="date"
-            name="dataFim"
-            placeholder="Data de Vencimento"
-            value={novoContrato.dataFim}
-            onChange={handleChange}
-          />
-        </div>
-        <input
-          type="text"
-          name="proprietario"
-          placeholder="Proprietário"
-          value={novoContrato.proprietario}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="admin"
-          placeholder="Admin"
-          value={novoContrato.admin}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="locatorio"
-          placeholder="Locatório"
-          value={novoContrato.locatorio}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="imob"
-          placeholder="Imóvel ID"
-          value={novoContrato.imob}
-          onChange={handleChange}
-        />
-        {edicaoContrato ? (
-          <button className="save-contrato" onClick={salvarEdicao}>
-            Salvar Edição
-          </button>
-        ) : (
-          <button className="add-contrato" onClick={adicionarContrato}>
-            Adicionar Contrato +
-          </button>
-        )}
-      </div>
+  <input
+    type="text"
+    name="locatorio"
+    placeholder="Locatário"
+    value={edicaoContrato ? edicaoContrato.locatorio : novoContrato.locatorio}
+    onChange={handleChange}
+  />
+  <input
+    type="text"
+    name="imovel"
+    placeholder="Imóvel"
+    value={edicaoContrato ? edicaoContrato.imovel : novoContrato.imovel}
+    onChange={handleChange}
+  />
+  <div className="form-group">
+    <label htmlFor="dataInicio">Data de Início:</label>
+    <input
+      type="date"
+      name="dataInicio"
+      placeholder="Data de Início"
+      value={edicaoContrato ? formatDate(edicaoContrato.dataInicio) : formatDate(novoContrato.dataInicio)}
+      onChange={handleChange}
+    />
+  </div>
+  <div className="form-group">
+    <label htmlFor="dataFim">Data de Vencimento:</label>
+    <input
+      type="date"
+      name="dataFim"
+      placeholder="Data de Vencimento"
+      value={edicaoContrato ? formatDate(edicaoContrato.dataFim) : formatDate(novoContrato.dataFim)}
+      onChange={handleChange}
+    />
+  </div>
+  <input
+    type="text"
+    name="proprietario"
+    placeholder="Proprietário"
+    value={edicaoContrato ? edicaoContrato.proprietario : novoContrato.proprietario}
+    onChange={handleChange}
+  />
+  <input
+    type="text"
+    name="admin"
+    placeholder="Admin"
+    value={edicaoContrato ? edicaoContrato.admin : novoContrato.admin}
+    onChange={handleChange}
+  />
+  <input
+    type="text"
+    name="imob"
+    placeholder="Imóvel ID"
+    value={edicaoContrato ? edicaoContrato.imob : novoContrato.imob}
+    onChange={handleChange}
+  />
+  {edicaoContrato ? (
+    <button className="save-contrato" onClick={salvarEdicao}>
+      Salvar Edição
+    </button>
+  ) : (
+    <button className="add-contrato" onClick={adicionarContrato}>
+      Adicionar Contrato +
+    </button>
+  )}
+</div>
+)}
+
 
       {modalVisivel && (
         <Modal 

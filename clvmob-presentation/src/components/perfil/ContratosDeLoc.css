@@ -50,6 +50,18 @@
     cursor: pointer;
     font-size: 14px;
 }
+.add-contratoLoc{
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  background-color: #607d8b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+}
 
 .contrato-actions button:hover {
     background-color: #aaa;

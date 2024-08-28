@@ -242,9 +242,6 @@ const formatDate = (dateString) => {
               <button className="save-proprietario" onClick={salvarEdicao}>
                 Salvar
               </button>
-              <button className="cancel-proprietario" onClick={cancelarEdicao}>
-                Cancelar
-              </button>
             </>
           ) : (
             <button className="save-proprietario" onClick={adicionarProprietario}>

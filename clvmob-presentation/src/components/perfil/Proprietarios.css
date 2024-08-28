@@ -43,7 +43,8 @@ h2 {
 }
 
 .proprietario-actions button {
-    background-color: #ccc;
+    background-color: #607d8b;
+    color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 4px;
@@ -52,7 +53,7 @@ h2 {
 }
 
 .proprietario-actions button:hover {
-    background-color: #aaa;
+    background-color: #455a64;
 }
 
 .add-proprietario, .save-proprietario{
@@ -68,8 +69,25 @@ h2 {
     margin-top: 20px;
 }
 
-.add-proprietario,.save-proprietario:hover {
+.add-proprietario:hover {
     background-color: #455a64;
+}
+.save-proprietario:hover{
+  background-color: #455a64;
+}
+
+.novo-proprietario-form{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 10px;
+  margin-top: 20px;
+  max-width: 800px;
+}
+
+.novo-proprietario-form input{
+  padding: 10px;
+  width: 80%;
+  box-sizing: border-box;
 }
 
 .modal {

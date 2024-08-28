@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Documentos.css';
-import { getAllDocuments } from '../../services/documento.service'; // Importando a função da API
+import { getAllDocuments } from '../../services/documento.service';
 
 const Documentos = () => {
   const [documentos, setDocumentos] = useState([]);
@@ -15,6 +15,7 @@ const Documentos = () => {
   const [documentoSelecionado, setDocumentoSelecionado] = useState(null);
   const [modalVisivel, setModalVisivel] = useState(false);
   const [formEdicaoVisivel, setFormEdicaoVisivel] = useState(false);
+  const [formNovoVisivel, setFormNovoVisivel] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,7 +23,6 @@ const Documentos = () => {
     const fetchDocumentos = async () => {
       try {
         const response = await getAllDocuments();
-        console.log(response)
         setDocumentos(response.data);
       } catch (error) {
         setError('Erro ao carregar documentos.');
@@ -74,6 +74,7 @@ const Documentos = () => {
       locatario: '',
       proprietario: ''
     });
+    setFormNovoVisivel(false);
   };
 
   const excluirDocumento = (id) => {
@@ -84,13 +85,13 @@ const Documentos = () => {
     const documento = documentos.find(documento => documento._id === id);
     setDocumentoSelecionado(documento);
     setModalVisivel(true);
-};
-
+  };
 
   const editarDocumento = (id) => {
-    const documento = documentos.find(documento => documento.id === id);
+    const documento = documentos.find(documento => documento._id === id);
     setDocumentoSelecionado(documento);
     setFormEdicaoVisivel(true);
+    setFormNovoVisivel(false); // Esconder o formulário de novo documento se estiver visível
   };
 
   const salvarEdicao = async () => {
@@ -132,6 +133,11 @@ const Documentos = () => {
     setFormEdicaoVisivel(false);
   };
 
+  const mostrarFormularioNovo = () => {
+    setFormNovoVisivel(true);
+    setFormEdicaoVisivel(false); // Esconder o formulário de edição se estiver visível
+  };
+
   if (loading) return <div className="loading-spinner"></div>;
   if (error) return <p>{error}</p>;
 
@@ -139,27 +145,32 @@ const Documentos = () => {
     <div className="documentos-container">
       <h2>Documentos</h2>
       <div className="documentos-list">
-      {documentos.map(documento => {
-      // Formata a data para o formato 'pt-BR'
-      const dataFormatada = documento.data ? new Date(documento.data).toLocaleDateString('pt-BR') : 'Não disponível';
-      
-      return (
-        <div key={documento._id} className="documento-item">
-          <span>{documento.titulo}</span>
-          <span>{documento.tipo}</span>
-          <span>{dataFormatada}</span>
-          <span>{documento.imob.tipo}</span>
-          <div className="documento-actions">
-            <button onClick={() => editarDocumento(documento._id)}>Editar</button>
-            <button onClick={() => excluirDocumento(documento._id)}>Excluir</button>
-            <button onClick={() => verDocumento(documento._id)}>Ver</button>
-          </div>
-        </div>
-      );
-    })}
+        {documentos.map(documento => {
+          const dataFormatada = documento.data ? new Date(documento.data).toLocaleDateString('pt-BR') : 'Não disponível';
+
+          return (
+            <div key={documento._id} className="documento-item">
+              <span>{documento.titulo}</span>
+              <span>{documento.tipo}</span>
+              <span>{dataFormatada}</span>
+              <span>{documento.imob.tipo}</span>
+              <div className="documento-actions">
+                <button onClick={() => editarDocumento(documento._id)}>Editar</button>
+                <button onClick={() => excluirDocumento(documento._id)}>Excluir</button>
+                <button onClick={() => verDocumento(documento._id)}>Ver</button>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {!formEdicaoVisivel && (
+      {!formEdicaoVisivel && !formNovoVisivel && (
+        <button className="add-documento" onClick={mostrarFormularioNovo}>
+          Adicionar Documento +
+        </button>
+      )}
+
+      {formNovoVisivel && (
         <div className="novo-documento-form">
           <input
             type="text"

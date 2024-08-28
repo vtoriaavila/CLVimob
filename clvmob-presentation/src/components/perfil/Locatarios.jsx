@@ -239,9 +239,6 @@ const Locatarios = () => {
               <button className="save-locatario" onClick={salvarEdicao}>
                 Salvar
               </button>
-              <button className="cancel-locatario" onClick={cancelarEdicao}>
-                Cancelar
-              </button>
             </>
           ) : (
             <button className="save-locatario" onClick={adicionarLocatario}>

@@ -20,6 +20,7 @@ const Pagamentos = () => {
   const [contrato, setContrato] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editando, setEditando] = useState(false); // Adiciona o estado para edição
 
   useEffect(() => {
     const fetchPagamentos = async () => {
@@ -28,7 +29,7 @@ const Pagamentos = () => {
         setPagamentos(response.data);
       } catch (error) {
         console.error('Erro ao buscar pagamentos:', error);
-      }finally{
+      } finally {
         setLoading(false);
       }
     };
@@ -53,7 +54,7 @@ const Pagamentos = () => {
     }
 
     const novoPagamentoData = {
-      _id: pagamentos.length + 1,
+      _id: editando ? pagamentoSelecionado._id : pagamentos.length + 1,
       tipo,
       valor: parseFloat(valor),
       data,
@@ -64,7 +65,17 @@ const Pagamentos = () => {
       destinatario
     };
 
-    setPagamentos([...pagamentos, novoPagamentoData]);
+    if (editando) {
+      setPagamentos(
+        pagamentos.map((pagamento) =>
+          pagamento._id === pagamentoSelecionado._id ? novoPagamentoData : pagamento
+        )
+      );
+      setEditando(false);
+    } else {
+      setPagamentos([...pagamentos, novoPagamentoData]);
+    }
+
     setNovoPagamento({
       tipo: '',
       valor: '',
@@ -96,8 +107,12 @@ const Pagamentos = () => {
   };
 
   const editarPagamento = (id) => {
-    console.log('Editar Pagamento:', id);
-    // Adicionar a lógica para editar o pagamento
+    const pagamento = pagamentos.find(pagamento => pagamento._id === id);
+    if (pagamento) {
+      setNovoPagamento(pagamento);
+      setEditando(true);
+      setPagamentoSelecionado(pagamento);
+    }
   };
 
   if (loading) return <div className="loading-spinner"></div>;
@@ -113,76 +128,78 @@ const Pagamentos = () => {
             <span>R$ {pagamento.valor}</span>
             <span>{new Date(pagamento.data).toLocaleDateString()}</span>
             <div className="pagamento-actions">
-              { <button onClick={() => editarPagamento(pagamento._id)}>editar</button> }
-              { <button onClick={() => excluirPagamento(pagamento._id)}>excluir</button> }
+              <button onClick={() => editarPagamento(pagamento._id)}>editar</button>
+              <button onClick={() => excluirPagamento(pagamento._id)}>excluir</button>
               <button onClick={() => verPagamento(pagamento._id)}>ver</button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Formulário para Adicionar Novo Pagamento */}
-      {/* <div className="novo-pagamento-form">
-        <input
-          type="text"
-          name="tipo"
-          placeholder="Tipo de Pagamento"
-          value={novoPagamento.tipo}
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="valor"
-          placeholder="Valor"
-          value={novoPagamento.valor}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="data"
-          placeholder="Data"
-          value={novoPagamento.data}
-          onChange={handleChange}
-        />
-        <input
-          type="date"
-          name="vencimento"
-          placeholder="Vencimento"
-          value={novoPagamento.vencimento}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="status"
-          placeholder="Status"
-          value={novoPagamento.status}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="contrato"
-          placeholder="Contrato"
-          value={novoPagamento.contrato}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="emissor"
-          placeholder="Emissor"
-          value={novoPagamento.emissor}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="destinatario"
-          placeholder="Destinatário"
-          value={novoPagamento.destinatario}
-          onChange={handleChange}
-        />
-        <button className="add-pagamento" onClick={adicionarPagamento}>
-          Adicionar Pagamento +
-        </button> 
-      </div>*/}
+      {/* Formulário para Adicionar ou Editar Pagamento */}
+      {editando && (
+        <div className="novo-pagamento-form">
+          <input
+            type="text"
+            name="tipo"
+            placeholder="Tipo de Pagamento"
+            value={novoPagamento.tipo}
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="valor"
+            placeholder="Valor"
+            value={novoPagamento.valor}
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            name="data"
+            placeholder="Data"
+            value={novoPagamento.data}
+            onChange={handleChange}
+          />
+          <input
+            type="date"
+            name="vencimento"
+            placeholder="Vencimento"
+            value={novoPagamento.vencimento}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="status"
+            placeholder="Status"
+            value={novoPagamento.status}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="contrato"
+            placeholder="Contrato"
+            value={novoPagamento.contrato}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="emissor"
+            placeholder="Emissor"
+            value={novoPagamento.emissor}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="destinatario"
+            placeholder="Destinatário"
+            value={novoPagamento.destinatario}
+            onChange={handleChange}
+          />
+          <button className="add-pagamento" onClick={adicionarPagamento}>
+            {editando ? 'Salvar Alterações' : 'Adicionar Pagamento +'}
+          </button>
+        </div>
+      )}
 
       {modalVisivel && (
         <Modal 
@@ -197,8 +214,6 @@ const Pagamentos = () => {
 
 const Modal = ({ pagamento, onClose, contrato }) => {
   if (!pagamento || !contrato) return null;
-
- 
 
   return (
     <div className="modal">
@@ -223,6 +238,5 @@ const Modal = ({ pagamento, onClose, contrato }) => {
     </div>
   );
 };
-
 
 export default Pagamentos;
