@@ -22,7 +22,6 @@ const ContratosDeLoc = () => {
     dataFim: '',
     proprietario: '',
     admin: '',
-    locatorio: '',
     imob: ''
   });
 
