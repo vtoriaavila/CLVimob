@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './Imoveis.css';
 import { createImob, getAllImobs, deleteImob, editimob } from '../../services/imob.service'; // Importa a função de editar imóvel
+import { getAllUsersProp } from '../../services/user.service';
+
 
 const Imoveis = () => {
   const [imoveis, setImoveis] = useState([]);
@@ -14,9 +16,11 @@ const Imoveis = () => {
   const [imovelAExcluir, setImovelAExcluir] = useState(null); // Imóvel que será excluído
   const [senha, setSenha] = useState(''); // Novo estado para a senha
   const [senhaError, setSenhaError] = useState(''); // Novo estado para erros de senha
+  const [proprietarios, setProprietarios] = useState([]); // Estado para armazenar os proprietários
 
   const [novoImovel, setNovoImovel] = useState({
     tipo: '',
+    proprietario: '',
     cep: '',
     endereco: '',
     cidade: '',
@@ -26,6 +30,7 @@ const Imoveis = () => {
     tamanho: '',
     aluguel: ''
   });
+
 
   useEffect(() => {
     const fetchImoveis = async () => {
@@ -40,7 +45,17 @@ const Imoveis = () => {
       }
     };
 
+    const fetchProprietarios = async () => {
+      try {
+        const response = await getAllUsersProp();
+        setProprietarios(response.data);
+      } catch (err) {
+        setError('Erro ao carregar proprietários');
+      }
+    };
+
     fetchImoveis();
+    fetchProprietarios();
   }, []);
 
   const handleChange = (e) => {
@@ -74,6 +89,7 @@ const Imoveis = () => {
 
     const novoImovelData = {
       tipo,
+      proprietario: '',
       cep,
       endereco,
       cidade,
@@ -101,6 +117,7 @@ const Imoveis = () => {
 
       setNovoImovel({
         tipo: '',
+        proprietario: '',
         cep: '',
         endereco: '',
         cidade: '',
@@ -151,6 +168,7 @@ const Imoveis = () => {
     const imovel = imoveis.find(imovel => imovel.id === id);
     setNovoImovel({
       tipo: imovel.tipo,
+      proprietario: imovel.proprietario,
       cep: imovel.cep,
       endereco: imovel.endereco,
       cidade: imovel.cidade,
@@ -202,6 +220,19 @@ const Imoveis = () => {
             value={novoImovel.tipo}
             onChange={handleChange}
           />
+          <select
+            name="proprietario"
+            value={novoImovel.proprietario}
+            onChange={handleChange}
+          >
+            <option value="">Selecione o Proprietário</option>
+            {proprietarios.map(prop => (
+              <option key={prop.id} value={prop.id}>
+                {prop.name}
+              </option>
+            ))}
+          </select>
+
           <input
             type="text"
             name="cep"
@@ -265,9 +296,9 @@ const Imoveis = () => {
       )}
 
       {modalVisivel && (
-        <Modal 
-          imovel={imovelSelecionado} 
-          onClose={() => setModalVisivel(false)} 
+        <Modal
+          imovel={imovelSelecionado}
+          onClose={() => setModalVisivel(false)}
         />
       )}
 
@@ -300,6 +331,7 @@ const Modal = ({ imovel, onClose }) => {
       <div className="modal-content">
         <h2>{imovel.tipo}</h2>
         <p>Tipo: {imovel.tipo}</p>
+        <p>Proprietario: {imovel.proprietario.name}</p>
         <p>CEP: {imovel.cep}</p>
         <p>Endereço: {imovel.endereco}</p>
         <p>Cidade: {imovel.cidade}</p>
